@@ -28,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_back"
+            app:titleTextAppearance="@style/TextAppearance.PetCare.Toolbar.Title"
             app:title="@string/screen_pet_checklist" />
 
     </com.google.android.material.appbar.AppBarLayout>

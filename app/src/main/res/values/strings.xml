@@ -259,12 +259,15 @@
     <string name="btn_send">Send</string>
     <string name="btn_open_messaging">Open in messaging app</string>
     <string name="btn_share_plan">Share care plan</string>
+    <string name="section_send_care_plan">Send Care Plan</string>
+    <string name="label_or_divider">or</string>
     <string name="dialog_confirm_send_title">Confirm SMS</string>
     <string name="dialog_confirm_send_message">Send care plan for %1$s to %2$s?</string>
     <string name="dialog_sms_permission_title">SMS Permission Required</string>
     <string name="dialog_sms_permission_message">PetCare needs SMS permission to send the delegation plan directly from the app. Alternatively, you can open your default messaging app without granting permission.</string>
     <string name="snackbar_sms_sent">Care plan sent successfully to %1$s!</string>
     <string name="snackbar_sms_failed">Failed to send SMS: %1$s</string>
+    <string name="snackbar_sms_timeout">SMS sending timed out. You can use \'Open in messaging app\' or \'Share care plan\'.</string>
     <string name="snackbar_contact_no_number">The selected contact does not have a phone number.</string>
     <string name="snackbar_sms_permission_denied">SMS permission was denied. You can still use \'Open in messaging app\'.</string>
     <string name="snackbar_sms_permission_permanently_denied">SMS permission is disabled. Tap Settings to enable it, or use the messaging app.</string>

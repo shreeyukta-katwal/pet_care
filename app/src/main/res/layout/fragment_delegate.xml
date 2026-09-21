@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/delegate_title"
+            app:titleTextAppearance="@style/TextAppearance.PetCare.Toolbar.Title"
             app:navigationIcon="@drawable/ic_back"
             app:navigationContentDescription="@string/cd_navigate_up" />
 
@@ -103,6 +104,7 @@
                         <!-- Phone number input field -->
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/layout_phone"
+                            style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -262,6 +264,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/layout_extra_instructions"
+                        style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -327,6 +330,7 @@
                     <!-- Editable preview box -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/layout_message_preview"
+                        style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp">
@@ -372,59 +376,122 @@
             </com.google.android.material.card.MaterialCardView>
 
             <!-- ── SECTION 5: Sending Actions & Fallback ───────────────────── -->
-
-            <!-- Non-telephony hint (shown on Wi-Fi tablets) -->
-            <TextView
-                android:id="@+id/text_no_telephony_hint"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:text="@string/no_telephony_hint"
-                android:textAppearance="?attr/textAppearanceBodySmall"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutlineVariant"
+                app:cardCornerRadius="16dp">
 
-            <!-- Primary Send SMS Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_send_sms"
-                style="@style/Widget.Material3.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_send_sms"
-                app:icon="@drawable/ic_send"
-                android:layout_marginBottom="8dp"
-                android:enabled="false" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-            <!-- Secondary Messaging App Fallback Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_open_messaging"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_open_messaging"
-                app:icon="@drawable/ic_message"
-                android:layout_marginBottom="8dp"
-                android:enabled="false" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="@string/section_send_care_plan"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textColor="?attr/colorOnSurface" />
 
-            <!-- Tertiary Share Care Plan Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_share_plan"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_share_plan"
-                app:icon="@drawable/ic_share" />
+                    <!-- Non-telephony hint (shown on Wi-Fi tablets) -->
+                    <TextView
+                        android:id="@+id/text_no_telephony_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:text="@string/no_telephony_hint"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
-            <!-- Progress spinner while sending -->
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progress_sending"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:indeterminate="true"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                    <!-- Primary Send SMS Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_send_sms"
+                        style="@style/Widget.Material3.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:text="@string/btn_send_sms"
+                        app:icon="@drawable/ic_send"
+                        app:cornerRadius="12dp"
+                        android:layout_marginBottom="8dp"
+                        android:enabled="false" />
+
+                    <!-- Secondary Messaging App Fallback Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_open_messaging"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:text="@string/btn_open_messaging"
+                        app:icon="@drawable/ic_message"
+                        app:cornerRadius="12dp"
+                        android:layout_marginBottom="8dp"
+                        android:enabled="false" />
+
+                    <!-- Divider with "or" label -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="6dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"
+                            android:background="?attr/colorOutlineVariant" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="12dp"
+                            android:text="@string/label_or_divider"
+                            android:textAppearance="?attr/textAppearanceLabelMedium"
+                            android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"
+                            android:background="?attr/colorOutlineVariant" />
+
+                    </LinearLayout>
+
+                    <!-- Tertiary Share Care Plan Button (Improved Tonal Button) -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_share_plan"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:text="@string/btn_share_plan"
+                        android:textColor="?attr/colorOnSurface"
+                        app:iconTint="?attr/colorOnSurface"
+                        app:icon="@drawable/ic_share"
+                        app:cornerRadius="12dp" />
+
+                    <!-- Progress spinner while sending -->
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progress_sending"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:indeterminate="true"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 

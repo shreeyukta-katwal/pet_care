@@ -38,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/screen_pet_list"
+            app:titleTextAppearance="@style/TextAppearance.PetCare.Toolbar.Title"
             app:layout_scrollFlags="scroll|enterAlways|snap" />
 
     </com.google.android.material.appbar.AppBarLayout>

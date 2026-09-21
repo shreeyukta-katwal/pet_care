@@ -35,6 +35,8 @@ import com.petcare.app.PetCareApp
 import com.petcare.app.R
 import com.petcare.app.databinding.FragmentDelegateBinding
 import com.petcare.app.ui.checklist.ChecklistFilterMode
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -89,6 +91,9 @@ class DelegateFragment : Fragment() {
 
     /** Registered broadcast receiver for SMS delivery callbacks, if any active. */
     private var activeSmsReceiver: BroadcastReceiver? = null
+
+    /** Safety timeout coroutine job to prevent indefinite spinner if cellular stack drops callback. */
+    private var smsTimeoutJob: Job? = null
 
     // ── Activity Result Launchers ─────────────────────────────────────────────
 
@@ -482,6 +487,7 @@ class DelegateFragment : Fragment() {
                 val resultCode = resultCode
                 if (resultCode != Activity.RESULT_OK && !hasReportedError) {
                     hasReportedError = true
+                    cancelSmsTimeout()
                     val errorDesc = when (resultCode) {
                         SmsManager.RESULT_ERROR_GENERIC_FAILURE -> getString(R.string.reason_generic_failure)
                         SmsManager.RESULT_ERROR_NO_SERVICE -> getString(R.string.reason_no_service)
@@ -495,6 +501,7 @@ class DelegateFragment : Fragment() {
                     )
                     unregisterSmsReceiver()
                 } else if (partsRemaining <= 0 && !hasReportedError) {
+                    cancelSmsTimeout()
                     viewModel.onSendCompleted(
                         success = true,
                         message = getString(R.string.snackbar_sms_sent, recipientDisplay)
@@ -530,9 +537,23 @@ class DelegateFragment : Fragment() {
             sentIntents.add(sentIntent)
         }
 
+        // Safety timeout: if cellular carrier does not return a callback within 10s, cancel loading
+        smsTimeoutJob?.cancel()
+        smsTimeoutJob = viewLifecycleOwner.lifecycleScope.launch {
+            delay(10_000)
+            if (activeSmsReceiver != null) {
+                unregisterSmsReceiver()
+                viewModel.onSendCompleted(
+                    success = false,
+                    message = getString(R.string.snackbar_sms_timeout)
+                )
+            }
+        }
+
         try {
             smsManager.sendMultipartTextMessage(phone, null, parts, sentIntents, null)
         } catch (e: Exception) {
+            cancelSmsTimeout()
             unregisterSmsReceiver()
             viewModel.onSendCompleted(
                 success = false,
@@ -541,7 +562,13 @@ class DelegateFragment : Fragment() {
         }
     }
 
+    private fun cancelSmsTimeout() {
+        smsTimeoutJob?.cancel()
+        smsTimeoutJob = null
+    }
+
     private fun unregisterSmsReceiver() {
+        cancelSmsTimeout()
         activeSmsReceiver?.let {
             try {
                 requireContext().unregisterReceiver(it)
