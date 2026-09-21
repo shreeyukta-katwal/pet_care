@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AndroidManifest.xml – PetCare application manifest.
+    Declares the Application class, permissions, and the single MainActivity
+    that hosts the Navigation Component NavHost.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- ── Hardware Features ────────────────────────────────────────────── -->
+    <!-- Telephony is optional: Wi-Fi only tablets can still use messaging app fallback / share -->
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <!-- ── Permissions ──────────────────────────────────────────────────── -->
+    <!-- SMS: used for checklist delegation (Step 8) -->
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <!--
+        WorkManager is used for task reminders (Step 7).
+        WorkManager timing is inexact by design (a few minutes of drift is possible)
+        and was chosen over exact alarms so that no SCHEDULE_EXACT_ALARM permission is needed.
+    -->
+    <!-- POST_NOTIFICATIONS: required on API 33+ to show WorkManager notifications -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- READ_EXTERNAL_STORAGE / READ_MEDIA_IMAGES: for pet photo picker (Step 3) -->
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_IMAGES"
+        android:maxSdkVersion="32" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <!--
+        Application element:
+        - android:name points to PetCareApp (our custom Application class).
+        - Theme is a Material 3 DayNight theme defined in themes.xml.
+        - Rounded-corner icon uses the adaptive launcher icon resources.
+    -->
+    <application
+        android:name=".PetCareApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PetCare">
+
+        <!--
+            MainActivity – the single Activity for the whole app.
+            The Navigation Component manages all fragment transactions inside it.
+            configChanges: handle orientation/screen-size ourselves so the Activity
+            is NOT recreated on rotation (prevents NavHost re-inflation).
+        -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Launcher intent filter – app entry point -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- FileProvider for camera captures without requiring CAMERA permission -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+
+</manifest>

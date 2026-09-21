@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    themes.xml – Light theme definition for PetCare.
+    Extends Material3.Theme.Material3.DayNight and overrides all colour role
+    attributes using the named colours defined in colors.xml.
+    Shape and typography overrides are also applied here.
+
+    The DayNight parent automatically switches to values-night/themes.xml
+    when the device is in dark mode.
+-->
+<resources>
+
+    <!--
+        Theme.PetCare – the main application theme.
+        Parent: Material3.DayNight base (no ActionBar) so we can use Toolbar in fragments.
+    -->
+    <style name="Theme.PetCare" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <!-- ── Primary colour roles ──────────────────────────────────── -->
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
+
+        <!-- ── Secondary colour roles ────────────────────────────────── -->
+        <item name="colorSecondary">@color/md_theme_light_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
+
+        <!-- ── Tertiary colour roles ─────────────────────────────────── -->
+        <item name="colorTertiary">@color/md_theme_light_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_light_onTertiaryContainer</item>
+
+        <!-- ── Error colour roles ────────────────────────────────────── -->
+        <item name="colorError">@color/md_theme_light_error</item>
+        <item name="colorOnError">@color/md_theme_light_onError</item>
+        <item name="colorErrorContainer">@color/md_theme_light_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/md_theme_light_onErrorContainer</item>
+
+        <!-- ── Background and surface roles ─────────────────────────── -->
+        <item name="android:colorBackground">@color/md_theme_light_background</item>
+        <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_light_onSurfaceVariant</item>
+
+        <!-- ── Outline ───────────────────────────────────────────────── -->
+        <item name="colorOutline">@color/md_theme_light_outline</item>
+        <item name="colorOutlineVariant">@color/md_theme_light_outlineVariant</item>
+
+        <!-- ── Inverse colours (Snackbar, etc.) ─────────────────────── -->
+        <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_light_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
+
+        <!-- ── Shape: rounded corners on components ──────────────────── -->
+        <!--
+            ShapeAppearance.PetCare.SmallComponent  – 12dp corners (chips, buttons, text fields)
+            ShapeAppearance.PetCare.MediumComponent – 16dp corners (cards, dialogs)
+            ShapeAppearance.PetCare.LargeComponent  – 24dp corners (bottom sheets, large cards)
+        -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.PetCare.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.PetCare.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.PetCare.LargeComponent</item>
+
+    </style>
+
+    <!-- ── Shape appearance overlays ────────────────────────────────── -->
+
+    <!-- Small components: buttons, chips, text input fields (12dp corners) -->
+    <style name="ShapeAppearance.PetCare.SmallComponent"
+        parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <!-- Medium components: cards, dialogs (16dp corners) -->
+    <style name="ShapeAppearance.PetCare.MediumComponent"
+        parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <!-- Large components: bottom sheets, large cards (24dp corners) -->
+    <style name="ShapeAppearance.PetCare.LargeComponent"
+        parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+
+</resources>

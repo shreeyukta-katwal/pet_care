@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    mipmap-anydpi-v26/ic_launcher.xml – Adaptive launcher icon definition.
+    Uses the adaptive icon format (API 26+) which separates foreground and
+    background layers so the launcher can apply any mask shape (circle, squircle, etc.).
+
+    Foreground: ic_petcare_logo (paw print in white)
+    Background: ic_launcher_background (solid teal)
+-->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Teal background fills the safe zone -->
+    <background android:drawable="@drawable/ic_launcher_background" />
+    <!-- White paw print centred in the foreground layer -->
+    <foreground android:drawable="@drawable/ic_petcare_logo" />
+</adaptive-icon>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    dimens.xml – App-wide dimension tokens.
+    All layout files reference these names rather than hard-coded dp/sp values
+    so the spacing system stays consistent and is easy to adjust.
+-->
+<resources>
+
+    <!-- ── Spacing scale ─────────────────────────────────────────────── -->
+    <!-- Extra-small gap (icon padding, chip insets) -->
+    <dimen name="spacing_xsmall">4dp</dimen>
+    <!-- Standard inner padding for compact UI elements -->
+    <dimen name="spacing_small">8dp</dimen>
+    <!-- Default content padding and list-item gaps -->
+    <dimen name="spacing_medium">16dp</dimen>
+    <!-- Section separators and generous card padding -->
+    <dimen name="spacing_large">24dp</dimen>
+    <!-- Page-level vertical margins -->
+    <dimen name="spacing_xlarge">32dp</dimen>
+
+    <!-- ── Card ───────────────────────────────────────────────────────── -->
+    <!-- Rounded corners on MaterialCardView and dialogs -->
+    <dimen name="card_corner_radius">16dp</dimen>
+
+    <!-- ── FAB ───────────────────────────────────────────────────────── -->
+    <!-- Bottom margin so the FAB clears the navigation bar -->
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- ── Photo ─────────────────────────────────────────────────────── -->
+    <!-- Diameter of the circular pet photo thumbnail on list cards -->
+    <dimen name="photo_thumbnail_size">72dp</dimen>
+    <!-- Diameter of the large photo preview in PetFormFragment -->
+    <dimen name="photo_preview_size">120dp</dimen>
+
+    <!-- ── Form ──────────────────────────────────────────────────────── -->
+    <!-- Maximum width for forms on large screens (prevents over-stretching) -->
+    <dimen name="form_max_width">480dp</dimen>
+    <!-- Wider maximum width for comprehensive forms (like task/routine) on tablets -->
+    <dimen name="form_max_width_wide">600dp</dimen>
+
+</resources>

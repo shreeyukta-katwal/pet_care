@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    menu_checklist.xml – Menu for PetChecklistFragment toolbar.
+    Actions:
+      - action_delegate: navigate to SMS Delegate screen
+      - action_edit_pet: navigate to PetFormFragment in edit mode
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Delegate checklist via SMS -->
+    <item
+        android:id="@+id/action_delegate"
+        android:icon="@drawable/ic_share"
+        android:title="@string/menu_delegate"
+        app:showAsAction="ifRoom" />
+
+    <!-- Reset today's checklist (non-gesture alternative to shake) -->
+    <item
+        android:id="@+id/action_reset_checklist"
+        android:title="@string/menu_reset_checklist"
+        app:showAsAction="never" />
+
+    <!-- Gestures guide dialog -->
+    <item
+        android:id="@+id/action_gestures_guide"
+        android:icon="@drawable/ic_gesture"
+        android:title="@string/menu_gestures_guide"
+        app:showAsAction="never" />
+
+</menu>

@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_pet_form.xml – Add / Edit pet form screen.
+
+    Structure:
+      CoordinatorLayout
+        ├─ AppBarLayout / MaterialToolbar  ("Add pet" or "Edit pet" title, back nav, delete icon)
+        └─ NestedScrollView
+             └─ LinearLayout (vertical, max-width constrained for tablets)
+                  ├─ Photo area (circular preview + "Change photo" button)
+                  ├─ Name field (required)
+                  ├─ Species dropdown (MaterialAutoCompleteTextView)
+                  ├─ Breed field
+                  ├─ Age field (numeric decimal)
+                  ├─ Weight field (numeric decimal)
+                  ├─ Diet notes
+                  ├─ Allergies
+                  ├─ Vaccinations
+                  ├─ Favourite toys
+                  ├─ Notes (multi-line)
+                  └─ Save / Add button (filled, full-width, sticky bottom feel)
+
+    All colours, shapes and text styles use theme attributes.
+    No hard-coded values; dimension tokens from dimens.xml are used.
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.pet.PetFormFragment">
+
+    <!-- ── Top App Bar ─────────────────────────────────────────────── -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <!--
+            Title changes dynamically: "Add pet" (new) or "Edit [pet name]" (edit).
+            Back arrow provided automatically by the Navigation Component.
+        -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_back"
+            app:navigationContentDescription="@string/cd_navigate_up"
+            tools:title="@string/title_add_pet" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- ── Scrollable form body ────────────────────────────────────── -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!--
+            Outer frame limits the form to form_max_width on large screens
+            (480 dp) while still allowing full-width on phones.
+        -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/form_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:maxWidth="@dimen/form_max_width"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_medium">
+
+                <!-- ── Photo area ───────────────────────────────────── -->
+                <!--
+                    Circular photo preview (120 dp) centred above the form.
+                    Tapping the preview or the "Change photo" button opens a
+                    bottom sheet to choose camera or gallery.
+                -->
+                <ImageView
+                    android:id="@+id/image_pet_photo"
+                    android:layout_width="@dimen/photo_preview_size"
+                    android:layout_height="@dimen/photo_preview_size"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:contentDescription="@string/cd_pet_photo"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_pet_placeholder" />
+
+                <!-- "Change photo" text button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_change_photo"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/spacing_large"
+                    android:text="@string/action_change_photo" />
+
+                <!-- ── Required fields ──────────────────────────────── -->
+
+                <!-- Pet name (required) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_name"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:hint="@string/hint_pet_name"
+                    app:helperText="@string/helper_required"
+                    app:startIconDrawable="@drawable/ic_pets_empty"
+                    app:startIconContentDescription="@string/cd_field_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPersonName|textCapWords"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Species (ExposedDropdownMenu) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_species"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:hint="@string/hint_species"
+                    app:helperText="@string/helper_required">
+
+                    <!--
+                        AutoCompleteTextView is required by the ExposedDropdownMenu style.
+                        The adapter is set in PetFormFragment.
+                    -->
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/dropdown_species"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        tools:text="Dog" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Breed -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_breed"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:hint="@string/hint_breed">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_breed"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapWords"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Age and Weight on one row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <!-- Age (years, decimal) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout_age"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/spacing_small"
+                        android:hint="@string/hint_age">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_age"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Weight (kg, decimal) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout_weight"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/spacing_small"
+                        android:hint="@string/hint_weight">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edit_weight"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <!-- ── Optional detail fields ───────────────────────── -->
+
+                <!-- Diet notes -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_diet"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:hint="@string/hint_diet">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_diet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:minLines="2"
+                        android:maxLines="4"
+                        android:gravity="top" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Allergies -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_allergies"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:hint="@string/hint_allergies">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_allergies"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapSentences"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Vaccinations -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_vaccinations"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:hint="@string/hint_vaccinations">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_vaccinations"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapSentences"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Favourite toys -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_favourite_toys"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:hint="@string/hint_favourite_toys">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_favourite_toys"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="textCapSentences"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- General notes (multi-line) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_notes"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_large"
+                    android:hint="@string/hint_notes">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_notes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionDone"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:minLines="3"
+                        android:maxLines="6"
+                        android:gravity="top" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- ── Save / Add button ────────────────────────────── -->
+                <!--
+                    Label: "Add pet" for new, "Save changes" for edit.
+                    Set dynamically by PetFormFragment.
+                -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_save"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_large"
+                    tools:text="@string/action_add_pet" />
+
+                <!-- Loading indicator shown while save is in progress -->
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/progress_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:indeterminate="true"
+                    android:visibility="gone"
+                    app:indicatorSize="32dp"
+                    app:trackCornerRadius="4dp" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

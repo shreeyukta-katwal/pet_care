@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    file_paths.xml – FileProvider path mappings for camera capture and private image files.
+-->
+<paths>
+    <!-- Private internal files directory for compressed pet photos -->
+    <files-path name="pet_photos" path="pet_photos/" />
+    <!-- Cache directory for temporary camera capture outputs -->
+    <cache-path name="camera_temp" path="camera_temp/" />
+</paths>

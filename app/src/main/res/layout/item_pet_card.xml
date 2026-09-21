@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_pet_card.xml – RecyclerView row for a single pet in PetListFragment.
+    Uses a MaterialCardView with:
+      • Circular pet photo (80 dp) with placeholder paw icon
+      • Pet name (headline / title style)
+      • Species and breed on one line
+      • Age displayed as a small chip-style text
+      • ⋮ overflow menu button (triggers popup for Edit / Delete)
+    All colours and text styles reference theme attributes so they work in
+    both light and dark mode without any hard-coded values.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_pet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/spacing_medium"
+    android:layout_marginBottom="@dimen/spacing_small"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="2dp"
+    app:strokeColor="?attr/colorOutlineVariant"
+    app:strokeWidth="1dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_medium">
+
+        <!--
+            Circular pet photo.
+            Loaded via setImageURI(); ic_paw_placeholder used when photoUri is null.
+        -->
+        <ImageView
+            android:id="@+id/image_pet_photo"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:contentDescription="@string/cd_pet_photo"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:src="@drawable/ic_pet_placeholder" />
+
+        <!-- Pet name – prominent title text -->
+        <TextView
+            android:id="@+id/text_pet_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="?attr/colorOnSurface"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintStart_toEndOf="@id/image_pet_photo"
+            app:layout_constraintEnd_toStartOf="@id/button_overflow"
+            app:layout_constraintTop_toTopOf="@id/image_pet_photo"
+            tools:text="Buddy" />
+
+        <!-- Species · Breed -->
+        <TextView
+            android:id="@+id/text_species_breed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:layout_marginTop="2dp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintStart_toEndOf="@id/image_pet_photo"
+            app:layout_constraintEnd_toStartOf="@id/button_overflow"
+            app:layout_constraintTop_toBottomOf="@id/text_pet_name"
+            tools:text="Dog · Labrador" />
+
+        <!-- Age label -->
+        <TextView
+            android:id="@+id/text_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintStart_toEndOf="@id/image_pet_photo"
+            app:layout_constraintTop_toBottomOf="@id/text_species_breed"
+            tools:text="3 yr" />
+
+        <!-- Progress label (Step 6 requirement 10: "4/6 done") -->
+        <TextView
+            android:id="@+id/text_progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_small"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:textColor="?attr/colorSecondary"
+            app:layout_constraintStart_toEndOf="@id/text_age"
+            app:layout_constraintEnd_toStartOf="@id/button_overflow"
+            app:layout_constraintBaseline_toBaselineOf="@id/text_age"
+            tools:text="• 4/6 done" />
+
+        <!-- ⋮ overflow button – anchored top-end of the card -->
+        <ImageButton
+            android:id="@+id/button_overflow"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/cd_more_options"
+            android:src="@drawable/ic_more_vert"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

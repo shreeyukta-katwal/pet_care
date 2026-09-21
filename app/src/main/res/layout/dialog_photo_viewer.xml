@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    dialog_photo_viewer.xml – Immersive fullscreen layout for enlarged pet photo viewer.
+    Features dark backdrop, pet title banner, high-resolution photo container, and close button.
+-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E6000000">
+
+    <!-- Top header bar with title and close button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="16dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/text_pet_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@android:color/white"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            tools:text="Max" />
+
+        <ImageButton
+            android:id="@+id/button_close"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/cd_navigate_up"
+            app:tint="@android:color/white" />
+
+    </LinearLayout>
+
+    <!-- Centered high-resolution image container -->
+    <ImageView
+        android:id="@+id/image_enlarged"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="24dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/cd_photo_viewer"
+        tools:src="@drawable/ic_pet_placeholder" />
+
+    <!-- Bottom dismiss hint -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:text="@string/cd_photo_viewer"
+        android:textColor="#B3FFFFFF"
+        android:textAppearance="?attr/textAppearanceBodySmall" />
+
+</FrameLayout>

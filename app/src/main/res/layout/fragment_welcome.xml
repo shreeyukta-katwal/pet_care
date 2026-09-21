@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_welcome.xml – Welcome / Landing screen layout.
+    The primary entry point for unauthenticated users.
+    
+    Structure:
+    - NestedScrollView (fillViewport=true): ensures scrollability in landscape and small screens.
+    - ConstraintLayout: centers content vertically and horizontally with a 480dp max width cap for tablets.
+    - Top Section: Large paw-print logo in a rounded badge container, app title, and tagline.
+    - Bottom Section: Filled 'Log In' button and Outlined 'Sign Up' button with rounded Material 3 styling.
+    - The action button container starts invisible to prevent UI flash during the auto-login session check.
+-->
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/bg_welcome_gradient">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="32dp">
+
+        <!-- ── Centered Content Card / Area (Max 480dp for tablet/landscape) ── -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contentContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintWidth_max="480dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!-- ── Logo Badge Container ──────────────────────────────── -->
+            <FrameLayout
+                android:id="@+id/logoBadge"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@drawable/bg_logo_circle"
+                android:padding="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Scalable Paw Print Vector Logo -->
+                <ImageView
+                    android:id="@+id/ivLogo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_petcare_logo"
+                    app:tint="?attr/colorPrimary"
+                    android:contentDescription="@string/cd_app_logo" />
+            </FrameLayout>
+
+            <!-- ── Welcome Details Container (Title, Tagline, Buttons) ────── -->
+            <!-- Starts INVISIBLE so only the logo is shown during session check (zero flash) -->
+            <LinearLayout
+                android:id="@+id/welcomeDetailsContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@id/logoBadge"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:visibility="visible">
+
+                <!-- ── App Brand Title ───────────────────────────────────── -->
+                <TextView
+                    android:id="@+id/tvAppName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textAppearance="?attr/textAppearanceHeadlineLarge"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold" />
+
+                <!-- ── Friendly Tagline ──────────────────────────────────── -->
+                <TextView
+                    android:id="@+id/tvTagline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="@string/welcome_tagline"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <!-- ── Action Buttons ────────────────────────────────────── -->
+                <LinearLayout
+                    android:id="@+id/actionContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:orientation="vertical">
+
+                    <!-- Filled 'Log In' Button with rounded corners -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="@string/btn_login"
+                        android:contentDescription="@string/cd_btn_login"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        app:cornerRadius="24dp" />
+
+                    <!-- Outlined 'Sign Up' Button with generous top spacing -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSignup"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/btn_signup"
+                        android:contentDescription="@string/cd_btn_signup"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        app:cornerRadius="24dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

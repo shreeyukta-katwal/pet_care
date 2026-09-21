@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    menu_pet_list.xml – Options menu for PetListFragment.
+    Provides the 'Log Out' action item in the top app bar.
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Gestures guide dialog -->
+    <item
+        android:id="@+id/action_gestures_guide"
+        android:icon="@drawable/ic_gesture"
+        android:title="@string/menu_gestures_guide"
+        app:showAsAction="never" />
+
+    <!-- Log Out menu item -->
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/action_logout"
+        android:icon="@android:drawable/ic_lock_power_off"
+        app:showAsAction="never" />
+
+</menu>

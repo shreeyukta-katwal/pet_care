@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_checklist_header.xml – Category header row for PetChecklistFragment's RecyclerView.
+    Displays a category icon and category name (e.g. Feeding, Exercise, Grooming, Medication, Healthcare).
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/spacing_medium"
+    android:paddingTop="@dimen/spacing_medium"
+    android:paddingBottom="@dimen/spacing_small">
+
+    <!-- Category Icon -->
+    <ImageView
+        android:id="@+id/image_category_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/cd_task_category_icon"
+        app:tint="?attr/colorPrimary"
+        tools:src="@drawable/ic_cat_feeding" />
+
+    <!-- Category Title -->
+    <TextView
+        android:id="@+id/text_category_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_small"
+        android:layout_weight="1"
+        android:textAppearance="?attr/textAppearanceTitleSmall"
+        android:textColor="?attr/colorPrimary"
+        android:textStyle="bold"
+        tools:text="FEEDING" />
+
+</LinearLayout>

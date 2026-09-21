@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    strings.xml – All user-visible string resources for PetCare.
+    No string may be hard-coded in layouts or Kotlin code (assignment requirement).
+    Placeholder screen names used in Step 1; real labels added in subsequent steps.
+-->
+<resources>
+
+    <!-- ── App name ──────────────────────────────────────────────────── -->
+    <string name="app_name">PetCare</string>
+
+    <!-- ── Placeholder screen names (Step 1) ────────────────────────── -->
+    <!-- Displayed by the placeholder fragments until real UIs are built -->
+    <string name="screen_welcome">Welcome</string>
+    <string name="screen_login">Login</string>
+    <string name="screen_signup">Sign Up</string>
+    <string name="screen_pet_list">My Pets</string>
+    <string name="screen_pet_form">Pet Profile</string>
+    <string name="screen_pet_checklist">Daily Checklist</string>
+    <string name="screen_task_form">Care Task</string>
+    <string name="screen_delegate">Delegate Checklist</string>
+
+    <!-- ── Welcome screen strings (Step 2) ───────────────────────── -->
+    <string name="welcome_tagline">Every pet. Every task. Never missed.</string>
+    <string name="btn_login">Log In</string>
+    <string name="btn_signup">Sign Up</string>
+    <string name="cd_btn_login">Log in to your existing account</string>
+    <string name="cd_btn_signup">Sign up for a new account</string>
+
+    <!-- ── Authentication & Registration strings (Step 3) ───────── -->
+    <string name="title_signup">Create an Account</string>
+    <string name="subtitle_signup">Sign up to track and manage care for your pets</string>
+    <string name="title_login">Welcome Back</string>
+    <string name="subtitle_login">Log in to view your daily care routines</string>
+    <string name="email_label">Email Address</string>
+    <string name="password_label">Password</string>
+    <string name="confirm_password_label">Confirm Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="already_have_account">Already have an account? Log In</string>
+    <string name="dont_have_account">Don’t have an account? Sign Up</string>
+    <string name="btn_create_account">Create Account</string>
+
+    <!-- Validation Errors -->
+    <string name="error_email_required">Email address is required</string>
+    <string name="error_email_invalid">Please enter a valid email address</string>
+    <string name="error_email_duplicate">An account with this email already exists</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_password_length">Password must be at least 8 characters</string>
+    <string name="error_password_complexity">Password must contain at least one letter and one digit</string>
+    <string name="error_password_confirm_required">Please confirm your password</string>
+    <string name="error_passwords_do_not_match">Passwords do not match</string>
+    <string name="error_invalid_credentials">Incorrect email or password</string>
+
+    <!-- Logout Option & Dialog -->
+    <string name="action_logout">Log Out</string>
+    <string name="dialog_logout_title">Log Out?</string>
+    <string name="dialog_logout_message">Are you sure you want to log out of PetCare?</string>
+    <string name="dialog_logout_confirm">Log Out</string>
+    <string name="dialog_logout_cancel">Cancel</string>
+
+    <!-- ── Pet Management strings (Step 4) ──────────────────────── -->
+    <string name="title_add_pet">Add Pet</string>
+    <string name="title_edit_pet">Edit Pet</string>
+    <string name="btn_add_pet">Add Pet</string>
+    <string name="btn_save_changes">Save Changes</string>
+    <string name="empty_pets_title">No pets yet!</string>
+    <string name="empty_pets_subtitle">Add your furry, scaly, or feathered friend to begin tracking their daily care routines.</string>
+    <string name="dialog_delete_pet_title">Delete %1$s?</string>
+    <string name="dialog_delete_pet_message">This will permanently remove %1$s and all of their scheduled care tasks.</string>
+    <string name="btn_delete">Delete</string>
+    <string name="snackbar_pet_deleted">%1$s deleted</string>
+    <string name="action_undo">Undo</string>
+    <string name="dialog_unsaved_title">Discard Changes?</string>
+    <string name="dialog_unsaved_message">You have unsaved changes. Are you sure you want to discard them?</string>
+    <string name="btn_discard">Discard</string>
+    <string name="btn_keep_editing">Keep Editing</string>
+    <string name="dialog_photo_source_title">Pet Photo</string>
+    <string name="action_take_photo">Take Photo</string>
+    <string name="action_choose_gallery">Choose from Gallery</string>
+    <string name="action_remove_photo">Remove Photo</string>
+    <string name="pet_photo_helper">Tap to add photo</string>
+    <string name="pet_name_label">Pet Name *</string>
+    <string name="species_label">Species *</string>
+    <string name="breed_label">Breed</string>
+    <string name="age_label">Age (years)</string>
+    <string name="weight_label">Weight (kg)</string>
+    <string name="diet_label">Dietary Preferences</string>
+    <string name="allergies_label">Allergies &amp; Sensitivities</string>
+    <string name="vaccinations_label">Vaccination History</string>
+    <string name="favourite_toys_label">Favourite Toys</string>
+    <string name="notes_label">Care Notes</string>
+    <string name="age_format_years">%1$s years old</string>
+    <string name="age_format_one_year">1 year old</string>
+
+    <!-- Pet Form Validation Errors -->
+    <string name="error_name_required">Pet name is required</string>
+    <string name="error_species_required">Please select or enter a species</string>
+    <string name="error_age_invalid">Age must be between 0 and 40 years</string>
+    <string name="error_weight_invalid">Weight must be between 0.1 and 150 kg</string>
+
+    <!-- ── Content descriptions (accessibility) ─────────────────────── -->
+    <string name="cd_pet_photo">Pet photo</string>
+    <string name="cd_app_logo">PetCare logo</string>
+    <string name="cd_more_options">More options</string>
+    <string name="cd_navigate_up">Navigate up</string>
+    <string name="cd_no_pets">No pets illustration</string>
+    <string name="cd_field_name">Pet name field</string>
+
+    <!-- ── Action labels ──────────────────────────────────────────────── -->
+    <string name="action_add_pet">Add Pet</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_change_photo">Change Photo</string>
+
+    <!-- ── Form hints and helpers ─────────────────────────────────────── -->
+    <string name="hint_pet_name">Pet Name *</string>
+    <string name="hint_species">Species *</string>
+    <string name="hint_breed">Breed</string>
+    <string name="hint_age">Age (years)</string>
+    <string name="hint_weight">Weight (kg)</string>
+    <string name="hint_diet">Dietary Preferences</string>
+    <string name="hint_allergies">Allergies &amp; Sensitivities</string>
+    <string name="hint_vaccinations">Vaccination History</string>
+    <string name="hint_favourite_toys">Favourite Toys</string>
+    <string name="hint_notes">Care Notes</string>
+    <string name="helper_required">Required</string>
+
+    <!-- Species dropdown items -->
+    <string-array name="species_options">
+        <item>Dog</item>
+        <item>Cat</item>
+        <item>Rabbit</item>
+        <item>Bird</item>
+        <item>Fish</item>
+        <item>Reptile</item>
+        <item>Hamster</item>
+        <item>Guinea Pig</item>
+        <item>Other</item>
+    </string-array>
+
+    <!-- ── Task & Care Routine Management (Step 5) ─────────────────────── -->
+    <string name="title_add_task">New Care Routine</string>
+    <string name="title_edit_task">Edit Routine</string>
+    <string name="action_add_task">Add Routine</string>
+    <string name="action_save_task">Save Routine</string>
+    <string name="action_add_routine">Add routine</string>
+    <string name="label_select_pet">Pet *</string>
+    <string name="hint_task_name">Routine / Task Name *</string>
+    <string name="hint_category">Category *</string>
+    <string name="hint_frequency">Frequency *</string>
+    <string name="hint_time">Time *</string>
+    <string name="hint_supplies">Required Supplies</string>
+    <string name="hint_task_notes">Notes</string>
+    <string name="hint_notes_healthcare">Clinic, address, appointment details</string>
+    <string name="label_reminder_switch">Remind me at this time</string>
+    <string name="frequency_daily">Daily</string>
+    <string name="frequency_weekly">Weekly</string>
+    <string name="chip_mon">Mon</string>
+    <string name="chip_tue">Tue</string>
+    <string name="chip_wed">Wed</string>
+    <string name="chip_thu">Thu</string>
+    <string name="chip_fri">Fri</string>
+    <string name="chip_sat">Sat</string>
+    <string name="chip_sun">Sun</string>
+    <string name="days_of_week_label">Repeat on *</string>
+    <string name="no_pets_warning">No pets found! You must add a pet before creating a care routine.</string>
+    <string name="btn_create_pet">Add Pet First</string>
+    <string name="snackbar_task_saved">Care routine saved</string>
+
+    <!-- Task Form Validation Errors -->
+    <string name="error_task_name_required">Routine name is required</string>
+    <string name="error_pet_required">Please select a pet</string>
+    <string name="error_category_required">Please select a category</string>
+    <string name="error_time_required">Please choose a time</string>
+    <string name="error_days_required">Select at least one day for weekly routines</string>
+
+    <!-- Content descriptions -->
+    <string name="cd_time_picker">Select reminder time</string>
+    <string name="cd_task_category_icon">Category icon</string>
+    <string name="cd_mark_done">Mark task done</string>
+
+    <!-- ── Checklist screen strings (Step 6) ─────────────── -->
+    <string name="fab_add_routine">Add routine</string>
+    <string name="cd_fab_add_routine">Add a new care routine for this pet</string>
+    <string name="btn_edit">Edit</string>
+    <string name="menu_delegate">Delegate</string>
+    <string name="menu_edit_pet">Edit Pet</string>
+    <string name="action_delete_task">Delete task</string>
+    <string name="action_edit_task">Edit task</string>
+    <string name="dialog_delete_task_title">Delete Routine</string>
+    <string name="dialog_delete_task_message">Are you sure you want to delete "%1$s"?</string>
+    <string name="snackbar_task_deleted">"%1$s" deleted</string>
+    <string name="tab_today">Today</string>
+    <string name="tab_all_routines">All routines</string>
+    <string name="progress_all_done">All done today! 🎉</string>
+    <string name="progress_x_of_y_done">%1$d/%2$d done</string>
+    <string name="empty_no_tasks_title">No care routines yet</string>
+    <string name="empty_no_tasks_subtitle">Add routines like meals, walks, or medication for %1$s.</string>
+    <string name="empty_no_tasks_today_title">No routines due today!</string>
+    <string name="empty_no_tasks_today_subtitle">Enjoy a relaxed day with %1$s.</string>
+    <string name="btn_add_first_routine">Add first routine</string>
+
+    <!-- ── Reminders & Notifications (Step 7) ────────────────────────── -->
+    <string name="notification_channel_reminders_name">Pet care reminders</string>
+    <string name="notification_channel_reminders_desc">Alerts for scheduled pet feeding, medication, and care routines.</string>
+    <string name="dialog_notification_permission_title">Enable Reminders</string>
+    <string name="dialog_notification_permission_message">PetCare needs notification permission so you never miss your pet\'s feeding, medication, or walk times.</string>
+    <string name="btn_allow">Allow</string>
+    <string name="btn_not_now">Not now</string>
+    <string name="snackbar_notifications_disabled">Reminders are turned off. Notifications permission was denied.</string>
+    <string name="action_open_settings">Settings</string>
+
+    <!-- ── SMS Delegation (Step 8) ────────────────────────────────────── -->
+    <string name="delegate_title">Delegate Care Plan</string>
+    <string name="delegate_subtitle">Share %1$s\'s care routine with a pet sitter or family member via SMS.</string>
+    <string name="section_recipient">Recipient</string>
+    <string name="hint_recipient_phone">Phone number</string>
+    <string name="error_invalid_phone">Enter a valid phone number (7–15 digits)</string>
+    <string name="btn_choose_contact">Choose contact</string>
+    <string name="cd_choose_contact">Pick a recipient from device contacts</string>
+    <string name="contact_selected_prefix">Contact: %1$s</string>
+    <string name="section_routines_to_include">Routines to Include</string>
+    <string name="tab_today_checklist">Today\'s checklist</string>
+    <string name="btn_select_all">Select all</string>
+    <string name="btn_clear_selection">Clear</string>
+    <string name="section_extra_instructions">Extra Instructions</string>
+    <string name="hint_extra_instructions">e.g. Back Friday evening. Call me if he refuses food.</string>
+    <string name="section_message_preview">Message Preview</string>
+    <string name="counter_sms_format">%1$d chars • %2$d SMS (%3$s)</string>
+    <string name="warning_non_gsm">Warning: Contains special characters/emojis. Each SMS part is limited to 70 characters instead of 160.</string>
+    <string name="btn_reset_message">Reset to default</string>
+    <string name="btn_send_sms">Send SMS</string>
+    <string name="btn_send">Send</string>
+    <string name="btn_open_messaging">Open in messaging app</string>
+    <string name="btn_share_plan">Share care plan</string>
+    <string name="dialog_confirm_send_title">Confirm SMS</string>
+    <string name="dialog_confirm_send_message">Send care plan for %1$s to %2$s?</string>
+    <string name="dialog_sms_permission_title">SMS Permission Required</string>
+    <string name="dialog_sms_permission_message">PetCare needs SMS permission to send the delegation plan directly from the app. Alternatively, you can open your default messaging app without granting permission.</string>
+    <string name="snackbar_sms_sent">Care plan sent successfully to %1$s!</string>
+    <string name="snackbar_sms_failed">Failed to send SMS: %1$s</string>
+    <string name="snackbar_contact_no_number">The selected contact does not have a phone number.</string>
+    <string name="snackbar_sms_permission_denied">SMS permission was denied. You can still use \'Open in messaging app\'.</string>
+    <string name="snackbar_sms_permission_permanently_denied">SMS permission is disabled. Tap Settings to enable it, or use the messaging app.</string>
+    <string name="reason_generic_failure">Generic transmission error</string>
+    <string name="reason_no_service">No cellular network service</string>
+    <string name="reason_radio_off">Airplane mode / cellular radio off</string>
+    <string name="reason_null_pdu">Invalid message PDU</string>
+    <string name="no_telephony_hint">Direct SMS is unavailable on this device (no telephony). Please use the messaging app or share option.</string>
+    <string name="empty_delegate_tasks">No care routines found to include.</string>
+
+    <!-- ── Gesture Controls (Step 9 - Desirable Feature) ──────────────── -->
+    <string name="menu_reset_checklist">Reset today\'s checklist</string>
+    <string name="menu_gestures_guide">Gestures guide</string>
+    <string name="dialog_gestures_guide_title">Desirable feature: Gesture controls</string>
+    <string name="dialog_gestures_guide_message">PetCare includes 5 intuitive gesture &amp; sensor controls:\n\n1. 👈 Swipe Left: Delete a care routine or pet card instantly (with Undo).\n\n2. 👉 Swipe Right: Mark a care routine done for today (with Undo).\n\n3. 📳 Shake Device: Reset today\'s checklist progress via the accelerometer sensor.\n\n4. 👆 Long Press: Enter multi-selection mode to batch-complete or batch-delete items.\n\n5. 🔍 Double Tap Photo: Enlarge pet profile picture in full screen.\n\nNote: Every gesture has a direct button/menu alternative.</string>
+    <string name="tip_gesture_hint">Tip: Swipe right to complete, left to delete, or shake to reset.</string>
+    <string name="dialog_reset_checklist_title">Reset Today\'s Checklist</string>
+    <string name="dialog_reset_checklist_message">Reset all completed tasks for %1$s today?</string>
+    <string name="btn_reset">Reset</string>
+    <string name="snackbar_checklist_reset">Today\'s checklist has been reset.</string>
+    <string name="snackbar_checklist_reset_undo">Checklist progress restored.</string>
+    <string name="action_mark_selected_done">Mark Done</string>
+    <string name="action_delete_selected">Delete</string>
+    <string name="dialog_delete_selected_tasks_title">Delete Selected Routines</string>
+    <string name="dialog_delete_selected_tasks_message">Are you sure you want to delete %1$d selected routine(s)?</string>
+    <string name="dialog_delete_selected_pets_title">Delete Selected Pets</string>
+    <string name="dialog_delete_selected_pets_message">Are you sure you want to delete %1$d selected pet(s)?</string>
+    <string name="snackbar_tasks_batch_deleted">%1$d routine(s) deleted</string>
+    <string name="snackbar_pets_batch_deleted">%1$d pet(s) deleted</string>
+    <string name="snackbar_tasks_batch_completed">%1$d routine(s) marked done</string>
+    <string name="action_mode_selected_count">%1$d selected</string>
+    <string name="cd_photo_viewer">Enlarged pet photo. Tap or swipe down to dismiss.</string>
+    <string name="btn_got_it">Got it</string>
+
+</resources>

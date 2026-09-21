@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_welcome_gradient.xml (night) – Subtle dark teal gradient for Welcome screen (Dark mode).
+    Starts with a deep, muted dark teal at the top and softly transitions to the dark surface background.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="270"
+        android:startColor="#003326"
+        android:centerColor="#0D241E"
+        android:endColor="#191C1B"
+        android:type="linear" />
+</shape>

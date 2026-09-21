@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    menu_pet_card.xml – Popup overflow menu for a single pet card.
+    Shown when the user taps the ⋮ icon on a pet card in PetListFragment.
+    Items: Edit (navigates to PetFormFragment) and Delete (triggers confirmation dialog).
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Add Routine: opens TaskFormFragment with this pet preselected -->
+    <item
+        android:id="@+id/action_add_routine"
+        android:title="@string/action_add_routine" />
+
+    <!-- Edit: opens PetFormFragment pre-filled with this pet's data -->
+    <item
+        android:id="@+id/action_edit_pet"
+        android:title="@string/action_edit" />
+
+    <!-- Delete: shows a confirmation AlertDialog then triggers undo Snackbar -->
+    <item
+        android:id="@+id/action_delete_pet"
+        android:title="@string/action_delete" />
+
+</menu>

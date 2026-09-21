@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ic_petcare_logo.xml – PetCare app logo: a friendly paw print.
+    Used as the adaptive launcher icon foreground and on the Welcome screen.
+    Drawn using vector paths so it scales crispy at any resolution.
+    Colour uses ?attr/colorPrimary via the theme tint mechanism when used in ImageView
+    with app:tint="?attr/colorPrimary"; the raw fill here is set to white for the
+    adaptive icon layer (which has a coloured background).
+
+    Dimensions: 108dp × 108dp (adaptive icon safe-zone is 72dp centred).
+    The paw consists of:
+      - One large central oval (main pad)
+      - Four small ovals (toe pads) arranged above the main pad
+-->
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!--
+        Main central pad – large rounded oval in the centre-bottom.
+        Filled with white so the adaptive icon background colour shows through.
+    -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M54,68
+            C43,68 35,61 35,52
+            C35,43 43,36 54,36
+            C65,36 73,43 73,52
+            C73,61 65,68 54,68Z" />
+
+    <!--
+        Top-left toe pad – small oval, upper-left of the main pad.
+    -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M36,38
+            C32,38 29,35 29,31
+            C29,27 32,24 36,24
+            C40,24 43,27 43,31
+            C43,35 40,38 36,38Z" />
+
+    <!--
+        Top-center-left toe pad – small oval.
+    -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M46,30
+            C43,30 40,27 40,23
+            C40,19 43,16 46,16
+            C49,16 52,19 52,23
+            C52,27 49,30 46,30Z" />
+
+    <!--
+        Top-center-right toe pad – small oval.
+    -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M62,30
+            C59,30 56,27 56,23
+            C56,19 59,16 62,16
+            C65,16 68,19 68,23
+            C68,27 65,30 62,30Z" />
+
+    <!--
+        Top-right toe pad – small oval, upper-right of the main pad.
+    -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="
+            M72,38
+            C68,38 65,35 65,31
+            C65,27 68,24 72,24
+            C76,24 79,27 79,31
+            C79,35 76,38 72,38Z" />
+
+</vector>

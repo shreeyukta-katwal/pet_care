@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_logo_circle.xml – Circular background badge for the PetCare paw-print logo.
+    Uses a subtle primary-container colored surface circle with 50% border radius.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="?attr/colorPrimaryContainer" />
+</shape>

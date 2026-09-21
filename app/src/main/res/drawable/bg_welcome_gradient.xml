@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_welcome_gradient.xml – Subtle teal-tinted background gradient for Welcome screen (Light mode).
+    Starts with a soft, warm mint/teal at the top and softly transitions to the light surface background.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="270"
+        android:startColor="#E0F2F1"
+        android:centerColor="#F0FAF7"
+        android:endColor="#FAFDFA"
+        android:type="linear" />
+</shape>

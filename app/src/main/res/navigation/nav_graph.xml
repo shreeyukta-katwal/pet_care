@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    nav_graph.xml – Navigation Component graph for PetCare.
+    Defines all fragment destinations and the navigation actions between them.
+    Start destination is welcomeFragment (the home/landing screen).
+
+    Destinations:
+    1. welcomeFragment    – Home screen with Login/Sign-up options
+    2. loginFragment      – User login
+    3. signupFragment     – User registration
+    4. petListFragment    – List of all pets for the logged-in user
+    5. petFormFragment    – Add / edit a pet profile
+    6. petChecklistFragment – Daily checklist for a single pet
+    7. taskFormFragment   – Add / edit a care task
+    8. delegateFragment   – SMS delegation of a pet's checklist
+
+    Navigation actions are stub (no arguments yet); safe-args arguments will be
+    added in the relevant feature steps.
+-->
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/welcomeFragment">
+
+    <!-- ── Welcome (Home) ───────────────────────────────────────────── -->
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.petcare.app.ui.welcome.WelcomeFragment"
+        android:label="@string/screen_welcome"
+        tools:layout="@layout/fragment_welcome">
+
+        <!-- Navigate to login screen -->
+        <action
+            android:id="@+id/action_welcome_to_login"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <!-- Navigate to sign-up screen -->
+        <action
+            android:id="@+id/action_welcome_to_signup"
+            app:destination="@id/signupFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <!-- Auto-skip direct to pet list if user is already logged in -->
+        <action
+            android:id="@+id/action_welcome_to_petList"
+            app:destination="@id/petListFragment"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- ── Login ────────────────────────────────────────────────────── -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.petcare.app.ui.auth.LoginFragment"
+        android:label="@string/screen_login"
+        tools:layout="@layout/fragment_login">
+
+        <!-- On successful login, navigate to pet list (clears auth back-stack) -->
+        <action
+            android:id="@+id/action_login_to_petList"
+            app:destination="@id/petListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true" />
+
+        <!-- Navigate to signup screen if user has no account -->
+        <action
+            android:id="@+id/action_login_to_signup"
+            app:destination="@id/signupFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <!-- ── Sign-up ───────────────────────────────────────────────────── -->
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="com.petcare.app.ui.auth.SignupFragment"
+        android:label="@string/screen_signup"
+        tools:layout="@layout/fragment_signup">
+
+        <!-- On successful registration, navigate to pet list (clears auth back-stack) -->
+        <action
+            android:id="@+id/action_signup_to_petList"
+            app:destination="@id/petListFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/welcomeFragment"
+            app:popUpToInclusive="true" />
+
+        <!-- Navigate to login screen if user already has an account -->
+        <action
+            android:id="@+id/action_signup_to_login"
+            app:destination="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <!-- ── Pet List ──────────────────────────────────────────────────── -->
+    <fragment
+        android:id="@+id/petListFragment"
+        android:name="com.petcare.app.ui.pet.PetListFragment"
+        android:label="@string/screen_pet_list"
+        tools:layout="@layout/fragment_pet_list">
+
+        <!-- Navigate to add-pet form (petId=0 means new pet, >0 means edit) -->
+        <action
+            android:id="@+id/action_petList_to_petForm"
+            app:destination="@id/petFormFragment">
+            <argument
+                android:name="petId"
+                app:argType="long"
+                android:defaultValue="0L" />
+        </action>
+
+        <!-- Navigate to the daily checklist for a selected pet -->
+        <action
+            android:id="@+id/action_petList_to_checklist"
+            app:destination="@id/petChecklistFragment">
+            <argument
+                android:name="petId"
+                app:argType="long"
+                android:defaultValue="0L" />
+        </action>
+
+        <!-- Logout: returns to welcome and clears the entire back stack -->
+        <action
+            android:id="@+id/action_petList_to_welcome"
+            app:destination="@id/welcomeFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+
+        <!-- Navigate directly to add routine for a pet -->
+        <action
+            android:id="@+id/action_petList_to_taskForm"
+            app:destination="@id/taskFormFragment">
+            <argument
+                android:name="taskId"
+                app:argType="long"
+                android:defaultValue="0L" />
+            <argument
+                android:name="preselectedPetId"
+                app:argType="long"
+                android:defaultValue="0L" />
+        </action>
+    </fragment>
+
+    <!-- ── Pet Form (Add / Edit) ─────────────────────────────────────── -->
+    <fragment
+        android:id="@+id/petFormFragment"
+        android:name="com.petcare.app.ui.pet.PetFormFragment"
+        android:label="@string/screen_pet_form"
+        tools:layout="@layout/fragment_pet_form">
+
+        <!--
+            petId = 0  → create a new pet
+            petId > 0  → edit the pet with this primary key
+        -->
+        <argument
+            android:name="petId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+
+    <!-- ── Pet Daily Checklist ───────────────────────────────────────── -->
+    <fragment
+        android:id="@+id/petChecklistFragment"
+        android:name="com.petcare.app.ui.checklist.PetChecklistFragment"
+        android:label="@string/screen_pet_checklist"
+        tools:layout="@layout/fragment_pet_checklist">
+
+        <!-- The pet whose checklist to display -->
+        <argument
+            android:name="petId"
+            app:argType="long"
+            android:defaultValue="0L" />
+
+        <!-- Navigate to add/edit a task -->
+        <action
+            android:id="@+id/action_checklist_to_taskForm"
+            app:destination="@id/taskFormFragment">
+            <argument
+                android:name="taskId"
+                app:argType="long"
+                android:defaultValue="0L" />
+            <argument
+                android:name="preselectedPetId"
+                app:argType="long"
+                android:defaultValue="0L" />
+        </action>
+
+        <!-- Navigate to SMS delegate screen -->
+        <action
+            android:id="@+id/action_checklist_to_delegate"
+            app:destination="@id/delegateFragment">
+            <argument
+                android:name="petId"
+                app:argType="long"
+                android:defaultValue="0L" />
+        </action>
+
+        <!-- Navigate to edit pet form -->
+        <action
+            android:id="@+id/action_checklist_to_petForm"
+            app:destination="@id/petFormFragment">
+            <argument
+                android:name="petId"
+                app:argType="long"
+                android:defaultValue="0L" />
+        </action>
+    </fragment>
+
+    <!-- ── Task Form (Add / Edit) ────────────────────────────────────── -->
+    <fragment
+        android:id="@+id/taskFormFragment"
+        android:name="com.petcare.app.ui.task.TaskFormFragment"
+        android:label="@string/screen_task_form"
+        tools:layout="@layout/fragment_task_form">
+
+        <!--
+            taskId = 0  → create a new task
+            taskId > 0  → edit the task with this primary key
+        -->
+        <argument
+            android:name="taskId"
+            app:argType="long"
+            android:defaultValue="0L" />
+
+        <!--
+            Optional preselected petId (e.g. when launched from pet's checklist/card)
+            0 = no preselection
+        -->
+        <argument
+            android:name="preselectedPetId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+
+    <!-- ── SMS Delegation ───────────────────────────────────────────── -->
+    <fragment
+        android:id="@+id/delegateFragment"
+        android:name="com.petcare.app.ui.delegate.DelegateFragment"
+        android:label="@string/screen_delegate"
+        tools:layout="@layout/fragment_delegate">
+        <argument
+            android:name="petId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+
+</navigation>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    ic_pets_empty.xml – Decorative illustration for the Pet List empty state.
+    Displays a large stylized paw outline.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Center pad -->
+    <path
+        android:fillColor="?attr/colorPrimaryContainer"
+        android:pathData="M60,78 C48,78 39,70 39,60 C39,50 48,42 60,42 C72,42 81,50 81,60 C81,70 72,78 60,78Z" />
+
+    <!-- Toe pads -->
+    <path
+        android:fillColor="?attr/colorPrimaryContainer"
+        android:pathData="M40,44 C35,44 32,41 32,36 C32,31 35,28 40,28 C45,28 48,31 48,36 C48,41 45,44 40,44Z" />
+    <path
+        android:fillColor="?attr/colorPrimaryContainer"
+        android:pathData="M52,34 C48,34 45,31 45,26 C45,21 48,18 52,18 C56,18 59,21 59,26 C59,31 56,34 52,34Z" />
+    <path
+        android:fillColor="?attr/colorPrimaryContainer"
+        android:pathData="M68,34 C64,34 61,31 61,26 C61,21 64,18 68,18 C72,18 75,21 75,26 C75,31 72,34 68,34Z" />
+    <path
+        android:fillColor="?attr/colorPrimaryContainer"
+        android:pathData="M80,44 C75,44 72,41 72,36 C72,31 75,28 80,28 C85,28 88,31 88,36 C88,41 85,44 80,44Z" />
+
+</vector>

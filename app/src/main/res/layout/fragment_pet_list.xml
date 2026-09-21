@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_pet_list.xml – Full pet list screen layout.
+
+    Structure:
+      CoordinatorLayout (root – enables AppBar scroll behaviours and FAB anchoring)
+        ├─ AppBarLayout
+        │    └─ MaterialToolbar  (title + Log Out overflow menu)
+        └─ ConstraintLayout (content area)
+             ├─ RecyclerView    (pet cards – visible when list is non-empty)
+             ├─ empty-state group (illustration + title + subtitle + add button)
+             └─ ExtendedFloatingActionButton ("Add pet" – always visible)
+
+    All colours and text styles use theme attributes for light/dark mode support.
+    Hard-coded values are intentionally avoided; use dimens.xml tokens instead.
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.pet.PetListFragment">
+
+    <!-- ── Top App Bar ─────────────────────────────────────────────── -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <!--
+            MaterialToolbar hosts the screen title and the Log Out menu item.
+            The menu is inflated by PetListFragment from menu/menu_pet_list.xml.
+        -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/screen_pet_list"
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- ── Main content area ───────────────────────────────────────── -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!--
+            RecyclerView: shows the list of pet cards.
+            GONE when the list is empty; VISIBLE otherwise.
+            Bottom padding prevents the FAB from obscuring the last card.
+        -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_pets"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/spacing_small"
+            android:paddingBottom="88dp"
+            android:scrollbars="vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/item_pet_card"
+            tools:visibility="visible" />
+
+        <!-- ── Empty state ─────────────────────────────────────────── -->
+        <!--
+            Shown when the user has no pets yet.
+            Contains an illustration, friendly copy, and a CTA button.
+            GONE when the list is non-empty; VISIBLE otherwise.
+        -->
+
+        <!-- Empty-state illustration -->
+        <ImageView
+            android:id="@+id/image_empty"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:src="@drawable/ic_pets_empty"
+            android:contentDescription="@string/cd_no_pets"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            app:layout_constraintBottom_toTopOf="@id/text_empty_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
+
+        <!-- "No pets yet" title -->
+        <TextView
+            android:id="@+id/text_empty_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/empty_pets_title"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintBottom_toTopOf="@id/text_empty_subtitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="gone" />
+
+        <!-- Supportive subtitle -->
+        <TextView
+            android:id="@+id/text_empty_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xsmall"
+            android:text="@string/empty_pets_subtitle"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintBottom_toTopOf="@id/button_empty_add"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="gone" />
+
+        <!-- Empty-state "Add your first pet" button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_empty_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:text="@string/action_add_pet"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- ── Floating Action Button ──────────────────────────────────── -->
+    <!--
+        ExtendedFAB "Add pet" – always anchored to the bottom-right.
+        The CoordinatorLayout keeps it above the system nav bar.
+        Label shrinks to icon-only on scroll via PetListFragment behaviour.
+    -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_add_pet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:text="@string/action_add_pet"
+        android:contentDescription="@string/action_add_pet"
+        app:icon="@drawable/ic_add" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    menu_checklist_action_mode.xml – Contextual Action Bar menu for multi-selected checklist items.
+    Provides batch mark-done and batch delete operations.
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Mark selected tasks done for today -->
+    <item
+        android:id="@+id/action_mark_done_selected"
+        android:icon="@drawable/ic_check"
+        android:title="@string/action_mark_selected_done"
+        app:showAsAction="ifRoom" />
+
+    <!-- Delete selected tasks -->
+    <item
+        android:id="@+id/action_delete_selected"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/action_delete_selected"
+        app:showAsAction="ifRoom" />
+
+</menu>

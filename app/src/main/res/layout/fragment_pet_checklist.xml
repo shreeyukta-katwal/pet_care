@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_pet_checklist.xml – Complete layout for PetChecklistFragment.
+    Includes:
+      - Top app bar with back navigation and options menu (Delegate, Edit pet)
+      - Pet header section: photo, name, species/breed, today's date, Edit button
+      - Daily progress indicator (LinearProgressIndicator + "4/6 done" text)
+      - Segmented control toggle ("Today" vs "All routines")
+      - RecyclerView for categorized tasks
+      - Empty state view when no tasks exist or none due today
+      - Extended FAB to add a new routine
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Top App Bar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_back"
+            app:title="@string/screen_pet_checklist" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Main Content Container -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="88dp">
+
+            <!-- Pet Header Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_pet_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_medium"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="2dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/spacing_medium">
+
+                    <!-- Pet Photo -->
+                    <ImageView
+                        android:id="@+id/image_pet_photo"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:contentDescription="@string/cd_pet_photo"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/ic_pet_placeholder" />
+
+                    <!-- Pet Name -->
+                    <TextView
+                        android:id="@+id/text_pet_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_medium"
+                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@id/image_pet_photo"
+                        app:layout_constraintEnd_toStartOf="@id/button_edit_pet"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Buddy" />
+
+                    <!-- Species / Breed -->
+                    <TextView
+                        android:id="@+id/text_species_breed"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_medium"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        app:layout_constraintStart_toEndOf="@id/image_pet_photo"
+                        app:layout_constraintEnd_toStartOf="@id/button_edit_pet"
+                        app:layout_constraintTop_toBottomOf="@id/text_pet_name"
+                        tools:text="Dog · Golden Retriever" />
+
+                    <!-- Today's Date -->
+                    <TextView
+                        android:id="@+id/text_today_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_medium"
+                        android:layout_marginTop="2dp"
+                        android:textAppearance="?attr/textAppearanceLabelMedium"
+                        android:textColor="?attr/colorPrimary"
+                        app:layout_constraintStart_toEndOf="@id/image_pet_photo"
+                        app:layout_constraintEnd_toStartOf="@id/button_edit_pet"
+                        app:layout_constraintTop_toBottomOf="@id/text_species_breed"
+                        tools:text="Monday, Sep 21" />
+
+                    <!-- Edit Pet Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_edit_pet"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/btn_edit"
+                        app:icon="@drawable/ic_edit"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- Divider -->
+                    <View
+                        android:id="@+id/divider_progress"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/spacing_medium"
+                        android:background="?attr/colorOutlineVariant"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/image_pet_photo" />
+
+                    <!-- Progress Text Label (e.g. "4/6 done" or "All done today! 🎉") -->
+                    <TextView
+                        android:id="@+id/text_progress_status"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:textColor="?attr/colorOnSurface"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_progress"
+                        tools:text="4/6 done" />
+
+                    <!-- Progress Bar -->
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progress_indicator_daily"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        app:trackCornerRadius="4dp"
+                        app:trackThickness="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_progress_status"
+                        tools:progress="66" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Segmented Control ("Today" vs "All routines") -->
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggle_filter_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/spacing_small"
+                app:singleSelection="true"
+                app:selectionRequired="true"
+                app:checkedButton="@id/button_tab_today">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_tab_today"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tab_today" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_tab_all"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tab_all_routines" />
+
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <!-- Empty State Container -->
+            <LinearLayout
+                android:id="@+id/layout_empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_large"
+                android:visibility="gone"
+                tools:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/image_empty"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_pets_empty"
+                    app:tint="?attr/colorOutline" />
+
+                <TextView
+                    android:id="@+id/text_empty_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    tools:text="No care routines yet" />
+
+                <TextView
+                    android:id="@+id/text_empty_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:gravity="center"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="Add routines like meals, walks, or medication." />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_empty_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:text="@string/btn_add_first_routine"
+                    app:icon="@drawable/ic_add" />
+
+            </LinearLayout>
+
+            <!-- Task List RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_checklist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_checklist_task" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- FAB – Add routine -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_add_routine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/cd_fab_add_routine"
+        android:text="@string/fab_add_routine"
+        app:icon="@drawable/ic_add" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
