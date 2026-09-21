@@ -84,6 +84,26 @@ class WorkManagerReminderSchedulerTest {
         assertEquals("task_99", WorkManagerReminderScheduler.tagForTask(99L))
         assertEquals("reminder_99", WorkManagerReminderScheduler.uniqueWorkName(99L))
     }
+
+    /**
+     * Diagnostic Test for Known Issue 2:
+     * When a weekly task is erroneously configured with daysOfWeek = 0 (no days selected),
+     * the scheduling engine should reject it (e.g. by throwing an IllegalArgumentException
+     * or returning an invalid occurrence). Currently, it loops 1..7 without a match and
+     * silently defaults to targetToday.plusDays(1), failing this defensive assertion.
+     */
+    @Test(expected = IllegalArgumentException::class)
+    fun `calculateNextOccurrence weekly task with zero daysOfWeek throws IllegalArgumentException`() {
+        val scheduler = WorkManagerReminderSchedulerStub()
+        val taskWithZeroDays = dummyTask.copy(
+            frequency = TaskFrequency.WEEKLY,
+            daysOfWeek = 0, // No days selected (Known Issue 2)
+            hour = 8,
+            minute = 0
+        )
+        // Should throw IllegalArgumentException for invalid weekly configuration
+        scheduler.calculateNextOccurrence(taskWithZeroDays, fixedZone)
+    }
 }
 
 /**

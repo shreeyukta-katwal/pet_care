@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_species_dropdown.xml – 48dp height dropdown item layout for Species ExposedDropdownMenu.
+-->
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text_species_item"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:minHeight="48dp"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="@dimen/spacing_medium"
+    android:textAppearance="?attr/textAppearanceBodyLarge"
+    android:textColor="?attr/colorOnSurface"
+    android:ellipsize="end"
+    android:singleLine="true" />

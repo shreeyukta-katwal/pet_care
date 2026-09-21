@@ -4,21 +4,25 @@
     
     Structure:
       CoordinatorLayout (root)
-        ├─ AppBarLayout / MaterialToolbar (Back arrow, title "New Care Routine" / "Edit Routine")
-        └─ NestedScrollView (max width constrained on tablets to ~600dp)
-             └─ LinearLayout (vertical)
-                  ├─ No-pets warning container (visible when user has 0 pets)
-                  ├─ Pet selector (ExposedDropdownMenu)
-                  ├─ Task name (required)
-                  ├─ Category (ExposedDropdownMenu with category icons)
-                  ├─ Frequency (MaterialButtonToggleGroup: Daily / Weekly)
-                  ├─ Days-of-week ChipGroup (visible ONLY when Weekly selected)
-                  ├─ Time selector (field/button opening MaterialTimePicker)
-                  ├─ Required supplies field
-                  ├─ Notes field (dynamic hint for Healthcare)
-                  ├─ Reminder Switch ("Remind me at this time", default on)
-                  ├─ Save / Add button
-                  └─ CircularProgressIndicator
+        ├─ AppBarLayout / MaterialToolbar (Dynamic title "Add Care Routine" / "Edit Care Routine", bold title appearance, pet subtitle, up arrow)
+        └─ NestedScrollView (max width constrained on tablets to 600dp, clipToPadding=false)
+             └─ ConstraintLayout (centers form container up to 600dp)
+                  └─ LinearLayout (form_container, 16dp horizontal padding)
+                       ├─ No-pets warning container (visible when user has 0 pets)
+                       ├─ Section 1: "Who and what" (labelMedium primary header)
+                       │    ├─ Pet selector (ExposedDropdownMenu with 28dp avatar and custom list adapter)
+                       │    ├─ Task name (required, asterisk in label only)
+                       │    └─ Category (ExposedDropdownMenu with category start icon)
+                       ├─ Section 2: "When" (labelMedium primary header)
+                       │    ├─ Frequency (MaterialButtonToggleGroup with check icon on selected button)
+                       │    ├─ Days-of-week ChipGroup (visible ONLY when Weekly selected)
+                       │    └─ Time selector (read-only exposed field with clock icon opening MaterialTimePicker)
+                       ├─ Section 3: "Details" (labelMedium primary header)
+                       │    ├─ Required supplies field (single line with supplies icon)
+                       │    ├─ Notes field (dynamic hint for Healthcare, multi-line, top gravity)
+                       │    └─ Reminder card row (outlined card with bell icon, title, subtitle, and switch)
+                       ├─ Save / Add button (full-width filled rounded button)
+                       └─ CircularProgressIndicator
 -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -41,7 +45,10 @@
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_back"
             app:navigationContentDescription="@string/cd_navigate_up"
-            tools:title="@string/title_add_task" />
+            app:titleTextAppearance="@style/TextAppearance.PetCare.Toolbar.Title"
+            app:subtitleTextAppearance="@style/TextAppearance.PetCare.Toolbar.Subtitle"
+            tools:title="@string/title_add_task"
+            tools:subtitle="Puppy" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -51,20 +58,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <FrameLayout
+        <!-- Outer constraint layout centers content up to 600dp on tablets -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/form_container"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:maxWidth="@dimen/form_max_width_wide"
                 android:orientation="vertical"
-                android:padding="@dimen/spacing_medium">
+                android:paddingHorizontal="@dimen/spacing_medium"
+                android:paddingTop="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_large"
+                app:layout_constraintWidth_max="@dimen/form_max_width_wide"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <!-- ── No Pets Warning Banner ───────────────────────── -->
                 <com.google.android.material.card.MaterialCardView
@@ -104,17 +118,27 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- ── Section 1: Who and what ──────────────────────── -->
+                <TextView
+                    android:id="@+id/header_who_and_what"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text="@string/section_who_and_what"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold" />
+
                 <!-- ── Pet Selector Dropdown ────────────────────────── -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_pet"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
                     android:hint="@string/label_select_pet"
-                    app:helperText="@string/helper_required"
-                    app:startIconDrawable="@drawable/ic_pet_placeholder"
-                    app:startIconContentDescription="@string/label_select_pet">
+                    app:startIconDrawable="@drawable/ic_pet_avatar_placeholder"
+                    app:startIconContentDescription="@string/cd_pet_avatar">
 
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/dropdown_pet"
@@ -128,12 +152,11 @@
                 <!-- ── Task Name Field ──────────────────────────────── -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_name"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
-                    android:hint="@string/hint_task_name"
-                    app:helperText="@string/helper_required">
+                    android:hint="@string/hint_task_name">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_name"
@@ -148,12 +171,11 @@
                 <!-- ── Category Selector Dropdown ───────────────────── -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_category"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
                     android:hint="@string/hint_category"
-                    app:helperText="@string/helper_required"
                     app:startIconDrawable="@drawable/ic_cat_feeding"
                     app:startIconContentDescription="@string/hint_category">
 
@@ -165,6 +187,18 @@
                         tools:text="Feeding" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- ── Section 2: When ──────────────────────────────── -->
+                <TextView
+                    android:id="@+id/header_when"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text="@string/section_when"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold" />
 
                 <!-- ── Frequency Toggle Group ───────────────────────── -->
                 <TextView
@@ -191,7 +225,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/frequency_daily" />
+                        android:text="@string/frequency_daily"
+                        app:icon="@drawable/ic_check"
+                        app:iconGravity="textStart" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_freq_weekly"
@@ -199,7 +235,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/frequency_weekly" />
+                        android:text="@string/frequency_weekly"
+                        app:iconGravity="textStart" />
 
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -228,6 +265,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:chipSpacingHorizontal="@dimen/spacing_xsmall"
+                        app:chipSpacingVertical="@dimen/spacing_xsmall"
+                        app:singleLine="false"
                         app:singleSelection="false">
 
                         <com.google.android.material.chip.Chip
@@ -297,12 +336,11 @@
                 <!-- ── Time Picker Field ────────────────────────────── -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_time"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
                     android:hint="@string/hint_time"
-                    app:helperText="@string/helper_required"
                     app:startIconDrawable="@drawable/ic_clock"
                     app:startIconContentDescription="@string/cd_time_picker">
 
@@ -317,18 +355,32 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:inputType="none"
-                        tools:text="08:00" />
+                        tools:text="08:00 AM" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- ── Section 3: Details ───────────────────────────── -->
+                <TextView
+                    android:id="@+id/header_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text="@string/section_details"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold" />
 
                 <!-- ── Required Supplies Field ──────────────────────── -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_supplies"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
-                    android:hint="@string/hint_supplies">
+                    android:hint="@string/hint_supplies"
+                    app:startIconDrawable="@drawable/ic_supplies"
+                    app:startIconContentDescription="@string/cd_supplies_icon">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edit_supplies"
@@ -336,14 +388,15 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
                         android:inputType="textCapSentences"
-                        android:maxLines="2" />
+                        android:maxLines="1"
+                        android:singleLine="true" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- ── Care Notes Field ─────────────────────────────── -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_notes"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
@@ -361,15 +414,69 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- ── Reminder Switch ──────────────────────────────── -->
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/switch_reminder"
+                <!-- ── Reminder Card Row ────────────────────────────── -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_reminder"
+                    style="@style/Widget.Material3.CardView.Outlined"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_large"
-                    android:checked="true"
-                    android:text="@string/label_reminder_switch"
-                    android:textAppearance="?attr/textAppearanceBodyLarge" />
+                    app:cardCornerRadius="@dimen/card_corner_radius"
+                    app:strokeColor="?attr/colorOutlineVariant"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minHeight="64dp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/spacing_medium"
+                        android:paddingVertical="@dimen/spacing_small">
+
+                        <ImageView
+                            android:id="@+id/image_reminder_icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="@dimen/spacing_medium"
+                            android:contentDescription="@string/cd_reminder_icon"
+                            android:src="@drawable/ic_bell"
+                            app:tint="?attr/colorPrimary" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/text_reminder_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/reminder_title"
+                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textColor="?attr/colorOnSurface" />
+
+                            <TextView
+                                android:id="@+id/text_reminder_subtitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/reminder_subtitle"
+                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:textColor="?attr/colorOnSurfaceVariant" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/switch_reminder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/spacing_small"
+                            android:checked="true" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
 
                 <!-- ── Save / Add Button ────────────────────────────── -->
                 <com.google.android.material.button.MaterialButton
@@ -377,7 +484,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_large"
-                    tools:text="@string/action_add_task" />
+                    android:minHeight="48dp"
+                    app:cornerRadius="12dp"
+                    tools:text="@string/btn_save_routine" />
 
                 <!-- CircularProgressIndicator for asynchronous save -->
                 <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -393,7 +502,7 @@
 
             </LinearLayout>
 
-        </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 

@@ -100,17 +100,31 @@
 
     <!-- ── Content descriptions (accessibility) ─────────────────────── -->
     <string name="cd_pet_photo">Pet photo</string>
+    <string name="cd_change_photo_badge">Change pet photo</string>
     <string name="cd_app_logo">PetCare logo</string>
     <string name="cd_more_options">More options</string>
     <string name="cd_navigate_up">Navigate up</string>
     <string name="cd_no_pets">No pets illustration</string>
     <string name="cd_field_name">Pet name field</string>
+    <string name="cd_field_species">Pet species field</string>
+    <string name="cd_field_breed">Pet breed field</string>
+    <string name="cd_field_diet">Dietary preferences field</string>
+    <string name="cd_field_allergies">Allergies field</string>
+    <string name="cd_field_vaccinations">Vaccinations field</string>
+    <string name="cd_field_toys">Favourite toys field</string>
+    <string name="cd_field_notes">Care notes field</string>
 
     <!-- ── Action labels ──────────────────────────────────────────────── -->
     <string name="action_add_pet">Add Pet</string>
+    <string name="btn_save_pet">Save pet</string>
     <string name="action_edit">Edit</string>
     <string name="action_delete">Delete</string>
     <string name="action_change_photo">Change Photo</string>
+    <string name="section_basic_information">Basic information</string>
+    <string name="section_health_and_care">Health and care</string>
+    <string name="section_extras">Extras</string>
+    <string name="suffix_years">years</string>
+    <string name="suffix_kg">kg</string>
 
     <!-- ── Form hints and helpers ─────────────────────────────────────── -->
     <string name="hint_pet_name">Pet Name *</string>
@@ -139,13 +153,22 @@
     </string-array>
 
     <!-- ── Task & Care Routine Management (Step 5) ─────────────────────── -->
-    <string name="title_add_task">New Care Routine</string>
-    <string name="title_edit_task">Edit Routine</string>
+    <string name="title_add_task">Add Care Routine</string>
+    <string name="title_edit_task">Edit Care Routine</string>
     <string name="action_add_task">Add Routine</string>
     <string name="action_save_task">Save Routine</string>
     <string name="action_add_routine">Add routine</string>
+    <string name="btn_save_routine">Save routine</string>
+    <string name="section_who_and_what">Who and what</string>
+    <string name="section_when">When</string>
+    <string name="section_details">Details</string>
+    <string name="section_basic_info">Basic Information</string>
+    <string name="section_health_care">Health &amp; Care</string>
+    <string name="section_additional_details">Additional Details</string>
+    <string name="reminder_title">Reminder</string>
+    <string name="reminder_subtitle">Notify me at the set time</string>
     <string name="label_select_pet">Pet *</string>
-    <string name="hint_task_name">Routine / Task Name *</string>
+    <string name="hint_task_name">Routine name *</string>
     <string name="hint_category">Category *</string>
     <string name="hint_frequency">Frequency *</string>
     <string name="hint_time">Time *</string>
@@ -178,6 +201,9 @@
     <string name="cd_time_picker">Select reminder time</string>
     <string name="cd_task_category_icon">Category icon</string>
     <string name="cd_mark_done">Mark task done</string>
+    <string name="cd_reminder_icon">Reminder</string>
+    <string name="cd_supplies_icon">Supplies</string>
+    <string name="cd_pet_avatar">Pet avatar</string>
 
     <!-- ── Checklist screen strings (Step 6) ─────────────── -->
     <string name="fab_add_routine">Add routine</string>

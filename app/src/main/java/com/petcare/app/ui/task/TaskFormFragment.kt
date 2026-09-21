@@ -4,6 +4,10 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -17,6 +21,10 @@ import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -37,6 +45,7 @@ import com.petcare.app.data.db.TaskEntity
 import com.petcare.app.data.db.TaskFrequency
 import com.petcare.app.databinding.FragmentTaskFormBinding
 import com.petcare.app.databinding.ItemCategoryDropdownBinding
+import com.petcare.app.databinding.ItemPetDropdownBinding
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -129,11 +138,13 @@ class TaskFormFragment : Fragment() {
             backPressedCallback
         )
 
+        setupWindowInsets()
         setupToolbar()
         setupCategoryDropdown()
         setupFrequencyToggle()
         setupDayChips()
         setupTimePicker()
+        setupReminderCard()
         setupTextWatchers()
         setupSaveButton()
         observeViewModel()
@@ -146,6 +157,19 @@ class TaskFormFragment : Fragment() {
 
     // ── UI Setup Helpers ──────────────────────────────────────────────────
 
+    /**
+     * Handles keyboard and system bar insets so bottom content and Save button are never obscured.
+     */
+    private fun setupWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.scrollView) { v, insets ->
+            val systemBars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
+            )
+            v.updatePadding(bottom = systemBars.bottom)
+            insets
+        }
+    }
+
     private fun setupToolbar() {
         binding.toolbar.title = if (viewModel.isEditMode) {
             getString(R.string.title_edit_task)
@@ -154,6 +178,126 @@ class TaskFormFragment : Fragment() {
         }
         binding.toolbar.setNavigationOnClickListener {
             handleBackNavigation()
+        }
+    }
+
+    /**
+     * Creates a circular avatar drawable for the selected pet (or placeholder).
+     * Disables any start icon tint so photos are not tinted.
+     */
+    private fun getPetAvatarDrawable(photoUriString: String?, sizeDp: Int): Drawable {
+        if (!photoUriString.isNullOrBlank()) {
+            try {
+                val uri = Uri.parse(photoUriString)
+                val density = resources.displayMetrics.density
+                val targetPx = (sizeDp * density).toInt().coerceAtLeast(1)
+
+                // Decode bounds first to downsample efficiently
+                val boundsOptions = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+                requireContext().contentResolver.openInputStream(uri)?.use { stream ->
+                    BitmapFactory.decodeStream(stream, null, boundsOptions)
+                }
+
+                val sampleSize = calculateInSampleSize(boundsOptions, targetPx, targetPx)
+                val decodeOptions = BitmapFactory.Options().apply {
+                    inSampleSize = sampleSize
+                    inPreferredConfig = Bitmap.Config.ARGB_8888
+                }
+
+                val rawBitmap = requireContext().contentResolver.openInputStream(uri)?.use { stream ->
+                    BitmapFactory.decodeStream(stream, null, decodeOptions)
+                }
+
+                if (rawBitmap != null) {
+                    // Center-crop to a square
+                    val minDim = minOf(rawBitmap.width, rawBitmap.height)
+                    val cropX = (rawBitmap.width - minDim) / 2
+                    val cropY = (rawBitmap.height - minDim) / 2
+                    val squareBitmap = Bitmap.createBitmap(rawBitmap, cropX, cropY, minDim, minDim)
+                    if (squareBitmap != rawBitmap) {
+                        rawBitmap.recycle()
+                    }
+                    val scaledBitmap = Bitmap.createScaledBitmap(squareBitmap, targetPx, targetPx, true)
+                    if (scaledBitmap != squareBitmap) {
+                        squareBitmap.recycle()
+                    }
+                    return RoundedBitmapDrawableFactory.create(resources, scaledBitmap).apply {
+                        isCircular = true
+                    }
+                }
+            } catch (e: Exception) {
+                // Fall back to theme-colored placeholder below
+            }
+        }
+        // Theme-colored paw-print placeholder on colorSecondaryContainer background
+        return ContextCompat.getDrawable(requireContext(), R.drawable.ic_pet_avatar_placeholder)!!
+    }
+
+    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        val (height: Int, width: Int) = options.outHeight to options.outWidth
+        var inSampleSize = 1
+        if (height > reqHeight || width > reqWidth) {
+            val halfHeight: Int = height / 2
+            val halfWidth: Int = width / 2
+            while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
+                inSampleSize *= 2
+            }
+        }
+        return inSampleSize
+    }
+
+    /**
+     * Updates the UI elements associated with the selected pet:
+     * circular avatar start icon (no tint), text, and toolbar subtitle.
+     */
+    private fun selectPetUi(pet: PetEntity) {
+        val petText = "${pet.name} (${pet.species})"
+        binding.dropdownPet.setText(petText, false)
+        // Disable icon tint so photo colors are preserved
+        binding.layoutPet.setStartIconTintList(null)
+        binding.layoutPet.startIconDrawable = getPetAvatarDrawable(pet.photoUri, 28)
+        binding.toolbar.subtitle = pet.name
+    }
+
+    /**
+     * Custom adapter for pet dropdown displaying a 32dp avatar, pet name, and species.
+     */
+    private inner class PetDropdownAdapter(
+        context: Context,
+        private val pets: List<PetEntity>
+    ) : ArrayAdapter<PetEntity>(context, R.layout.item_pet_dropdown, pets) {
+
+        private val noOpFilter = object : android.widget.Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                return FilterResults().apply {
+                    values = pets
+                    count = pets.size
+                }
+            }
+
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                notifyDataSetChanged()
+            }
+
+            override fun convertResultToString(resultValue: Any?): CharSequence {
+                val pet = resultValue as? PetEntity ?: return ""
+                return "${pet.name} (${pet.species})"
+            }
+        }
+
+        override fun getFilter(): android.widget.Filter = noOpFilter
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+            val itemBinding = if (convertView != null) {
+                ItemPetDropdownBinding.bind(convertView)
+            } else {
+                ItemPetDropdownBinding.inflate(LayoutInflater.from(context), parent, false)
+            }
+            val pet = getItem(position)!!
+            itemBinding.textPetName.text = pet.name
+            itemBinding.textPetSpecies.text = pet.species
+            itemBinding.imagePetAvatar.setImageDrawable(getPetAvatarDrawable(pet.photoUri, 32))
+            return itemBinding.root
         }
     }
 
@@ -177,21 +321,23 @@ class TaskFormFragment : Fragment() {
         binding.layoutPet.visibility = View.VISIBLE
         binding.buttonSave.isEnabled = true
 
-        val petNames = pets.map { "${it.name} (${it.species})" }
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, petNames)
+        // Ensure icon tint is null so custom photos and vectors render without color distortion
+        binding.layoutPet.setStartIconTintList(null)
+
+        val adapter = PetDropdownAdapter(requireContext(), pets)
         binding.dropdownPet.setAdapter(adapter)
 
         // Select preselected pet or restore selection
         val selectedId = viewModel.getSelectedPetId()
         val defaultPet = pets.find { it.id == selectedId } ?: pets.firstOrNull()
         if (defaultPet != null) {
-            val index = pets.indexOf(defaultPet)
-            binding.dropdownPet.setText(petNames[index], false)
+            selectPetUi(defaultPet)
             viewModel.selectPet(defaultPet.id)
         }
 
         binding.dropdownPet.setOnItemClickListener { _, _, position, _ ->
             val pet = pets[position]
+            selectPetUi(pet)
             viewModel.selectPet(pet.id)
             binding.layoutPet.error = null
         }
@@ -264,12 +410,15 @@ class TaskFormFragment : Fragment() {
     }
 
     /**
-     * Wires frequency toggle between Daily and Weekly.
+     * Wires frequency toggle between Daily and Weekly with check icon on selected button.
      */
     private fun setupFrequencyToggle() {
+        updateFrequencyIcons(binding.toggleFrequency.checkedButtonId)
+
         binding.toggleFrequency.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
                 viewModel.markDirty()
+                updateFrequencyIcons(checkedId)
                 if (checkedId == R.id.button_freq_weekly) {
                     binding.containerDaysOfWeek.visibility = View.VISIBLE
                 } else {
@@ -277,6 +426,16 @@ class TaskFormFragment : Fragment() {
                     binding.textDaysError.visibility = View.GONE
                 }
             }
+        }
+    }
+
+    private fun updateFrequencyIcons(checkedId: Int) {
+        if (checkedId == R.id.button_freq_weekly) {
+            binding.buttonFreqWeekly.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
+            binding.buttonFreqDaily.icon = null
+        } else {
+            binding.buttonFreqDaily.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check)
+            binding.buttonFreqWeekly.icon = null
         }
     }
 
@@ -325,11 +484,28 @@ class TaskFormFragment : Fragment() {
     }
 
     /**
-     * Sets up click listener on the Time input to launch MaterialTimePicker.
+     * Sets up click listener on the Time input and layout to launch MaterialTimePicker.
      */
     private fun setupTimePicker() {
         binding.editTime.setOnClickListener {
             showTimePicker()
+        }
+        binding.layoutTime.setOnClickListener {
+            showTimePicker()
+        }
+    }
+
+    private fun formatDisplayTime(hour: Int, minute: Int): String {
+        return if (DateFormat.is24HourFormat(requireContext())) {
+            String.format(Locale.getDefault(), "%02d:%02d", hour, minute)
+        } else {
+            val amPm = if (hour < 12) "AM" else "PM"
+            val displayHour = when {
+                hour == 0 -> 12
+                hour > 12 -> hour - 12
+                else -> hour
+            }
+            String.format(Locale.getDefault(), "%02d:%02d %s", displayHour, minute, amPm)
         }
     }
 
@@ -352,6 +528,15 @@ class TaskFormFragment : Fragment() {
         }
 
         picker.show(childFragmentManager, "TaskTimePicker")
+    }
+
+    /**
+     * Makes the reminder card row clickable to toggle the switch.
+     */
+    private fun setupReminderCard() {
+        binding.cardReminder.setOnClickListener {
+            binding.switchReminder.toggle()
+        }
     }
 
     private fun setupTextWatchers() {
@@ -378,9 +563,9 @@ class TaskFormFragment : Fragment() {
 
     private fun setupSaveButton() {
         binding.buttonSave.text = if (viewModel.isEditMode) {
-            getString(R.string.action_save_task)
+            getString(R.string.btn_save_changes)
         } else {
-            getString(R.string.action_add_task)
+            getString(R.string.btn_save_routine)
         }
 
         binding.buttonSave.setOnClickListener {
@@ -422,7 +607,7 @@ class TaskFormFragment : Fragment() {
                 executeSave()
             }
             .show()
-    }
+        }
 
     private fun executeSave() {
         val freq = if (binding.toggleFrequency.checkedButtonId == R.id.button_freq_weekly) {
@@ -468,9 +653,7 @@ class TaskFormFragment : Fragment() {
                 launch {
                     viewModel.selectedTime.collect { time ->
                         if (time != null) {
-                            binding.editTime.setText(
-                                String.format(Locale.getDefault(), "%02d:%02d", time.first, time.second)
-                            )
+                            binding.editTime.setText(formatDisplayTime(time.first, time.second))
                         }
                     }
                 }
@@ -518,10 +701,12 @@ class TaskFormFragment : Fragment() {
 
         if (task.frequency == TaskFrequency.WEEKLY) {
             binding.toggleFrequency.check(R.id.button_freq_weekly)
+            updateFrequencyIcons(R.id.button_freq_weekly)
             binding.containerDaysOfWeek.visibility = View.VISIBLE
             setDaysOfWeekFromBitmask(task.daysOfWeek)
         } else {
             binding.toggleFrequency.check(R.id.button_freq_daily)
+            updateFrequencyIcons(R.id.button_freq_daily)
             binding.containerDaysOfWeek.visibility = View.GONE
         }
 
@@ -531,8 +716,7 @@ class TaskFormFragment : Fragment() {
 
         val pet = petList.find { it.id == task.petId }
         if (pet != null) {
-            val name = "${pet.name} (${pet.species})"
-            binding.dropdownPet.setText(name, false)
+            selectPetUi(pet)
         }
     }
 

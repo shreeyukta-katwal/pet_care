@@ -92,4 +92,36 @@
         <item name="cornerSize">24dp</item>
     </style>
 
+    <!-- Circular shape for avatars (50% corner size) -->
+    <style name="ShapeAppearance.PetCare.Circular" parent="ShapeAppearance.Material3.Corner.Full">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- Outlined text field style with 12dp rounded corners -->
+    <style name="Widget.PetCare.TextInputLayout.OutlinedBox" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+    </style>
+
+    <!-- Outlined text field exposed dropdown style with 12dp rounded corners -->
+    <style name="Widget.PetCare.TextInputLayout.OutlinedBox.ExposedDropdownMenu" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+    </style>
+
+    <!-- Bold M3 Title Large Toolbar title appearance -->
+    <style name="TextAppearance.PetCare.Toolbar.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <!-- Toolbar subtitle appearance -->
+    <style name="TextAppearance.PetCare.Toolbar.Subtitle" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
 </resources>

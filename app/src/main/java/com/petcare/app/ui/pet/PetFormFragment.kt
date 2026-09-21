@@ -11,6 +11,9 @@ import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -111,6 +114,7 @@ class PetFormFragment : Fragment() {
             backPressedCallback
         )
 
+        setupWindowInsets()
         setupToolbar()
         setupSpeciesDropdown()
         setupPhotoButtons()
@@ -125,6 +129,19 @@ class PetFormFragment : Fragment() {
     }
 
     // ── UI setup ──────────────────────────────────────────────────────────
+
+    /**
+     * Handles keyboard and system bar insets so bottom content and Save button are never obscured.
+     */
+    private fun setupWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.scrollView) { v, insets ->
+            val systemBars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
+            )
+            v.updatePadding(bottom = systemBars.bottom)
+            insets
+        }
+    }
 
     /**
      * Configures the top app bar with navigation back click and dynamic title.
@@ -365,6 +382,7 @@ class PetFormFragment : Fragment() {
      * Pre-fills form fields when editing an existing pet.
      */
     private fun populateFields(pet: PetEntity) {
+        binding.toolbar.subtitle = pet.name
         binding.editName.setText(pet.name)
         binding.dropdownSpecies.setText(pet.species, false)
         binding.editBreed.setText(pet.breed)

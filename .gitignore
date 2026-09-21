@@ -57,3 +57,5 @@ Thumbs.db
 Claude.md
 claude.md
 implementation_plan.md
+docs/
+generate_docx_report.py

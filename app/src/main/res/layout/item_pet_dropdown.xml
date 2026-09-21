@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_pet_dropdown.xml – Custom dropdown item layout for Pet selector ExposedDropdownMenu.
+    Displays a 32dp circular avatar alongside the pet's name and species.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="56dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/spacing_medium"
+    android:paddingVertical="@dimen/spacing_small">
+
+    <!-- 32dp Circular pet avatar -->
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_pet_avatar"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="@dimen/spacing_medium"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/cd_pet_avatar"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.PetCare.Circular"
+        tools:src="@drawable/ic_pet_avatar_placeholder" />
+
+    <!-- Two-line text: Pet name and species -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_pet_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="?attr/colorOnSurface"
+            tools:text="Max" />
+
+        <TextView
+            android:id="@+id/text_pet_species"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            tools:text="Dog" />
+
+    </LinearLayout>
+
+</LinearLayout>

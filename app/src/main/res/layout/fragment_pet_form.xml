@@ -4,24 +4,25 @@
 
     Structure:
       CoordinatorLayout
-        ├─ AppBarLayout / MaterialToolbar  ("Add pet" or "Edit pet" title, back nav, delete icon)
-        └─ NestedScrollView
-             └─ LinearLayout (vertical, max-width constrained for tablets)
-                  ├─ Photo area (circular preview + "Change photo" button)
-                  ├─ Name field (required)
-                  ├─ Species dropdown (MaterialAutoCompleteTextView)
-                  ├─ Breed field
-                  ├─ Age field (numeric decimal)
-                  ├─ Weight field (numeric decimal)
-                  ├─ Diet notes
-                  ├─ Allergies
-                  ├─ Vaccinations
-                  ├─ Favourite toys
-                  ├─ Notes (multi-line)
-                  └─ Save / Add button (filled, full-width, sticky bottom feel)
-
-    All colours, shapes and text styles use theme attributes.
-    No hard-coded values; dimension tokens from dimens.xml are used.
+        ├─ AppBarLayout / MaterialToolbar ("Add Pet" or "Edit Pet" title, bold M3 styling, back nav)
+        └─ NestedScrollView (clipToPadding=false)
+             └─ ConstraintLayout (limits form to form_max_width centered on tablets)
+                  └─ LinearLayout (vertical form container)
+                       ├─ Section 1: "Basic Information"
+                       │    ├─ Photo area (circular preview + "Change photo" button)
+                       │    ├─ Name field (required, asterisk in label only)
+                       │    ├─ Species dropdown (MaterialAutoCompleteTextView, required)
+                       │    ├─ Breed field
+                       │    └─ Age and Weight fields (numeric decimal row)
+                       ├─ Section 2: "Health & Care"
+                       │    ├─ Diet notes
+                       │    ├─ Allergies
+                       │    └─ Vaccinations
+                       ├─ Section 3: "Additional Details"
+                       │    ├─ Favourite toys
+                       │    └─ Notes (multi-line)
+                       ├─ Save / Add button (filled, full-width, rounded 12dp button)
+                       └─ CircularProgressIndicator
 -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,16 +39,14 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
-        <!--
-            Title changes dynamically: "Add pet" (new) or "Edit [pet name]" (edit).
-            Back arrow provided automatically by the Navigation Component.
-        -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_back"
             app:navigationContentDescription="@string/cd_navigate_up"
+            app:titleTextAppearance="@style/TextAppearance.PetCare.Toolbar.Title"
+            app:subtitleTextAppearance="@style/TextAppearance.PetCare.Toolbar.Subtitle"
             tools:title="@string/title_add_pet" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -58,41 +57,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!--
-            Outer frame limits the form to form_max_width on large screens
-            (480 dp) while still allowing full-width on phones.
-        -->
-        <FrameLayout
+        <!-- Outer constraint layout limits the form to form_max_width centered on large screens -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/form_container"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:maxWidth="@dimen/form_max_width"
                 android:orientation="vertical"
-                android:padding="@dimen/spacing_medium">
+                android:paddingHorizontal="@dimen/spacing_medium"
+                android:paddingTop="@dimen/spacing_medium"
+                android:paddingBottom="@dimen/spacing_large"
+                app:layout_constraintWidth_max="@dimen/form_max_width"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <!-- ── Section 1: Basic Information ────────────────── -->
+                <TextView
+                    android:id="@+id/header_basic_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text="@string/section_basic_info"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold" />
 
                 <!-- ── Photo area ───────────────────────────────────── -->
-                <!--
-                    Circular photo preview (120 dp) centred above the form.
-                    Tapping the preview or the "Change photo" button opens a
-                    bottom sheet to choose camera or gallery.
-                -->
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/image_pet_photo"
                     android:layout_width="@dimen/photo_preview_size"
                     android:layout_height="@dimen/photo_preview_size"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/spacing_medium"
+                    android:layout_marginTop="@dimen/spacing_small"
                     android:layout_marginBottom="@dimen/spacing_small"
                     android:contentDescription="@string/cd_pet_photo"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_pet_placeholder" />
+                    android:src="@drawable/ic_pet_placeholder"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.PetCare.Circular" />
 
                 <!-- "Change photo" text button -->
                 <com.google.android.material.button.MaterialButton
@@ -101,20 +110,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:minHeight="48dp"
                     android:text="@string/action_change_photo" />
-
-                <!-- ── Required fields ──────────────────────────────── -->
 
                 <!-- Pet name (required) -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_name"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
                     android:hint="@string/hint_pet_name"
-                    app:helperText="@string/helper_required"
                     app:startIconDrawable="@drawable/ic_pets_empty"
                     app:startIconContentDescription="@string/cd_field_name">
 
@@ -128,20 +135,15 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Species (ExposedDropdownMenu) -->
+                <!-- Species (ExposedDropdownMenu, required) -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_species"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
-                    android:hint="@string/hint_species"
-                    app:helperText="@string/helper_required">
+                    android:hint="@string/hint_species">
 
-                    <!--
-                        AutoCompleteTextView is required by the ExposedDropdownMenu style.
-                        The adapter is set in PetFormFragment.
-                    -->
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
                         android:id="@+id/dropdown_species"
                         android:layout_width="match_parent"
@@ -154,7 +156,7 @@
                 <!-- Breed -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_breed"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
@@ -181,7 +183,7 @@
                     <!-- Age (years, decimal) -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/layout_age"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -201,7 +203,7 @@
                     <!-- Weight (kg, decimal) -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/layout_weight"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -220,12 +222,22 @@
 
                 </LinearLayout>
 
-                <!-- ── Optional detail fields ───────────────────────── -->
+                <!-- ── Section 2: Health & Care ─────────────────────── -->
+                <TextView
+                    android:id="@+id/header_health_care"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text="@string/section_health_care"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold" />
 
                 <!-- Diet notes -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_diet"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
@@ -246,7 +258,7 @@
                 <!-- Allergies -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_allergies"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
@@ -265,7 +277,7 @@
                 <!-- Vaccinations -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_vaccinations"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
@@ -281,10 +293,22 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- ── Section 3: Additional Details ────────────────── -->
+                <TextView
+                    android:id="@+id/header_additional_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text="@string/section_additional_details"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    android:textColor="?attr/colorPrimary"
+                    android:textStyle="bold" />
+
                 <!-- Favourite toys -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_favourite_toys"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
@@ -303,7 +327,7 @@
                 <!-- General notes (multi-line) -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_notes"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_large"
@@ -322,15 +346,13 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- ── Save / Add button ────────────────────────────── -->
-                <!--
-                    Label: "Add pet" for new, "Save changes" for edit.
-                    Set dynamically by PetFormFragment.
-                -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_save"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_large"
+                    android:minHeight="48dp"
+                    app:cornerRadius="12dp"
                     tools:text="@string/action_add_pet" />
 
                 <!-- Loading indicator shown while save is in progress -->
@@ -347,7 +369,7 @@
 
             </LinearLayout>
 
-        </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 

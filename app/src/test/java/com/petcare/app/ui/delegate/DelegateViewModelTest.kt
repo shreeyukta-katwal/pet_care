@@ -262,4 +262,30 @@ class DelegateViewModelTest {
         advanceUntilIdle()
         assertEquals(setOf(101L, 102L), viewModel.uiState.value.selectedTaskIds)
     }
+
+    @Test
+    fun `onSendCompleted with failure updates state with error message and marks send failed`() = runTest {
+        val viewModel = createViewModel()
+        backgroundScope.launch { viewModel.uiState.collect {} }
+        advanceUntilIdle()
+
+        // Set valid recipient phone
+        viewModel.setRecipientPhone("+44 7911 123456")
+        advanceUntilIdle()
+
+        // Simulate SMS send initiated
+        viewModel.setSending(true)
+        advanceUntilIdle()
+        assertTrue(viewModel.uiState.value.isSending)
+
+        // Simulate SMS dispatch failure callback (e.g. Generic failure / Radio off)
+        val failureReason = "Failed to send SMS: Generic transmission error"
+        viewModel.onSendCompleted(success = false, message = failureReason)
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertFalse("isSending must reset to false after send attempt", state.isSending)
+        assertFalse("sendSuccess must be false on failure", state.sendSuccess)
+        assertEquals("Failure message must be delivered to UI state", failureReason, state.userMessage)
+    }
 }
