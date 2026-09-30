@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_admin_task_row.xml – One read-only task row inside a pet detail card.
+
+    Visual treatment that signals "read-only" unambiguously:
+      ● A status icon (done = filled check in primaryContainer, not done = outlined circle
+        in surfaceVariant) instead of an interactive Checkbox.
+      ● Task name, category, and done/not-done status text.
+      ● The entire row is non-clickable (no ripple, no focusable).
+
+    Binding IDs (set programmatically in AdminUserDetailAdapter):
+      icon_status, text_task_name, text_task_category, text_task_status
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="@dimen/spacing_small"
+    android:background="@drawable/bg_routine_row"
+    android:paddingHorizontal="@dimen/spacing_medium"
+    android:paddingVertical="@dimen/size_12dp"
+    android:clickable="false"
+    android:focusable="false">
+
+    <!-- Status indicator icon (not an interactive Checkbox) -->
+    <ImageView
+        android:id="@+id/icon_status"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="@dimen/icon_size"
+        android:layout_marginEnd="@dimen/spacing_medium"
+        android:src="@drawable/ic_check"
+        android:contentDescription="@null" />
+
+    <!-- Task name and category label -->
+    <LinearLayout
+        android:layout_width="@dimen/dimension_zero"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_task_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.PetCare.TitleSmall"
+            android:textColor="?attr/colorOnSurface"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/text_task_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.PetCare.LabelSmall"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+
+    </LinearLayout>
+
+    <!-- Done today / Not done today status label -->
+    <TextView
+        android:id="@+id/text_task_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_small"
+        android:textAppearance="@style/TextAppearance.PetCare.LabelSmall"
+        android:textStyle="bold" />
+
+</LinearLayout>

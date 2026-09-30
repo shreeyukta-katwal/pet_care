@@ -65,6 +65,9 @@ class FakePetDao : PetDao {
 
     override fun getAllForUser(userId: Long): Flow<List<PetEntity>> = petsFlow
 
+    override suspend fun getAllForUserOnce(userId: Long): List<PetEntity> =
+        pets.values.filter { it.userId == userId }
+
     override suspend fun findById(petId: Long): PetEntity? = pets[petId]
 }
 
@@ -97,7 +100,7 @@ class FakeTaskDao : TaskDao {
         tasksFlow.value = tasks.values.toList()
     }
 
-    override fun getAllTasks(): Flow<List<TaskEntity>> = tasksFlow
+    override fun getAllTasksForUser(userId: Long): Flow<List<TaskEntity>> = tasksFlow
 
     override suspend fun getAllEnabledTasks(): List<TaskEntity> =
         tasks.values.filter { it.reminderEnabled }
@@ -106,6 +109,8 @@ class FakeTaskDao : TaskDao {
 
     override suspend fun getAllForPetOnce(petId: Long): List<TaskEntity> =
         tasks.values.filter { it.petId == petId }
+
+    override suspend fun getAllForUserOnce(userId: Long): List<TaskEntity> = emptyList()
 
     override suspend fun findById(taskId: Long): TaskEntity? = tasks[taskId]
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     item_delegate_task.xml – Row layout for selecting care routines to include in SMS delegation.
-    Contains a MaterialCheckBox, category badge, scheduled time, and supplies/notes summary.
+    Contains a MaterialCheckBox, category badge with icon, scheduled time, and supplies/notes summary.
 -->
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -9,52 +9,116 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="6dp"
-    app:cardElevation="0dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="?attr/colorOutlineVariant"
-    app:cardCornerRadius="12dp">
+    android:layout_marginBottom="@dimen/spacing_s"
+    style="@style/Widget.PetCare.Card"
+    app:cardElevation="@dimen/dimension_zero"
+    app:strokeWidth="@dimen/card_elevation"
+    app:strokeColor="?attr/colorOutlineVariant">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="8dp">
+        android:gravity="top"
+        android:paddingHorizontal="@dimen/size_12dp"
+        android:paddingVertical="@dimen/size_10dp">
 
         <!-- Checkbox indicating whether task is included in delegation -->
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/check_include"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
+            android:layout_marginTop="@dimen/size_2dp"
+            android:layout_marginEnd="@dimen/spacing_s"
             android:contentDescription="@string/cd_mark_done" />
 
-        <!-- Task title and time/category details -->
+        <!-- Task title, category badge, time and details -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimension_zero"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text_task_name"
+            <!-- Top row: Category icon, Task name, Category badge -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textStyle="bold"
-                android:textColor="?attr/colorOnSurface"
-                tools:text="08:00 Morning meal" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
+                <ImageView
+                    android:id="@+id/image_category_icon"
+                    android:layout_width="@dimen/size_20dp"
+                    android:layout_height="@dimen/size_20dp"
+                    android:layout_marginEnd="@dimen/size_6dp"
+                    android:contentDescription="@string/hint_category"
+                    app:tint="?attr/colorPrimary"
+                    tools:src="@drawable/ic_cat_feeding" />
+
+                <TextView
+                    android:id="@+id/text_task_name"
+                    android:layout_width="@dimen/dimension_zero"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    tools:text="Morning meal" />
+
+                <TextView
+                    android:id="@+id/text_category_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_s"
+                    android:background="@drawable/bg_category_badge"
+                    android:paddingHorizontal="@dimen/spacing_s"
+                    android:paddingVertical="@dimen/size_2dp"
+                    android:textAppearance="@style/TextAppearance.PetCare.LabelSmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textStyle="bold"
+                    tools:text="Feeding" />
+
+            </LinearLayout>
+
+            <!-- Middle row: Scheduled time with clock icon -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/size_14dp"
+                    android:layout_height="@dimen/size_14dp"
+                    android:layout_marginEnd="@dimen/spacing_xs"
+                    android:contentDescription="@string/cd_time_picker"
+                    android:src="@drawable/ic_clock"
+                    app:tint="?attr/colorOnSurfaceVariant" />
+
+                <TextView
+                    android:id="@+id/text_task_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="08:00" />
+
+            </LinearLayout>
+
+            <!-- Bottom row: Supplies and notes summary -->
             <TextView
                 android:id="@+id/text_task_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
                 android:textColor="?attr/colorOnSurfaceVariant"
-                tools:text="Feeding • 1 cup dry kibble" />
+                android:maxLines="2"
+                android:ellipsize="end"
+                tools:text="1 cup dry kibble • Give fresh water" />
 
         </LinearLayout>
 

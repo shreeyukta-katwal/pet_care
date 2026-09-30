@@ -1,7 +1,6 @@
 package com.petcare.app.gesture
 
 import android.app.Dialog
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -24,8 +23,8 @@ import kotlin.math.abs
  *   2. [com.petcare.app.ui.checklist.PetChecklistFragment] (checklist header hero photo)
  * - Renders the photo in full resolution inside an immersive, borderless [DialogFragment].
  * - Implements touch gesture dismissal:
- *   - **Single tap**: Dismisses viewer immediately.
- *   - **Swipe Down gesture**: Detects downward vertical drag (`deltaY > 150dp` with minimal X-drift)
+ *   - **Single tap**: Dismisses viewer immediately (tap anywhere).
+ *   - **Swipe Down gesture**: Detects downward vertical drag (`deltaY > 100px` with vertical trajectory)
  *     and smoothly dismisses the viewer.
  *
  * ## Usability & Accessibility:
@@ -56,7 +55,7 @@ class PhotoViewerDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setBackgroundDrawable(ColorDrawable(requireContext().getColor(R.color.color_transparent)))
         return dialog
     }
 
@@ -71,10 +70,13 @@ class PhotoViewerDialog : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
+        dialog?.window?.apply {
+            setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            setBackgroundDrawable(ColorDrawable(requireContext().getColor(R.color.color_transparent)))
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,6 +107,16 @@ class PhotoViewerDialog : DialogFragment() {
             dismiss()
         }
 
+        // Photo tap to dismiss
+        binding.imageEnlarged.setOnClickListener {
+            dismiss()
+        }
+
+        // Bottom hint pill tap to dismiss
+        binding.layoutDismissHint.setOnClickListener {
+            dismiss()
+        }
+
         // Swipe-down to dismiss gesture
         setupSwipeDownToDismiss(binding.root)
     }
@@ -113,7 +125,7 @@ class PhotoViewerDialog : DialogFragment() {
         var startY = 0f
         var startX = 0f
 
-        view.setOnTouchListener { _, event ->
+        val touchListener = View.OnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     startY = event.rawY
@@ -123,8 +135,8 @@ class PhotoViewerDialog : DialogFragment() {
                 MotionEvent.ACTION_UP -> {
                     val deltaY = event.rawY - startY
                     val deltaX = abs(event.rawX - startX)
-                    // Downward swipe of at least 120 pixels with mostly vertical trajectory
-                    if (deltaY > 120 && deltaY > deltaX * 1.5) {
+                    // Downward swipe of at least 100 pixels with mostly vertical trajectory
+                    if (deltaY > 100 && deltaY > deltaX * 1.3) {
                         dismiss()
                         true
                     } else if (abs(deltaY) < 20 && deltaX < 20) {
@@ -138,6 +150,8 @@ class PhotoViewerDialog : DialogFragment() {
                 else -> false
             }
         }
+        view.setOnTouchListener(touchListener)
+        binding.imageEnlarged.setOnTouchListener(touchListener)
     }
 
     override fun onDestroyView() {

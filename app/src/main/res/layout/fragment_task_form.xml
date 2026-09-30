@@ -30,6 +30,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
     tools:context=".ui.task.TaskFormFragment">
 
     <!-- ── Top App Bar ─────────────────────────────────────────────── -->
@@ -37,7 +38,7 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="false">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -68,17 +69,49 @@
 
             <LinearLayout
                 android:id="@+id/form_container"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dimension_zero"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/spacing_medium"
                 android:paddingTop="@dimen/spacing_medium"
-                android:paddingBottom="@dimen/spacing_large"
+                android:paddingBottom="@dimen/spacing_xlarge"
                 app:layout_constraintWidth_max="@dimen/form_max_width_wide"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- The routine builder starts with context, then grouped inputs. -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_large"
+                    app:cardBackgroundColor="?attr/colorSecondaryContainer"
+                    app:cardCornerRadius="@dimen/card_corner_radius"
+                    app:cardElevation="@dimen/dimension_zero">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_large">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/task_form_eyebrow"
+                            android:textAppearance="@style/TextAppearance.PetCare.LabelLarge"
+                            android:textColor="?attr/colorOnSecondaryContainer" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_small"
+                            android:text="@string/task_form_intro"
+                            android:textAppearance="@style/TextAppearance.PetCare.TitleLarge"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
                 <!-- ── No Pets Warning Banner ───────────────────────── -->
                 <com.google.android.material.card.MaterialCardView
@@ -90,7 +123,7 @@
                     app:cardBackgroundColor="?attr/colorErrorContainer"
                     app:cardCornerRadius="@dimen/card_corner_radius"
                     app:strokeColor="?attr/colorError"
-                    app:strokeWidth="1dp"
+                    app:strokeWidth="@dimen/card_elevation"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -104,7 +137,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/no_pets_warning"
-                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
                             android:textColor="?attr/colorOnErrorContainer" />
 
                         <com.google.android.material.button.MaterialButton
@@ -121,18 +154,15 @@
                 <!-- ── Section 1: Who and what ──────────────────────── -->
                 <TextView
                     android:id="@+id/header_who_and_what"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/Widget.PetCare.SectionHeader"
+                    android:layout_marginTop="@dimen/spacing_small"
                     android:layout_marginBottom="@dimen/spacing_small"
-                    android:text="@string/section_who_and_what"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    android:textColor="?attr/colorPrimary"
-                    android:textStyle="bold" />
+                    android:text="@string/section_who_and_what" />
 
                 <!-- ── Pet Selector Dropdown ────────────────────────── -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_pet"
-                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    style="@style/Widget.PetCare.TextInputLayout.OutlinedBox.ExposedDropdownMenu.Avatar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
@@ -191,14 +221,10 @@
                 <!-- ── Section 2: When ──────────────────────────────── -->
                 <TextView
                     android:id="@+id/header_when"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/Widget.PetCare.SectionHeader"
                     android:layout_marginTop="@dimen/spacing_small"
                     android:layout_marginBottom="@dimen/spacing_small"
-                    android:text="@string/section_when"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    android:textColor="?attr/colorPrimary"
-                    android:textStyle="bold" />
+                    android:text="@string/section_when" />
 
                 <!-- ── Frequency Toggle Group ───────────────────────── -->
                 <TextView
@@ -207,7 +233,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_xsmall"
                     android:text="@string/hint_frequency"
-                    android:textAppearance="?attr/textAppearanceLabelLarge"
+                    android:textAppearance="@style/TextAppearance.PetCare.LabelLarge"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
@@ -221,8 +247,8 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_freq_daily"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
+                        style="@style/Widget.PetCare.Button.Outlined"
+                        android:layout_width="@dimen/dimension_zero"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/frequency_daily"
@@ -231,8 +257,8 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_freq_weekly"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
+                        style="@style/Widget.PetCare.Button.Outlined"
+                        android:layout_width="@dimen/dimension_zero"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/frequency_weekly"
@@ -257,7 +283,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/spacing_xsmall"
                         android:text="@string/days_of_week_label"
-                        android:textAppearance="?attr/textAppearanceLabelLarge"
+                        android:textAppearance="@style/TextAppearance.PetCare.LabelLarge"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 
                     <com.google.android.material.chip.ChipGroup
@@ -271,49 +297,49 @@
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip_mon"
-                            style="@style/Widget.Material3.Chip.Filter"
+                            style="@style/Widget.PetCare.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/chip_mon" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip_tue"
-                            style="@style/Widget.Material3.Chip.Filter"
+                            style="@style/Widget.PetCare.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/chip_tue" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip_wed"
-                            style="@style/Widget.Material3.Chip.Filter"
+                            style="@style/Widget.PetCare.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/chip_wed" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip_thu"
-                            style="@style/Widget.Material3.Chip.Filter"
+                            style="@style/Widget.PetCare.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/chip_thu" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip_fri"
-                            style="@style/Widget.Material3.Chip.Filter"
+                            style="@style/Widget.PetCare.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/chip_fri" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip_sat"
-                            style="@style/Widget.Material3.Chip.Filter"
+                            style="@style/Widget.PetCare.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/chip_sat" />
 
                         <com.google.android.material.chip.Chip
                             android:id="@+id/chip_sun"
-                            style="@style/Widget.Material3.Chip.Filter"
+                            style="@style/Widget.PetCare.Chip.Filter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/chip_sun" />
@@ -324,9 +350,9 @@
                         android:id="@+id/text_days_error"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="@dimen/size_2dp"
                         android:text="@string/error_days_required"
-                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
                         android:textColor="?attr/colorError"
                         android:visibility="gone"
                         tools:visibility="visible" />
@@ -362,14 +388,10 @@
                 <!-- ── Section 3: Details ───────────────────────────── -->
                 <TextView
                     android:id="@+id/header_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/Widget.PetCare.SectionHeader"
                     android:layout_marginTop="@dimen/spacing_small"
                     android:layout_marginBottom="@dimen/spacing_small"
-                    android:text="@string/section_details"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    android:textColor="?attr/colorPrimary"
-                    android:textStyle="bold" />
+                    android:text="@string/section_details" />
 
                 <!-- ── Required Supplies Field ──────────────────────── -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -417,34 +439,31 @@
                 <!-- ── Reminder Card Row ────────────────────────────── -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_reminder"
-                    style="@style/Widget.Material3.CardView.Outlined"
+                    style="@style/Widget.PetCare.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_large"
-                    app:cardCornerRadius="@dimen/card_corner_radius"
-                    app:strokeColor="?attr/colorOutlineVariant"
-                    app:strokeWidth="1dp">
+                    android:layout_marginBottom="@dimen/spacing_large">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:minHeight="64dp"
+                        android:minHeight="@dimen/size_64dp"
                         android:orientation="horizontal"
                         android:paddingHorizontal="@dimen/spacing_medium"
                         android:paddingVertical="@dimen/spacing_small">
 
                         <ImageView
                             android:id="@+id/image_reminder_icon"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="@dimen/spacing_l"
+                            android:layout_height="@dimen/spacing_l"
                             android:layout_marginEnd="@dimen/spacing_medium"
                             android:contentDescription="@string/cd_reminder_icon"
                             android:src="@drawable/ic_bell"
                             app:tint="?attr/colorPrimary" />
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="@dimen/dimension_zero"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:orientation="vertical">
@@ -454,7 +473,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/reminder_title"
-                                android:textAppearance="?attr/textAppearanceTitleMedium"
+                                android:textAppearance="@style/TextAppearance.PetCare.TitleMedium"
                                 android:textColor="?attr/colorOnSurface" />
 
                             <TextView
@@ -462,7 +481,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/reminder_subtitle"
-                                android:textAppearance="?attr/textAppearanceBodySmall"
+                                android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
                                 android:textColor="?attr/colorOnSurfaceVariant" />
 
                         </LinearLayout>
@@ -481,11 +500,10 @@
                 <!-- ── Save / Add Button ────────────────────────────── -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_save"
+                    style="@style/Widget.PetCare.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_large"
-                    android:minHeight="48dp"
-                    app:cornerRadius="12dp"
                     tools:text="@string/btn_save_routine" />
 
                 <!-- CircularProgressIndicator for asynchronous save -->
@@ -497,8 +515,8 @@
                     android:layout_marginBottom="@dimen/spacing_medium"
                     android:indeterminate="true"
                     android:visibility="gone"
-                    app:indicatorSize="32dp"
-                    app:trackCornerRadius="4dp" />
+                    app:indicatorSize="@dimen/spacing_xl"
+                    app:trackCornerRadius="@dimen/spacing_xs" />
 
             </LinearLayout>
 

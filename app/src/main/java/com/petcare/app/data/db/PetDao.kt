@@ -69,6 +69,10 @@ interface PetDao {
     @Query("SELECT * FROM pets WHERE user_id = :userId ORDER BY name ASC")
     fun getAllForUser(userId: Long): Flow<List<PetEntity>>
 
+    /** One-shot read of another owner's pets, used only by the admin read-only detail view. */
+    @Query("SELECT * FROM pets WHERE user_id = :userId ORDER BY name ASC")
+    suspend fun getAllForUserOnce(userId: Long): List<PetEntity>
+
     /**
      * Returns a single pet by primary key (one-shot, not reactive).
      *

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     item_checklist_header.xml – Category header row for PetChecklistFragment's RecyclerView.
-    Displays a category icon and category name (e.g. Feeding, Exercise, Grooming, Medication, Healthcare).
+    Displays a 24dp category icon, section header label, and a subtle horizontal divider line.
 -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,25 +15,29 @@
     android:paddingTop="@dimen/spacing_medium"
     android:paddingBottom="@dimen/spacing_small">
 
-    <!-- Category Icon -->
+    <!-- Category Icon (24dp, tinted with colorPrimary) -->
     <ImageView
         android:id="@+id/image_category_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/spacing_l"
+        android:layout_height="@dimen/spacing_l"
         android:contentDescription="@string/cd_task_category_icon"
         app:tint="?attr/colorPrimary"
         tools:src="@drawable/ic_cat_feeding" />
 
-    <!-- Category Title -->
+    <!-- Category Title (shared SectionHeader style) -->
     <TextView
         android:id="@+id/text_category_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        style="@style/Widget.PetCare.SectionHeader"
         android:layout_marginStart="@dimen/spacing_small"
+        tools:text="Feeding" />
+
+    <!-- Light horizontal divider line -->
+    <View
+        android:id="@+id/divider_category"
+        android:layout_width="@dimen/dimension_zero"
+        android:layout_height="@dimen/card_elevation"
+        android:layout_marginStart="@dimen/spacing_medium"
         android:layout_weight="1"
-        android:textAppearance="?attr/textAppearanceTitleSmall"
-        android:textColor="?attr/colorPrimary"
-        android:textStyle="bold"
-        tools:text="FEEDING" />
+        android:background="?attr/colorOutlineVariant" />
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import com.petcare.app.data.db.PetCareDatabase
 import com.petcare.app.data.repository.PetRepository
 import com.petcare.app.data.repository.TaskRepository
 import com.petcare.app.data.repository.UserRepository
+import com.petcare.app.data.repository.AdminRepository
 import com.petcare.app.data.session.SessionManager
 import com.petcare.app.data.session.SharedPreferencesSessionManager
 import com.petcare.app.reminder.ReminderScheduler
@@ -64,6 +65,11 @@ class AppContainer(context: Context) {
      * Repository for care task operations (CRUD, mark done, reset checklist).
      */
     val taskRepository: TaskRepository = TaskRepository(database.taskDao())
+
+    /** Privileged data access kept separate from normal owner-facing repositories. */
+    val adminRepository: AdminRepository by lazy { AdminRepository(
+        database, database.userDao(), database.petDao(), database.taskDao(), reminderScheduler
+    ) }
 
     // ── Session ───────────────────────────────────────────────────────────
 

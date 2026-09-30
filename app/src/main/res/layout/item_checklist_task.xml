@@ -3,29 +3,26 @@
     item_checklist_task.xml – Task item row for PetChecklistFragment's RecyclerView.
     Includes:
       - MaterialCheckBox for marking done (strikethrough + dimmed effect)
-      - Task name (title style)
+      - Task name (title style, max 2 lines with ellipsis)
       - Scheduled time with clock icon
-      - Supplies & notes preview
-      - Overflow menu button (Edit / Delete task)
+      - Compact supplies & notes preview (max 2 lines with ellipsis, no overflow on narrow screens)
+      - Overflow menu button (48dp touch target, Edit / Delete task)
 -->
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_task"
+    style="@style/Widget.PetCare.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacing_medium"
-    android:layout_marginVertical="4dp"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="1dp"
-    app:strokeColor="?attr/colorOutlineVariant"
-    app:strokeWidth="1dp">
+    android:layout_marginVertical="@dimen/spacing_xs">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_medium">
+        android:padding="14dp">
 
         <!-- Checkbox to mark done -->
         <com.google.android.material.checkbox.MaterialCheckBox
@@ -39,11 +36,14 @@
         <!-- Task name -->
         <TextView
             android:id="@+id/text_task_name"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimension_zero"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_small"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:layout_marginEnd="@dimen/spacing_xsmall"
+            android:textAppearance="@style/TextAppearance.PetCare.TitleMedium"
             android:textColor="?attr/colorOnSurface"
+            android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintStart_toEndOf="@id/checkbox_task"
             app:layout_constraintEnd_toStartOf="@id/button_overflow"
             app:layout_constraintTop_toTopOf="@id/checkbox_task"
@@ -53,9 +53,9 @@
         <!-- Clock icon -->
         <ImageView
             android:id="@+id/image_clock"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_width="@dimen/spacing_m"
+            android:layout_height="@dimen/spacing_m"
+            android:layout_marginTop="@dimen/spacing_xs"
             android:contentDescription="@string/cd_time_picker"
             android:src="@drawable/ic_clock"
             app:tint="?attr/colorOnSurfaceVariant"
@@ -65,25 +65,29 @@
         <!-- Scheduled time -->
         <TextView
             android:id="@+id/text_task_time"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimension_zero"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:textAppearance="?attr/textAppearanceBodySmall"
-            android:textColor="?attr/colorOnSurfaceVariant"
+            android:layout_marginStart="@dimen/spacing_xs"
+            android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
+            android:textColor="?attr/colorOnPrimaryContainer"
+            android:maxLines="1"
+            android:ellipsize="end"
             app:layout_constraintStart_toEndOf="@id/image_clock"
             app:layout_constraintEnd_toStartOf="@id/button_overflow"
             app:layout_constraintTop_toTopOf="@id/image_clock"
             app:layout_constraintBottom_toBottomOf="@id/image_clock"
             tools:text="08:00 AM" />
 
-        <!-- Supplies & Notes preview -->
+        <!-- Supplies & Notes compact preview (max 2 lines with ellipsis) -->
         <TextView
             android:id="@+id/text_task_details"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimension_zero"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
             android:textColor="?attr/colorOnSurfaceVariant"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/text_task_name"
             app:layout_constraintEnd_toStartOf="@id/button_overflow"
@@ -91,11 +95,11 @@
             tools:text="Supplies: Kibble • Notes: Half cup"
             tools:visibility="visible" />
 
-        <!-- Overflow menu button -->
+        <!-- Overflow menu button (48dp touch target per Material guidelines) -->
         <ImageButton
             android:id="@+id/button_overflow"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/touch_target"
+            android:layout_height="@dimen/touch_target"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/cd_more_options"
             android:src="@drawable/ic_more_vert"

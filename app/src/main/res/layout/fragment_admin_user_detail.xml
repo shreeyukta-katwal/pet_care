@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_admin_user_detail.xml – Read-only view of a selected user's pets and tasks.
+
+    This screen shows a selected account's pets and tasks:
+      1. Toolbar with back navigation.
+      2. Account summary card.
+      3. RecyclerView of pet cards; each card shows pet info + tasks grouped by category.
+      4. Empty state when the user has no pets.
+
+    No edit controls, checkboxes, or FABs exist – the absence of interactive chrome
+    is itself the read-only signal.
+
+    Binding IDs: toolbar, button_back, recycler_pets, empty (unchanged).
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground">
+
+    <!-- ── Toolbar – matches every other screen's chrome ──────────────── -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="false"
+        app:liftOnScroll="true"
+        app:liftOnScrollTargetViewId="@id/recycler_pets">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.PetCare.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/screen_admin_user_detail"
+            app:navigationIcon="@drawable/ic_back"
+            app:navigationContentDescription="@string/cd_navigate_up" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!--
+        button_back kept for binding compatibility; hidden behind the toolbar.
+        AdminUserDetailFragment.kt references binding.buttonBack.setOnClickListener.
+    -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/touch_target"
+        android:layout_gravity="top|start"
+        android:text="@string/action_back"
+        app:icon="@drawable/ic_back"
+        android:visibility="gone" />
+
+    <!-- ── Scrollable body ───────────────────────────────────────────── -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/spacing_medium"
+                android:paddingTop="@dimen/spacing_large"
+                android:paddingBottom="@dimen/spacing_xlarge">
+
+            <!-- Account identity appears in one summary card. -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                app:cardBackgroundColor="?attr/colorPrimaryContainer"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="@dimen/dimension_zero">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_large">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_account_eyebrow"
+                        android:textAppearance="@style/TextAppearance.PetCare.LabelLarge"
+                        android:textColor="?attr/colorOnPrimaryContainer" />
+
+                    <TextView
+                        android:id="@+id/text_account_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:text="@string/admin_account_loading"
+                        android:textAppearance="@style/TextAppearance.PetCare.TitleLarge"
+                        android:textColor="?attr/colorOnPrimaryContainer"
+                        android:textStyle="bold"
+                        android:ellipsize="end"
+                        android:maxLines="2" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:text="@string/admin_account_subtitle"
+                        android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
+                        android:textColor="?attr/colorOnPrimaryContainer" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- "Pets" section header -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_medium"
+                android:text="@string/admin_section_pets"
+                style="@style/Widget.PetCare.SectionHeader" />
+
+            <!--
+                RecyclerView with wrap_content + nestedScrollingEnabled=false
+                inside the NestedScrollView – rows are card items from AdminUserDetailAdapter.
+            -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_pets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false" />
+
+            <!-- Empty state shown by AdminUserDetailFragment when pets list is empty -->
+            <TextView
+                android:id="@+id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/spacing_large"
+                android:text="@string/admin_no_pets"
+                android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

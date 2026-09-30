@@ -3,13 +3,14 @@
     fragment_delegate.xml – Complete layout for SMS Care Plan Delegation.
 
     Architecture sections:
-    1. TopAppBar: Navigation and title.
-    2. Recipient Section: Phone input with live validation, contact picker button, and contact name badge.
+    1. TopAppBar: Navigation and title using shared toolbar tokens.
+    2. Recipient Section: Phone input with live validation, contact picker button, and contact name badge below the field.
     3. Content Selection: Toggle between Today's checklist and All routines, Select/Clear all controls,
-       and RecyclerView with per-task selection checkboxes.
+       and RecyclerView with per-task selection checkboxes and category grouping.
     4. Extra Instructions: Free-text note field for pet sitter reminders.
-    5. Message Preview: Editable preview box, live character and multipart SMS counter, and non-GSM encoding warning.
-    6. Sending Controls: Direct "Send SMS" button, "Open in messaging app" fallback, share button, and progress spinner.
+    5. Message Preview: Clearly bordered shaded box, monospace font, with the live character and multipart SMS counter directly below it.
+    6. Sending Controls: Filled "Send SMS", Outlined "Open in messaging app", and Text "Share" button hierarchy,
+       stacking cleanly on narrow screens.
 -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -17,12 +18,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface">
+    android:background="?android:attr/colorBackground">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp">
+        app:elevation="@dimen/dimension_zero">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -36,464 +37,466 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <!-- Outer constraint layout centers content up to 600dp on tablets -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="32dp">
+            android:layout_height="wrap_content">
 
-            <!-- Subtitle banner -->
-            <TextView
-                android:id="@+id/text_subtitle"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/form_container"
+                android:layout_width="@dimen/dimension_zero"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                tools:text="Share Max's care routine with a pet sitter or family member via SMS." />
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/spacing_medium"
+                android:paddingTop="@dimen/spacing_small"
+                android:paddingBottom="@dimen/spacing_xlarge"
+                app:layout_constraintWidth_max="@dimen/form_max_width_wide"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <!-- ── SECTION 1: Recipient ────────────────────────────────────── -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardCornerRadius="16dp">
-
-                <LinearLayout
+                <!-- Subtitle banner -->
+                <TextView
+                    android:id="@+id/text_subtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginBottom="@dimen/spacing_large"
+                    android:background="@drawable/bg_delegate_intro"
+                    android:padding="@dimen/spacing_large"
+                    android:textAppearance="@style/TextAppearance.PetCare.TitleMedium"
+                    android:textColor="?attr/colorOnPrimaryContainer"
+                    tools:text="Share Max's care routine with a pet sitter or family member via SMS." />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/section_recipient"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textColor="?attr/colorOnSurface" />
-
-                    <!-- Contact name chip indicator (shown if picked from contacts) -->
-                    <TextView
-                        android:id="@+id/text_contact_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:textAppearance="?attr/textAppearanceLabelMedium"
-                        android:textColor="?attr/colorPrimary"
-                        android:visibility="gone"
-                        tools:text="Contact: Daniel Smith"
-                        tools:visibility="visible" />
+                <!-- ── SECTION 1: Recipient ────────────────────────────────────── -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PetCare.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal"
-                        android:gravity="top">
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_medium">
 
-                        <!-- Phone number input field -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/layout_phone"
-                            style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
-                            android:layout_width="0dp"
+                        <TextView
+                            style="@style/Widget.PetCare.SectionHeader"
+                            android:text="@string/section_recipient" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="8dp"
-                            android:hint="@string/hint_recipient_phone"
-                            app:endIconMode="clear_text"
-                            app:errorEnabled="true">
+                            android:layout_marginTop="@dimen/spacing_small">
+
+                            <!-- Phone number input field -->
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/layout_phone"
+                                style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
+                                android:layout_width="@dimen/dimension_zero"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/spacing_small"
+                                android:hint="@string/hint_recipient_phone"
+                                app:endIconMode="clear_text"
+                                app:errorEnabled="true"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/btn_pick_contact"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edit_phone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="phone"
+                                    android:maxLines="1" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <!-- Contact picker button neatly aligned with input box top -->
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_pick_contact"
+                                style="@style/Widget.PetCare.Button.Tonal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:minHeight="@dimen/welcome_button_min_height"
+                                android:text="@string/btn_choose_contact"
+                                app:icon="@drawable/ic_contacts"
+                                android:contentDescription="@string/cd_choose_contact"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/layout_phone" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <!-- Contact name indicator shown clearly below the field once chosen -->
+                        <TextView
+                            android:id="@+id/text_contact_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_xsmall"
+                            android:background="@drawable/bg_contact_badge"
+                            android:paddingHorizontal="@dimen/spacing_medium"
+                            android:paddingVertical="@dimen/spacing_small"
+                            android:drawableStart="@drawable/ic_contacts"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:drawableTint="?attr/colorPrimary"
+                            android:gravity="center_vertical"
+                            android:textAppearance="@style/TextAppearance.PetCare.LabelMedium"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:visibility="gone"
+                            tools:text="Contact: Daniel Smith"
+                            tools:visibility="visible" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ── SECTION 2: Routines to Include ──────────────────────────── -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PetCare.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_medium">
+
+                        <TextView
+                            style="@style/Widget.PetCare.SectionHeader"
+                            android:text="@string/section_routines_to_include" />
+
+                        <!-- Toggle: Today's checklist vs All routines -->
+                        <com.google.android.material.button.MaterialButtonToggleGroup
+                            android:id="@+id/toggle_filter_mode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_small"
+                            app:checkedButton="@id/btn_filter_today"
+                            app:selectionRequired="true"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_filter_today"
+                                style="@style/Widget.PetCare.Button.Outlined"
+                                android:layout_width="@dimen/dimension_zero"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/tab_today_checklist" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_filter_all"
+                                style="@style/Widget.PetCare.Button.Outlined"
+                                android:layout_width="@dimen/dimension_zero"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/tab_all_routines" />
+
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                        <!-- Select all / Clear selection row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_xsmall"
+                            android:layout_marginBottom="@dimen/spacing_xsmall"
+                            android:orientation="horizontal"
+                            android:gravity="end">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_select_all_tasks"
+                                style="@style/Widget.PetCare.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/btn_select_all" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_clear_tasks"
+                                style="@style/Widget.PetCare.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/btn_clear_selection" />
+
+                        </LinearLayout>
+
+                        <!-- Tasks RecyclerView with distinct category grouping -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_tasks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            tools:itemCount="3"
+                            tools:listitem="@layout/item_delegate_task" />
+
+                        <!-- Empty tasks state -->
+                        <TextView
+                            android:id="@+id/text_empty_tasks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="@dimen/spacing_large"
+                            android:gravity="center"
+                            android:text="@string/empty_delegate_tasks"
+                            android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ── SECTION 3: Extra Instructions ───────────────────────────── -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PetCare.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_medium">
+
+                        <TextView
+                            style="@style/Widget.PetCare.SectionHeader"
+                            android:text="@string/section_extra_instructions" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/layout_extra_instructions"
+                            style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_small"
+                            android:hint="@string/hint_extra_instructions"
+                            app:endIconMode="clear_text">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/edit_phone"
+                                android:id="@+id/edit_extra_instructions"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="phone"
-                                android:maxLines="1" />
+                                android:inputType="textMultiLine|textCapSentences"
+                                android:minLines="2"
+                                android:maxLines="4" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <!-- Contact picker button -->
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_pick_contact"
-                            style="@style/Widget.Material3.Button.TonalButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/btn_choose_contact"
-                            app:icon="@drawable/ic_contacts"
-                            android:contentDescription="@string/cd_choose_contact" />
-
                     </LinearLayout>
 
-                </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- ── SECTION 2: Routines to Include ──────────────────────────── -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardCornerRadius="16dp">
-
-                <LinearLayout
+                <!-- ── SECTION 4: Live Message Preview ─────────────────────────── -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PetCare.Card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginBottom="@dimen/spacing_medium">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/section_routines_to_include"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textColor="?attr/colorOnSurface" />
-
-                    <!-- Toggle: Today's checklist vs All routines -->
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/toggle_filter_mode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        app:checkedButton="@id/btn_filter_today"
-                        app:selectionRequired="true"
-                        app:singleSelection="true">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_filter_today"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/tab_today_checklist" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_filter_all"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/tab_all_routines" />
-
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
-
-                    <!-- Select all / Clear selection row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal"
-                        android:gravity="end">
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_medium">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_select_all_tasks"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/btn_select_all" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_clear_tasks"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/btn_clear_selection" />
-
-                    </LinearLayout>
-
-                    <!-- Tasks RecyclerView -->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_tasks"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
-                        tools:itemCount="3"
-                        tools:listitem="@layout/item_delegate_task" />
-
-                    <!-- Empty tasks state -->
-                    <TextView
-                        android:id="@+id/text_empty_tasks"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingVertical="16dp"
-                        android:gravity="center"
-                        android:text="@string/empty_delegate_tasks"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        android:visibility="gone" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- ── SECTION 3: Extra Instructions ───────────────────────────── -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardCornerRadius="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/section_extra_instructions"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textColor="?attr/colorOnSurface" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/layout_extra_instructions"
-                        style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:hint="@string/hint_extra_instructions"
-                        app:endIconMode="clear_text">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edit_extra_instructions"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textMultiLine|textCapSentences"
-                            android:minLines="2"
-                            android:maxLines="4" />
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <TextView
+                                android:layout_width="@dimen/dimension_zero"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                style="@style/Widget.PetCare.SectionHeader"
+                                android:text="@string/section_message_preview" />
 
-                </LinearLayout>
+                            <!-- Reset to default button (visible when user customized text) -->
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btn_reset_message"
+                                style="@style/Widget.PetCare.Button.TextButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/btn_reset_message"
+                                android:visibility="gone"
+                                tools:visibility="visible" />
 
-            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
 
-            <!-- ── SECTION 4: Live Message Preview ─────────────────────────── -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardCornerRadius="16dp">
+                        <!-- Clearly bordered and shaded preview box -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/layout_message_preview"
+                            style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_small"
+                            app:boxBackgroundColor="?attr/colorSurfaceVariant">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edit_message_preview"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textMultiLine"
+                                android:minLines="5"
+                                android:maxLines="12"
+                                android:fontFamily="monospace"
+                                android:textSize="@dimen/text_size_13sp"
+                                android:lineSpacingExtra="@dimen/size_3dp"
+                                android:textColor="?attr/colorOnSurface" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        </com.google.android.material.textfield.TextInputLayout>
 
+                        <!-- Live character and SMS parts counter directly below preview box -->
                         <TextView
-                            android:layout_width="0dp"
+                            android:id="@+id/text_sms_counter"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/section_message_preview"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textColor="?attr/colorOnSurface" />
+                            android:layout_marginTop="@dimen/size_6dp"
+                            android:gravity="end"
+                            android:textAppearance="@style/TextAppearance.PetCare.LabelSmall"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            tools:text="142 chars • 1 SMS (GSM 7-bit)" />
 
-                        <!-- Reset to default button (visible when user customized text) -->
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_reset_message"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            android:layout_width="wrap_content"
+                        <!-- Warning for non-GSM / Unicode characters -->
+                        <TextView
+                            android:id="@+id/text_encoding_warning"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/btn_reset_message"
+                            android:layout_marginTop="@dimen/spacing_xs"
+                            android:text="@string/warning_non_gsm"
+                            android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
+                            android:textColor="?attr/colorError"
+                            android:drawableStart="@drawable/ic_warning_24"
+                            android:drawablePadding="@dimen/size_6dp"
+                            android:drawableTint="?attr/colorError"
+                            android:gravity="center_vertical"
                             android:visibility="gone"
                             tools:visibility="visible" />
 
                     </LinearLayout>
 
-                    <!-- Editable preview box -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/layout_message_preview"
-                        style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp">
+                </com.google.android.material.card.MaterialCardView>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/edit_message_preview"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textMultiLine"
-                            android:minLines="5"
-                            android:maxLines="12"
-                            android:fontFamily="monospace"
-                            android:textSize="13sp"
-                            android:textColor="?attr/colorOnSurface" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- Live character and SMS parts counter -->
-                    <TextView
-                        android:id="@+id/text_sms_counter"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="end"
-                        android:textAppearance="?attr/textAppearanceLabelMedium"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        tools:text="142 chars • 1 SMS (GSM 7-bit)" />
-
-                    <!-- Warning for non-GSM / Unicode characters -->
-                    <TextView
-                        android:id="@+id/text_encoding_warning"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/warning_non_gsm"
-                        android:textAppearance="?attr/textAppearanceBodySmall"
-                        android:textColor="?attr/colorError"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- ── SECTION 5: Sending Actions & Fallback ───────────────────── -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutlineVariant"
-                app:cardCornerRadius="16dp">
-
-                <LinearLayout
+                <!-- ── SECTION 5: Sending Actions & Fallback ───────────────────── -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PetCare.Card"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:text="@string/section_send_care_plan"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textColor="?attr/colorOnSurface" />
-
-                    <!-- Non-telephony hint (shown on Wi-Fi tablets) -->
-                    <TextView
-                        android:id="@+id/text_no_telephony_hint"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        android:text="@string/no_telephony_hint"
-                        android:textAppearance="?attr/textAppearanceBodySmall"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                    <!-- Primary Send SMS Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_send_sms"
-                        style="@style/Widget.Material3.Button"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="48dp"
-                        android:text="@string/btn_send_sms"
-                        app:icon="@drawable/ic_send"
-                        app:cornerRadius="12dp"
-                        android:layout_marginBottom="8dp"
-                        android:enabled="false" />
-
-                    <!-- Secondary Messaging App Fallback Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_open_messaging"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="48dp"
-                        android:text="@string/btn_open_messaging"
-                        app:icon="@drawable/ic_message"
-                        app:cornerRadius="12dp"
-                        android:layout_marginBottom="8dp"
-                        android:enabled="false" />
-
-                    <!-- Divider with "or" label -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="6dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1"
-                            android:background="?attr/colorOutlineVariant" />
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_medium">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="12dp"
-                            android:text="@string/label_or_divider"
-                            android:textAppearance="?attr/textAppearanceLabelMedium"
-                            android:textColor="?attr/colorOnSurfaceVariant" />
+                            style="@style/Widget.PetCare.SectionHeader"
+                            android:layout_marginBottom="@dimen/spacing_small"
+                            android:text="@string/section_send_care_plan" />
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="1dp"
-                            android:layout_weight="1"
-                            android:background="?attr/colorOutlineVariant" />
+                        <!-- Non-telephony hint styled as a subtle info note, not an error -->
+                        <TextView
+                            android:id="@+id/text_no_telephony_hint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:background="@drawable/bg_info_note"
+                            android:padding="@dimen/spacing_medium"
+                            android:drawableStart="@drawable/ic_info_20"
+                            android:drawablePadding="@dimen/spacing_small"
+                            android:drawableTint="?attr/colorPrimary"
+                            android:gravity="center_vertical"
+                            android:text="@string/no_telephony_hint"
+                            android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                        <!-- Primary Send SMS Button (Filled) -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_send_sms"
+                            style="@style/Widget.PetCare.Button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_small"
+                            android:text="@string/btn_send_sms"
+                            app:icon="@drawable/ic_send"
+                            android:enabled="false" />
+
+                        <!-- Secondary Messaging App Fallback Button (Outlined) -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_open_messaging"
+                            style="@style/Widget.PetCare.Button.Outlined"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_small"
+                            android:text="@string/btn_open_messaging"
+                            app:icon="@drawable/ic_message"
+                            android:enabled="false" />
+
+                        <!-- Divider with "or" label -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="@dimen/spacing_xsmall"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="@dimen/dimension_zero"
+                                android:layout_height="@dimen/card_elevation"
+                                android:layout_weight="1"
+                                android:background="?attr/colorOutlineVariant" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="@dimen/spacing_medium"
+                                android:text="@string/label_or_divider"
+                                android:textAppearance="@style/TextAppearance.PetCare.LabelMedium"
+                                android:textColor="?attr/colorOnSurfaceVariant" />
+
+                            <View
+                                android:layout_width="@dimen/dimension_zero"
+                                android:layout_height="@dimen/card_elevation"
+                                android:layout_weight="1"
+                                android:background="?attr/colorOutlineVariant" />
+
+                        </LinearLayout>
+
+                        <!-- Tertiary Share Care Plan Button (Text Button) -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_share_plan"
+                            style="@style/Widget.PetCare.Button.TextButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/btn_share_plan"
+                            app:icon="@drawable/ic_share" />
+
+                        <!-- Progress spinner while sending -->
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
+                            android:id="@+id/progress_sending"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_small"
+                            android:indeterminate="true"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
 
                     </LinearLayout>
 
-                    <!-- Tertiary Share Care Plan Button (Improved Tonal Button) -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_share_plan"
-                        style="@style/Widget.Material3.Button.TonalButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="48dp"
-                        android:text="@string/btn_share_plan"
-                        android:textColor="?attr/colorOnSurface"
-                        app:iconTint="?attr/colorOnSurface"
-                        app:icon="@drawable/ic_share"
-                        app:cornerRadius="12dp" />
+                </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Progress spinner while sending -->
-                    <com.google.android.material.progressindicator.LinearProgressIndicator
-                        android:id="@+id/progress_sending"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:indeterminate="true"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+            </LinearLayout>
 
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 

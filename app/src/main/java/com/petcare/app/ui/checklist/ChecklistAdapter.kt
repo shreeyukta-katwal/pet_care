@@ -4,7 +4,9 @@ import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
+import android.widget.TextView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -90,7 +92,7 @@ class ChecklistAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(category: TaskCategory) {
-            binding.textCategoryTitle.text = category.displayName.uppercase(Locale.getDefault())
+            binding.textCategoryTitle.text = category.displayName
             binding.imageCategoryIcon.setImageResource(getCategoryIcon(category))
         }
 
@@ -169,30 +171,29 @@ class ChecklistAdapter(
                 onTaskLongClick?.invoke(task) ?: false
             }
 
-            // Overflow menu button
-            binding.buttonOverflow.setOnClickListener { anchor ->
-                val popup = PopupMenu(anchor.context, anchor)
-                popup.inflate(R.menu.menu_pet_card) // Reuse overflow menu structure or custom
-                popup.menu.clear()
-                popup.menu.add(0, R.id.action_edit_pet, 0, R.string.action_edit_task)
-                popup.menu.add(0, R.id.action_delete_pet, 1, R.string.action_delete_task)
+            // Overflow menu button (modern bottom sheet)
+            binding.buttonOverflow.setOnClickListener { _ ->
+                val context = binding.root.context
+                val sheet = BottomSheetDialog(context, R.style.Widget_PetCare_BottomSheetDialog)
+                val sheetView = LayoutInflater.from(context)
+                    .inflate(R.layout.bottom_sheet_task_options, null)
 
-                popup.setOnMenuItemClickListener { menuItem ->
-                    when (menuItem.itemId) {
-                        R.id.action_edit_pet -> {
-                            onTaskEditClick(task.id)
-                            true
-                        }
-                        R.id.action_delete_pet -> {
-                            onTaskDeleteClick(task)
-                            true
-                        }
-                        else -> false
-                    }
+                sheetView.findViewById<TextView>(R.id.text_sheet_task_name).text = task.name
+
+                sheetView.findViewById<View>(R.id.option_edit_task).setOnClickListener {
+                    onTaskEditClick(task.id)
+                    sheet.dismiss()
                 }
-                popup.show()
+                sheetView.findViewById<View>(R.id.option_delete_task).setOnClickListener {
+                    onTaskDeleteClick(task)
+                    sheet.dismiss()
+                }
+
+                sheet.setContentView(sheetView)
+                sheet.show()
             }
         }
+
 
         private fun formatTime(hour: Int, minute: Int): String {
             val amPm = if (hour < 12) "AM" else "PM"

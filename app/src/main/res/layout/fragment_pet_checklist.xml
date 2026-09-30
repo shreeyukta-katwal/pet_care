@@ -2,7 +2,7 @@
 <!--
     fragment_pet_checklist.xml – Complete layout for PetChecklistFragment.
     Includes:
-      - Top app bar with back navigation and options menu (Delegate, Edit pet)
+      - Top app bar with back navigation and a bottom-sheet options menu
       - Pet header section: photo, name, species/breed, today's date, Edit button
       - Daily progress indicator (LinearProgressIndicator + "4/6 done" text)
       - Segmented control toggle ("Today" vs "All routines")
@@ -15,7 +15,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground">
 
     <!-- Top App Bar -->
     <com.google.android.material.appbar.AppBarLayout
@@ -44,29 +45,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="88dp">
+            android:paddingBottom="@dimen/size_88dp">
 
             <!-- Pet Header Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_pet_header"
+                style="@style/Widget.PetCare.Card"
+                app:cardBackgroundColor="?attr/colorPrimaryContainer"
+                app:cardElevation="@dimen/dimension_zero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium"
-                app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardElevation="2dp">
+                android:layout_marginHorizontal="@dimen/spacing_medium"
+                android:layout_marginTop="@dimen/spacing_medium"
+                android:layout_marginBottom="@dimen/spacing_medium">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/spacing_medium">
+                    android:padding="@dimen/spacing_large">
 
-                    <!-- Pet Photo -->
-                    <ImageView
+                    <!-- Pet Photo (72dp circular avatar, matching pet list style) -->
+                    <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/image_pet_photo"
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
+                        android:layout_width="@dimen/photo_thumbnail_size"
+                        android:layout_height="@dimen/photo_thumbnail_size"
                         android:contentDescription="@string/cd_pet_photo"
                         android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.PetCare.Circular"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:src="@drawable/ic_pet_placeholder" />
@@ -74,25 +79,32 @@
                     <!-- Pet Name -->
                     <TextView
                         android:id="@+id/text_pet_name"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dimension_zero"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/spacing_medium"
-                        android:textAppearance="?attr/textAppearanceTitleLarge"
+                        android:layout_marginEnd="@dimen/spacing_small"
+                        android:textAppearance="@style/TextAppearance.PetCare.TitleLarge"
                         android:textColor="?attr/colorOnSurface"
                         android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         app:layout_constraintStart_toEndOf="@id/image_pet_photo"
                         app:layout_constraintEnd_toStartOf="@id/button_edit_pet"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/image_pet_photo"
                         tools:text="Buddy" />
 
                     <!-- Species / Breed -->
                     <TextView
                         android:id="@+id/text_species_breed"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dimension_zero"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/spacing_medium"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:layout_marginEnd="@dimen/spacing_small"
+                        android:layout_marginTop="@dimen/size_2dp"
+                        android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
                         android:textColor="?attr/colorOnSurfaceVariant"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         app:layout_constraintStart_toEndOf="@id/image_pet_photo"
                         app:layout_constraintEnd_toStartOf="@id/button_edit_pet"
                         app:layout_constraintTop_toBottomOf="@id/text_pet_name"
@@ -101,33 +113,37 @@
                     <!-- Today's Date -->
                     <TextView
                         android:id="@+id/text_today_date"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dimension_zero"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/spacing_medium"
-                        android:layout_marginTop="2dp"
-                        android:textAppearance="?attr/textAppearanceLabelMedium"
+                        android:layout_marginEnd="@dimen/spacing_small"
+                        android:layout_marginTop="@dimen/size_2dp"
+                        android:textAppearance="@style/TextAppearance.PetCare.LabelMedium"
                         android:textColor="?attr/colorPrimary"
+                        android:maxLines="1"
+                        android:ellipsize="end"
                         app:layout_constraintStart_toEndOf="@id/image_pet_photo"
                         app:layout_constraintEnd_toStartOf="@id/button_edit_pet"
                         app:layout_constraintTop_toBottomOf="@id/text_species_breed"
                         tools:text="Monday, Sep 21" />
 
-                    <!-- Edit Pet Button -->
+                    <!-- Edit Pet Button (vertically centered with pet photo) -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_edit_pet"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="@style/Widget.PetCare.Button.Outlined"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/btn_edit"
                         app:icon="@drawable/ic_edit"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="@id/image_pet_photo"
+                        app:layout_constraintBottom_toBottomOf="@id/image_pet_photo" />
 
                     <!-- Divider -->
                     <View
                         android:id="@+id/divider_progress"
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
+                        android:layout_width="@dimen/dimension_zero"
+                        android:layout_height="@dimen/card_elevation"
                         android:layout_marginTop="@dimen/spacing_medium"
                         android:background="?attr/colorOutlineVariant"
                         app:layout_constraintStart_toStartOf="parent"
@@ -137,10 +153,11 @@
                     <!-- Progress Text Label (e.g. "4/6 done" or "All done today! 🎉") -->
                     <TextView
                         android:id="@+id/text_progress_status"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dimension_zero"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_small"
-                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:gravity="center_vertical"
+                        android:textAppearance="@style/TextAppearance.PetCare.TitleSmall"
                         android:textColor="?attr/colorOnSurface"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -150,11 +167,11 @@
                     <!-- Progress Bar -->
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/progress_indicator_daily"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dimension_zero"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_small"
-                        app:trackCornerRadius="4dp"
-                        app:trackThickness="8dp"
+                        app:trackCornerRadius="@dimen/spacing_xs"
+                        app:trackThickness="@dimen/spacing_s"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/text_progress_status"
@@ -164,12 +181,12 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Segmented Control ("Today" vs "All routines") -->
+            <!-- Segmented Control ("Today" vs "All routines") – Full width toggle group -->
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/toggle_filter_group"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="@dimen/spacing_medium"
                 android:layout_marginBottom="@dimen/spacing_small"
                 app:singleSelection="true"
                 app:selectionRequired="true"
@@ -177,16 +194,18 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_tab_today"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.PetCare.Button.Outlined"
+                    android:layout_width="@dimen/dimension_zero"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/tab_today" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_tab_all"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.PetCare.Button.Outlined"
+                    android:layout_width="@dimen/dimension_zero"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="@string/tab_all_routines" />
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
@@ -196,6 +215,9 @@
                 android:id="@+id/layout_empty_state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/spacing_medium"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:background="@drawable/bg_auth_panel"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="@dimen/spacing_large"
@@ -204,8 +226,8 @@
 
                 <ImageView
                     android:id="@+id/image_empty"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
+                    android:layout_width="@dimen/icon_size_avatar_large"
+                    android:layout_height="@dimen/icon_size_avatar_large"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_pets_empty"
                     app:tint="?attr/colorOutline" />
@@ -215,7 +237,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_medium"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textAppearance="@style/TextAppearance.PetCare.TitleMedium"
                     android:textColor="?attr/colorOnSurface"
                     tools:text="No care routines yet" />
 
@@ -225,12 +247,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_small"
                     android:gravity="center"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     tools:text="Add routines like meals, walks, or medication." />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_empty_add"
+                    style="@style/Widget.PetCare.Button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_medium"
@@ -252,15 +275,14 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- FAB – Add routine -->
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <!-- FAB – Add routine (extended FAB with consistent fab_margin) -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_routine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/fab_margin"
         android:contentDescription="@string/cd_fab_add_routine"
-        android:text="@string/fab_add_routine"
-        app:icon="@drawable/ic_add" />
+        app:srcCompat="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

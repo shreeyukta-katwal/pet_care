@@ -51,6 +51,8 @@ android {
     // Generates binding classes for every layout XML; eliminates findViewById.
     buildFeatures {
         viewBinding = true
+        // Required so the debug-only administrator seed is excluded from release builds.
+        buildConfig = true
     }
 
     // ── Room schema export ────────────────────────────────────────────

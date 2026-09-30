@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_admin_pet_detail.xml – Read-only pet card for the administrator's user-detail list.
+
+    Layout anatomy (top → bottom inside the card):
+      ● Pet header row: 40dp circular paw-icon avatar (colorSecondaryContainer),
+        then name (TitleMedium bold) + species/breed (BodyMedium muted)
+      ● "Read-only view" tonal chip as clear non-interactive signal
+      ● Divider
+      ● Tasks section label ("Routines")
+      ● LinearLayout tasks_container – populated dynamically in AdminUserDetailAdapter
+        by inflating item_admin_task_row.xml for each task
+
+    Binding IDs relied on by AdminUserDetailAdapter:
+      pet_name, pet_info, tasks_container (NEW – replaces the old plain TextView tasks)
+
+    NOTE: The old @+id/tasks (TextView) is removed – AdminUserDetailAdapter.kt must
+    be updated to use tasks_container instead.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.PetCare.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_medium">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_large">
+
+        <!-- ── Pet header ───────────────────────────────────────────── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/spacing_medium">
+
+            <!-- Circular pet avatar (paw icon, secondary container colour) -->
+            <FrameLayout
+                android:layout_width="@dimen/welcome_button_min_height"
+                android:layout_height="@dimen/welcome_button_min_height"
+                android:layout_marginEnd="@dimen/spacing_medium"
+                android:background="@drawable/bg_pet_avatar_small">
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_l"
+                    android:layout_height="@dimen/spacing_l"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_paw_24"
+                    android:contentDescription="@null"
+                    app:tint="?attr/colorOnSecondaryContainer" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/dimension_zero"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/pet_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.PetCare.TitleMedium"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+                <TextView
+                    android:id="@+id/pet_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_2dp"
+                    android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Divider separates the pet header from the task list -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/card_elevation"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:background="?attr/colorOutlineVariant" />
+
+        <!-- "Routines" section label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_small"
+            android:text="@string/admin_pet_routines_label"
+            style="@style/Widget.PetCare.SectionHeader" />
+
+        <!--
+            Dynamic task rows are added here by AdminUserDetailAdapter.
+            When tasks is empty the adapter adds a "no routines" placeholder row.
+        -->
+        <LinearLayout
+            android:id="@+id/tasks_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

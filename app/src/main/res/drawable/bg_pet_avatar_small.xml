@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_pet_avatar_small.xml – Circular background for small (48dp) pet avatars
+    in the admin user detail screen. Uses colorSecondaryContainer to distinguish
+    pet cards from the user-row avatar (which uses colorPrimaryContainer).
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="?attr/colorSecondaryContainer" />
+</shape>

@@ -59,8 +59,12 @@ interface TaskDao {
      *
      * @return A [Flow] emitting the current list of all [TaskEntity] rows.
      */
-    @Query("SELECT * FROM tasks")
-    fun getAllTasks(): Flow<List<TaskEntity>>
+    @Query("""
+        SELECT tasks.* FROM tasks
+        INNER JOIN pets ON pets.id = tasks.pet_id
+        WHERE pets.user_id = :userId
+    """)
+    fun getAllTasksForUser(userId: Long): Flow<List<TaskEntity>>
 
     /**
      * Returns a one-shot snapshot of all tasks with reminders enabled.
@@ -100,6 +104,14 @@ interface TaskDao {
      */
     @Query("SELECT * FROM tasks WHERE pet_id = :petId")
     suspend fun getAllForPetOnce(petId: Long): List<TaskEntity>
+
+    /** Finds every task owned by a user before an admin deletes that user's account. */
+    @Query("""
+        SELECT tasks.* FROM tasks
+        INNER JOIN pets ON pets.id = tasks.pet_id
+        WHERE pets.user_id = :userId
+    """)
+    suspend fun getAllForUserOnce(userId: Long): List<TaskEntity>
 
     /**
      * Returns a single task by primary key (one-shot, not reactive).

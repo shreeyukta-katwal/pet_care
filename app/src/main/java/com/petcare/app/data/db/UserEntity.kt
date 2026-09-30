@@ -39,5 +39,9 @@ data class UserEntity(
     val passwordHash: String,
 
     @ColumnInfo(name = "salt")
-    val salt: String
+    val salt: String,
+
+    /** True only for the locally seeded administrator account. */
+    @ColumnInfo(name = "is_admin")
+    val isAdmin: Boolean = false
 )

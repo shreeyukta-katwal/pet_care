@@ -2,7 +2,6 @@ package com.petcare.app.gesture
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
@@ -49,8 +48,8 @@ class ChecklistSwipeCallback(
     private val onSwipeToggleDone: (position: Int) -> Unit
 ) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
-    private val deleteColor = Color.parseColor("#D32F2F") // Material Red
-    private val doneColor = Color.parseColor("#2E7D32")   // Material Green
+    private val deleteColor = ContextCompat.getColor(context, R.color.color_swipe_delete_bg)
+    private val doneColor = ContextCompat.getColor(context, R.color.color_swipe_done_bg)
 
     private val deleteIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_delete)
     private val doneIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_check)
@@ -115,6 +114,8 @@ class ChecklistSwipeCallback(
             )
             c.drawRect(backgroundRect, backgroundPaint)
 
+            c.save()
+            c.clipRect(backgroundRect)
             deleteIcon?.let { icon ->
                 val iconMargin = (itemView.height - icon.intrinsicHeight) / 2
                 val iconTop = itemView.top + iconMargin
@@ -124,6 +125,7 @@ class ChecklistSwipeCallback(
                 icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
                 icon.draw(c)
             }
+            c.restore()
         } else if (dX > 0) {
             // Swiping RIGHT -> Mark Done (Green background + Checkmark icon)
             backgroundPaint.color = doneColor
@@ -135,6 +137,8 @@ class ChecklistSwipeCallback(
             )
             c.drawRect(backgroundRect, backgroundPaint)
 
+            c.save()
+            c.clipRect(backgroundRect)
             doneIcon?.let { icon ->
                 val iconMargin = (itemView.height - icon.intrinsicHeight) / 2
                 val iconTop = itemView.top + iconMargin
@@ -144,6 +148,7 @@ class ChecklistSwipeCallback(
                 icon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
                 icon.draw(c)
             }
+            c.restore()
         }
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)

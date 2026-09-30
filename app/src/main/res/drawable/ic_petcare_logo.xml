@@ -14,8 +14,8 @@
 -->
 <vector
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp"
-    android:height="108dp"
+    android:width="@dimen/size_108dp"
+    android:height="@dimen/size_108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
@@ -24,7 +24,7 @@
         Filled with white so the adaptive icon background colour shows through.
     -->
     <path
-        android:fillColor="#FFFFFF"
+        android:fillColor="@color/color_icon_white"
         android:pathData="
             M54,68
             C43,68 35,61 35,52
@@ -36,7 +36,7 @@
         Top-left toe pad – small oval, upper-left of the main pad.
     -->
     <path
-        android:fillColor="#FFFFFF"
+        android:fillColor="@color/color_icon_white"
         android:pathData="
             M36,38
             C32,38 29,35 29,31
@@ -48,7 +48,7 @@
         Top-center-left toe pad – small oval.
     -->
     <path
-        android:fillColor="#FFFFFF"
+        android:fillColor="@color/color_icon_white"
         android:pathData="
             M46,30
             C43,30 40,27 40,23
@@ -60,7 +60,7 @@
         Top-center-right toe pad – small oval.
     -->
     <path
-        android:fillColor="#FFFFFF"
+        android:fillColor="@color/color_icon_white"
         android:pathData="
             M62,30
             C59,30 56,27 56,23
@@ -72,7 +72,7 @@
         Top-right toe pad – small oval, upper-right of the main pad.
     -->
     <path
-        android:fillColor="#FFFFFF"
+        android:fillColor="@color/color_icon_white"
         android:pathData="
             M72,38
             C68,38 65,35 65,31

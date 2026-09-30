@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    dialog_gestures_guide.xml – Custom layout for the Gestures & Sensor Controls guide dialog.
+    Lists the 5 gesture and sensor controls with icons, titles, and descriptions,
+    accompanied by an accessibility note.
+-->
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/spacing_l"
+        android:paddingTop="@dimen/spacing_s"
+        android:paddingBottom="@dimen/size_12dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_m"
+            android:text="@string/dialog_gestures_guide_subtitle"
+            android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+
+        <!-- 1. Swipe Left -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/size_12dp">
+
+            <FrameLayout
+                android:layout_width="@dimen/size_40dp"
+                android:layout_height="@dimen/size_40dp"
+                android:layout_marginEnd="@dimen/spacing_m"
+                android:background="@drawable/bg_gesture_icon_delete">
+
+                <ImageView
+                    android:layout_width="@dimen/size_20dp"
+                    android:layout_height="@dimen/size_20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_delete"
+                    android:contentDescription="@null"
+                    app:tint="@color/color_swipe_delete_bg" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/dimension_zero"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gesture_swipe_left_name"
+                    android:textAppearance="@style/TextAppearance.PetCare.TitleSmall"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_2dp"
+                    android:text="@string/gesture_swipe_left_desc"
+                    android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 2. Swipe Right -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/size_12dp">
+
+            <FrameLayout
+                android:layout_width="@dimen/size_40dp"
+                android:layout_height="@dimen/size_40dp"
+                android:layout_marginEnd="@dimen/spacing_m"
+                android:background="@drawable/bg_gesture_icon_done">
+
+                <ImageView
+                    android:layout_width="@dimen/size_20dp"
+                    android:layout_height="@dimen/size_20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_check"
+                    android:contentDescription="@null"
+                    app:tint="@color/color_swipe_done_bg" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/dimension_zero"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gesture_swipe_right_name"
+                    android:textAppearance="@style/TextAppearance.PetCare.TitleSmall"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_2dp"
+                    android:text="@string/gesture_swipe_right_desc"
+                    android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 3. Shake Device -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/size_12dp">
+
+            <FrameLayout
+                android:layout_width="@dimen/size_40dp"
+                android:layout_height="@dimen/size_40dp"
+                android:layout_marginEnd="@dimen/spacing_m"
+                android:background="@drawable/bg_gesture_icon_shake">
+
+                <ImageView
+                    android:layout_width="@dimen/size_20dp"
+                    android:layout_height="@dimen/size_20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_gesture"
+                    android:contentDescription="@null"
+                    app:tint="?attr/colorTertiary" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/dimension_zero"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gesture_shake_name"
+                    android:textAppearance="@style/TextAppearance.PetCare.TitleSmall"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_2dp"
+                    android:text="@string/gesture_shake_desc"
+                    android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 4. Long Press -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/size_12dp">
+
+            <FrameLayout
+                android:layout_width="@dimen/size_40dp"
+                android:layout_height="@dimen/size_40dp"
+                android:layout_marginEnd="@dimen/spacing_m"
+                android:background="@drawable/bg_gesture_icon_select">
+
+                <ImageView
+                    android:layout_width="@dimen/size_20dp"
+                    android:layout_height="@dimen/size_20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_edit"
+                    android:contentDescription="@null"
+                    app:tint="?attr/colorSecondary" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/dimension_zero"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gesture_long_press_name"
+                    android:textAppearance="@style/TextAppearance.PetCare.TitleSmall"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_2dp"
+                    android:text="@string/gesture_long_press_desc"
+                    android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- 5. Double Tap Photo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/spacing_m">
+
+            <FrameLayout
+                android:layout_width="@dimen/size_40dp"
+                android:layout_height="@dimen/size_40dp"
+                android:layout_marginEnd="@dimen/spacing_m"
+                android:background="@drawable/bg_gesture_icon_photo">
+
+                <ImageView
+                    android:layout_width="@dimen/size_20dp"
+                    android:layout_height="@dimen/size_20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_camera"
+                    android:contentDescription="@null"
+                    app:tint="?attr/colorPrimary" />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/dimension_zero"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gesture_double_tap_name"
+                    android:textAppearance="@style/TextAppearance.PetCare.TitleSmall"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_2dp"
+                    android:text="@string/gesture_double_tap_desc"
+                    android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Subtle Info Note: Non-gesture accessibility alternatives -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_info_note"
+            android:padding="@dimen/size_12dp"
+            android:drawableStart="@drawable/ic_info_20"
+            android:drawablePadding="@dimen/spacing_s"
+            android:drawableTint="?attr/colorPrimary"
+            android:gravity="center_vertical"
+            android:text="@string/gesture_note_alternatives"
+            android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

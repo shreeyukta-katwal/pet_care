@@ -2,7 +2,6 @@ package com.petcare.app.gesture
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
@@ -32,7 +31,7 @@ class PetListSwipeCallback(
     private val onSwipeDelete: (position: Int) -> Unit
 ) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-    private val deleteColor = Color.parseColor("#D32F2F") // Material Red
+    private val deleteColor = ContextCompat.getColor(context, R.color.color_swipe_delete_bg)
     private val deleteIcon: Drawable? = ContextCompat.getDrawable(context, R.drawable.ic_delete)
     private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 

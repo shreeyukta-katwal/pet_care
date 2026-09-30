@@ -16,12 +16,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.snackbar.Snackbar
 import com.petcare.app.PetCareApp
 import com.petcare.app.R
 import com.petcare.app.data.db.PetEntity
 import com.petcare.app.data.repository.PetSnapshot
 import com.petcare.app.databinding.FragmentPetListBinding
+import com.petcare.app.databinding.BottomSheetPetListOptionsBinding
 import com.petcare.app.gesture.PetListSwipeCallback
 import com.petcare.app.gesture.PhotoViewerDialog
 import com.petcare.app.util.PhotoStorageHelper
@@ -37,7 +39,7 @@ import kotlinx.coroutines.launch
  *    opens contextual action mode ("N selected"), allowing batch deletion.
  * 5. **Double-Tap Photo to Enlarge**: Double-tapping a pet photo thumbnail opens [PhotoViewerDialog]
  *    with a scale animation and swipe-down-to-dismiss gesture.
- * 6. **Gesture Discoverability**: Accessible "Gestures guide" option in the top app bar overflow menu.
+ * 6. **Gesture Discoverability**: Accessible "Gestures guide" option in the top app bar menu.
  */
 class PetListFragment : Fragment() {
 
@@ -70,6 +72,8 @@ class PetListFragment : Fragment() {
     /** Active contextual ActionMode when multi-selection is enabled. */
     private var actionMode: ActionMode? = null
     private val selectedPetIds = mutableSetOf<Long>()
+    private var isAdmin = false
+    private var actionsSheet: BottomSheetDialog? = null
 
     // ── Fragment lifecycle ────────────────────────────────────────────────
 
@@ -94,6 +98,7 @@ class PetListFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        actionsSheet?.dismiss()
         super.onDestroyView()
         finishActionMode()
         binding.recyclerPets.adapter = null
@@ -104,19 +109,51 @@ class PetListFragment : Fragment() {
 
     private fun setupToolbar() {
         binding.toolbar.inflateMenu(R.menu.menu_pet_list)
+        val appContainer = (requireActivity().application as PetCareApp).container
+        viewLifecycleOwner.lifecycleScope.launch {
+            val userId = appContainer.sessionManager.getUserId()
+            isAdmin = appContainer.userRepository.findById(userId)?.isAdmin == true
+            actionsSheet?.findViewById<View>(R.id.action_admin_panel)?.visibility =
+                if (isAdmin) View.VISIBLE else View.GONE
+        }
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_logout -> {
-                    showLogoutConfirmationDialog()
-                    true
-                }
-                R.id.action_gestures_guide -> {
-                    showGesturesGuideDialog()
+                R.id.action_more -> {
+                    showActionsSheet()
                     true
                 }
                 else -> false
             }
         }
+    }
+
+    private fun showActionsSheet() {
+        if (actionsSheet?.isShowing == true) {
+            actionsSheet?.dismiss()
+            return
+        }
+
+        val menuBinding = BottomSheetPetListOptionsBinding.inflate(layoutInflater)
+        menuBinding.actionAdminPanel.visibility = if (isAdmin) View.VISIBLE else View.GONE
+        val sheet = BottomSheetDialog(requireContext(), R.style.Widget_PetCare_BottomSheetDialog).apply {
+            setContentView(menuBinding.root)
+            setOnDismissListener { actionsSheet = null }
+        }
+        actionsSheet = sheet
+
+        menuBinding.actionGesturesGuide.setOnClickListener {
+            sheet.dismiss()
+            showGesturesGuideDialog()
+        }
+        menuBinding.actionAdminPanel.setOnClickListener {
+            sheet.dismiss()
+            findNavController().navigate(R.id.action_petList_to_adminDashboard)
+        }
+        menuBinding.actionLogout.setOnClickListener {
+            sheet.dismiss()
+            showLogoutConfirmationDialog()
+        }
+        sheet.show()
     }
 
     private fun setupRecyclerView() {
@@ -203,7 +240,7 @@ class PetListFragment : Fragment() {
                             .map { it.pet }
                             .filter { it.id in selectedPetIds }
 
-                        MaterialAlertDialogBuilder(requireContext())
+                        MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_PetCare_MaterialAlertDialog_Destructive)
                             .setTitle(R.string.dialog_delete_selected_pets_title)
                             .setMessage(getString(R.string.dialog_delete_selected_pets_message, count))
                             .setPositiveButton(R.string.btn_delete) { _, _ ->
@@ -261,9 +298,11 @@ class PetListFragment : Fragment() {
     }
 
     private fun showGesturesGuideDialog() {
+        // Inflate the custom list layout showing icon + name + description for each of the 5 gestures
+        val guideView = layoutInflater.inflate(R.layout.dialog_gestures_guide, null)
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_gestures_guide_title)
-            .setMessage(R.string.dialog_gestures_guide_message)
+            .setView(guideView)
             .setPositiveButton(R.string.btn_got_it, null)
             .show()
     }
@@ -314,23 +353,13 @@ class PetListFragment : Fragment() {
     }
 
     private fun updateEmptyState(isEmpty: Boolean) {
-        if (isEmpty) {
-            binding.recyclerPets.visibility = View.GONE
-            binding.imageEmpty.visibility = View.VISIBLE
-            binding.textEmptyTitle.visibility = View.VISIBLE
-            binding.textEmptySubtitle.visibility = View.VISIBLE
-            binding.buttonEmptyAdd.visibility = View.VISIBLE
-        } else {
-            binding.recyclerPets.visibility = View.VISIBLE
-            binding.imageEmpty.visibility = View.GONE
-            binding.textEmptyTitle.visibility = View.GONE
-            binding.textEmptySubtitle.visibility = View.GONE
-            binding.buttonEmptyAdd.visibility = View.GONE
-        }
+        binding.recyclerPets.visibility = if (isEmpty) View.GONE else View.VISIBLE
+        binding.emptyStateCard.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        binding.fabAddPet.visibility = if (isEmpty) View.GONE else View.VISIBLE
     }
 
     private fun showDeleteConfirmationDialog(pet: PetEntity) {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_PetCare_MaterialAlertDialog_Destructive)
             .setTitle(getString(R.string.dialog_delete_pet_title, pet.name))
             .setMessage(getString(R.string.dialog_delete_pet_message, pet.name))
             .setPositiveButton(R.string.btn_delete) { _, _ ->
@@ -370,7 +399,7 @@ class PetListFragment : Fragment() {
     }
 
     private fun showLogoutConfirmationDialog() {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_PetCare_MaterialAlertDialog_Destructive)
             .setTitle(R.string.dialog_logout_title)
             .setMessage(R.string.dialog_logout_message)
             .setPositiveButton(R.string.action_logout) { _, _ ->

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Quiet inset surface separates read-only routine rows without heavy dividers. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="?attr/colorSurfaceVariant" />
+    <corners android:radius="@dimen/radius_m" />
+</shape>

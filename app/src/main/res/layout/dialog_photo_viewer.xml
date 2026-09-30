@@ -1,67 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     dialog_photo_viewer.xml – Immersive fullscreen layout for enlarged pet photo viewer.
-    Features dark backdrop, pet title banner, high-resolution photo container, and close button.
+    Features dark backdrop, top header bar, centered high-resolution photo container,
+    and a prominent bottom dismiss hint pill.
 -->
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E6000000">
+    android:background="@color/color_photo_viewer_scrim"
+    android:fitsSystemWindows="true">
 
-    <!-- Top header bar with title and close button -->
+    <!-- Top header bar with pet name title and circular close button -->
     <LinearLayout
+        android:id="@+id/header_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
         android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="24dp"
-        android:paddingBottom="16dp"
-        android:gravity="center_vertical">
+        android:paddingHorizontal="@dimen/size_20dp"
+        android:paddingTop="@dimen/spacing_m"
+        android:paddingBottom="@dimen/size_12dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/text_pet_title"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimension_zero"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@android:color/white"
-            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textColor="@color/color_photo_viewer_on_scrim"
+            android:textAppearance="@style/TextAppearance.PetCare.TitleLarge"
+            android:textStyle="bold"
             tools:text="Max" />
 
         <ImageButton
             android:id="@+id/button_close"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="@dimen/touch_target"
+            android:layout_height="@dimen/touch_target"
+            android:background="@drawable/bg_close_scrim"
             android:src="@drawable/ic_back"
             android:contentDescription="@string/cd_navigate_up"
-            app:tint="@android:color/white" />
+            app:tint="@color/color_photo_viewer_on_scrim" />
 
     </LinearLayout>
 
-    <!-- Centered high-resolution image container -->
+    <!-- Centered high-resolution image container constrained cleanly between header and bottom pill -->
     <ImageView
         android:id="@+id/image_enlarged"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_margin="24dp"
+        android:layout_width="@dimen/dimension_zero"
+        android:layout_height="@dimen/dimension_zero"
+        android:layout_marginHorizontal="@dimen/spacing_m"
+        android:layout_marginVertical="@dimen/spacing_m"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:contentDescription="@string/cd_photo_viewer"
+        app:layout_constraintTop_toBottomOf="@id/header_bar"
+        app:layout_constraintBottom_toTopOf="@id/layout_dismiss_hint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:src="@drawable/ic_pet_placeholder" />
 
-    <!-- Bottom dismiss hint -->
-    <TextView
+    <!-- Obvious bottom dismiss hint pill (tap or swipe down) -->
+    <LinearLayout
+        android:id="@+id/layout_dismiss_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="32dp"
-        android:text="@string/cd_photo_viewer"
-        android:textColor="#B3FFFFFF"
-        android:textAppearance="?attr/textAppearanceBodySmall" />
+        android:layout_marginBottom="@dimen/size_28dp"
+        android:background="@drawable/bg_photo_dismiss_hint"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/spacing_m"
+        android:paddingVertical="@dimen/spacing_s"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-</FrameLayout>
+        <ImageView
+            android:layout_width="@dimen/size_18dp"
+            android:layout_height="@dimen/size_18dp"
+            android:layout_marginEnd="@dimen/spacing_s"
+            android:src="@drawable/ic_gesture"
+            android:contentDescription="@null"
+            app:tint="@color/color_photo_viewer_on_scrim" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_photo_dismiss"
+            android:textColor="@color/color_photo_viewer_on_scrim"
+            android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

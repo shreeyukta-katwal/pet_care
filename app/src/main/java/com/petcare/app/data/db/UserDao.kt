@@ -82,4 +82,27 @@ interface UserDao {
      */
     @Query("DELETE FROM users WHERE id = :id")
     suspend fun deleteById(id: Long)
+
+    /** Returns every account with aggregate pet and task counts for the admin area. */
+    @Query("""
+        SELECT users.*, COUNT(DISTINCT pets.id) AS pet_count, COUNT(tasks.id) AS task_count
+        FROM users
+        LEFT JOIN pets ON pets.user_id = users.id
+        LEFT JOIN tasks ON tasks.pet_id = pets.id
+        GROUP BY users.id
+        ORDER BY users.email ASC
+    """)
+    suspend fun getAllWithCounts(): List<UserWithCounts>
+
+    /** Returns aggregate application-wide figures used only by the admin dashboard. */
+    @Query("""
+        SELECT COUNT(DISTINCT users.id) AS total_users,
+               COUNT(DISTINCT pets.id) AS total_pets,
+               COUNT(tasks.id) AS total_tasks,
+               SUM(CASE WHEN tasks.last_completed_date = :today THEN 1 ELSE 0 END) AS tasks_completed_today
+        FROM users
+        LEFT JOIN pets ON pets.user_id = users.id
+        LEFT JOIN tasks ON tasks.pet_id = pets.id
+    """)
+    suspend fun getAppStats(today: String): AppStats
 }

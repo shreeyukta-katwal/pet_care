@@ -4,10 +4,11 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.petcare.app.R
 import com.petcare.app.data.db.PetEntity
 import com.petcare.app.databinding.ItemPetCardBinding
@@ -95,8 +96,12 @@ class PetListAdapter(
             if (item.progressText.isNotBlank()) {
                 binding.textProgress.text = item.progressText
                 binding.textProgress.visibility = View.VISIBLE
+                binding.progressPetToday.visibility = View.VISIBLE
+                binding.progressPetToday.progress =
+                    (item.completedCount * 100 / item.totalCount.coerceAtLeast(1))
             } else {
                 binding.textProgress.visibility = View.GONE
+                binding.progressPetToday.visibility = View.GONE
             }
 
             // ── Multi-selection state ───────────────────────────────────
@@ -120,19 +125,31 @@ class PetListAdapter(
                 onPetLongClick?.invoke(pet) ?: false
             }
 
-            // ── Overflow menu ──────────────────────────────────────────
-            binding.buttonOverflow.setOnClickListener { anchor ->
-                val popup = PopupMenu(anchor.context, anchor)
-                popup.inflate(R.menu.menu_pet_card)
-                popup.setOnMenuItemClickListener { menuItem ->
-                    when (menuItem.itemId) {
-                        R.id.action_edit_pet      -> { onEditClick(pet.id);        true }
-                        R.id.action_delete_pet    -> { onDeleteClick(pet);         true }
-                        R.id.action_add_routine   -> { onAddRoutineClick(pet.id);  true }
-                        else                      -> false
-                    }
+            // ── Overflow menu (modern bottom sheet) ────────────────────
+            binding.buttonOverflow.setOnClickListener { _ ->
+                val context = binding.root.context
+                val sheet = BottomSheetDialog(context, R.style.Widget_PetCare_BottomSheetDialog)
+                val sheetView = LayoutInflater.from(context)
+                    .inflate(R.layout.bottom_sheet_pet_options, null)
+
+                // Set the pet name header
+                sheetView.findViewById<TextView>(R.id.text_sheet_pet_name).text = pet.name
+
+                sheetView.findViewById<View>(R.id.option_add_routine).setOnClickListener {
+                    onAddRoutineClick(pet.id)
+                    sheet.dismiss()
                 }
-                popup.show()
+                sheetView.findViewById<View>(R.id.option_edit).setOnClickListener {
+                    onEditClick(pet.id)
+                    sheet.dismiss()
+                }
+                sheetView.findViewById<View>(R.id.option_delete).setOnClickListener {
+                    onDeleteClick(pet)
+                    sheet.dismiss()
+                }
+
+                sheet.setContentView(sheetView)
+                sheet.show()
             }
         }
 

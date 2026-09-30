@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    PetCare design system: shared by light and dark mode.
+    1. PALETTE: raw colours; values-night overrides only these entries.
+    2. SEMANTIC COLOUR TOKENS: named UI roles referencing the palette.
+    3. SPACING AND SIZING: dimensions, radii, icon sizes and typography sizes.
+    4. TEXT APPEARANCE STYLES: existing Material 3 text roles.
+    5. COMPONENT STYLES: widgets, shapes, dialog overlays and theme defaults.
+    Theme colour attributes resolve through Section 2. Component references to
+    theme attributes intentionally preserve local overlays (destructive dialogs).
+    Enum, boolean, percentage and layout keywords retain their Android meaning.
+-->
+<resources>
+    <!-- SECTION 1 - PALETTE
+         EDIT THIS SECTION TO CHANGE THE APP'S COLOURS. Everything below refers back to these values, so a change here updates the whole app. -->
+    <color name="palette_primary">#E04A6E</color>
+    <color name="palette_on_primary">#FFFFFF</color>
+    <color name="palette_primary_container">#FFD9E2</color>
+    <color name="palette_on_primary_container">#9B2447</color>
+    <color name="palette_secondary">#9B2447</color>
+    <color name="palette_on_secondary">#FFFFFF</color>
+    <color name="palette_secondary_container">#FFEBF0</color>
+    <color name="palette_on_secondary_container">#9B2447</color>
+    <color name="palette_tertiary">#B47337</color>
+    <color name="palette_on_tertiary">#FFFFFF</color>
+    <color name="palette_tertiary_container">#FFE7A3</color>
+    <color name="palette_on_tertiary_container">#65451D</color>
+    <color name="palette_error">#C0392B</color>
+    <color name="palette_on_error">#FFFFFF</color>
+    <color name="palette_error_container">#F9DEDC</color>
+    <color name="palette_on_error_container">#410E0B</color>
+    <color name="palette_background">#FFF6F1</color>
+    <color name="palette_on_background">#43303F</color>
+    <color name="palette_surface">#FFFFFF</color>
+    <color name="palette_on_surface">#43303F</color>
+    <color name="palette_surface_variant">#FFEBF0</color>
+    <color name="palette_on_surface_variant">#7C6272</color>
+    <color name="palette_outline">#C49CAA</color>
+    <color name="palette_outline_variant">#F3D9DF</color>
+    <color name="palette_inverse_surface">#2D3130</color>
+    <color name="palette_inverse_on_surface">#EFF1EF</color>
+    <color name="palette_inverse_primary">#FFB3C6</color>
+    <color name="palette_welcome_gradient_start">#FFE7A3</color>
+    <color name="palette_welcome_gradient_center">#FFC8D5</color>
+    <color name="palette_welcome_gradient_end">#CFF1E4</color>
+    <color name="palette_photo_viewer_scrim">#E6000000</color>
+    <color name="palette_photo_viewer_on_scrim">#FFFFFFFF</color>
+    <color name="palette_photo_viewer_on_scrim_muted">#B3FFFFFF</color>
+    <color name="palette_swipe_delete_background">#D32F2F</color>
+    <color name="palette_swipe_done_background">#2E7D32</color>
+    <color name="palette_icon_white">#FFFFFF</color>
+    <color name="palette_close_scrim">#33FFFFFF</color>
+    <color name="palette_photo_hint_scrim">#4D000000</color>
+    <color name="palette_transparent">#00000000</color>
+    <color name="palette_launcher_background">#E04A6E</color>
+    <color name="palette_welcome_tagline">#6B4A5C</color>
+
+    <!-- SECTION 2 - SEMANTIC COLOUR TOKENS -->
+    <color name="color_primary">@color/palette_primary</color>
+    <color name="color_on_primary">@color/palette_on_primary</color>
+    <color name="color_primary_container">@color/palette_primary_container</color>
+    <color name="color_on_primary_container">@color/palette_on_primary_container</color>
+    <color name="color_secondary">@color/palette_secondary</color>
+    <color name="color_on_secondary">@color/palette_on_secondary</color>
+    <color name="color_secondary_container">@color/palette_secondary_container</color>
+    <color name="color_on_secondary_container">@color/palette_on_secondary_container</color>
+    <color name="color_tertiary">@color/palette_tertiary</color>
+    <color name="color_on_tertiary">@color/palette_on_tertiary</color>
+    <color name="color_tertiary_container">@color/palette_tertiary_container</color>
+    <color name="color_on_tertiary_container">@color/palette_on_tertiary_container</color>
+    <color name="color_error">@color/palette_error</color>
+    <color name="color_on_error">@color/palette_on_error</color>
+    <color name="color_error_container">@color/palette_error_container</color>
+    <color name="color_on_error_container">@color/palette_on_error_container</color>
+    <color name="color_background">@color/palette_background</color>
+    <color name="color_on_background">@color/palette_on_background</color>
+    <color name="color_surface">@color/palette_surface</color>
+    <color name="color_on_surface">@color/palette_on_surface</color>
+    <color name="color_surface_variant">@color/palette_surface_variant</color>
+    <color name="color_on_surface_variant">@color/palette_on_surface_variant</color>
+    <color name="color_outline">@color/palette_outline</color>
+    <color name="color_outline_variant">@color/palette_outline_variant</color>
+    <color name="color_inverse_surface">@color/palette_inverse_surface</color>
+    <color name="color_inverse_on_surface">@color/palette_inverse_on_surface</color>
+    <color name="color_inverse_primary">@color/palette_inverse_primary</color>
+    <color name="color_welcome_gradient_start">@color/palette_welcome_gradient_start</color>
+    <color name="color_welcome_gradient_center">@color/palette_welcome_gradient_center</color>
+    <color name="color_welcome_gradient_end">@color/palette_welcome_gradient_end</color>
+    <color name="color_photo_viewer_scrim">@color/palette_photo_viewer_scrim</color>
+    <color name="color_photo_viewer_on_scrim">@color/palette_photo_viewer_on_scrim</color>
+    <color name="color_photo_viewer_on_scrim_muted">@color/palette_photo_viewer_on_scrim_muted</color>
+    <color name="color_swipe_delete_bg">@color/palette_swipe_delete_background</color>
+    <color name="color_swipe_done_bg">@color/palette_swipe_done_background</color>
+    <color name="color_icon_white">@color/palette_icon_white</color>
+    <color name="color_close_scrim">@color/palette_close_scrim</color>
+    <color name="color_photo_hint_scrim">@color/palette_photo_hint_scrim</color>
+    <color name="color_transparent">@color/palette_transparent</color>
+    <color name="color_launcher_background">@color/palette_launcher_background</color>
+    <color name="color_welcome_tagline">@color/palette_welcome_tagline</color>
+
+    <!-- SECTION 3 - SPACING AND SIZING
+         Existing off-scale sizes are preserved to avoid changing screen geometry. -->
+    <dimen name="spacing_xsmall">@dimen/spacing_xs</dimen>
+    <dimen name="spacing_small">@dimen/spacing_s</dimen>
+    <dimen name="spacing_medium">@dimen/spacing_m</dimen>
+    <dimen name="spacing_large">@dimen/spacing_l</dimen>
+    <dimen name="spacing_xlarge">@dimen/spacing_xl</dimen>
+    <dimen name="card_corner_radius">@dimen/radius_l</dimen>
+    <dimen name="fab_margin">@dimen/spacing_m</dimen>
+    <dimen name="photo_thumbnail_size">72dp</dimen>
+    <dimen name="photo_preview_size">@dimen/icon_size_avatar_large</dimen>
+    <dimen name="icon_size">@dimen/icon_size_decorative</dimen>
+    <dimen name="avatar_size">@dimen/icon_size_avatar</dimen>
+    <dimen name="touch_target">48dp</dimen>
+    <dimen name="form_max_width">480dp</dimen>
+    <dimen name="form_max_width_wide">600dp</dimen>
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_s">8dp</dimen>
+    <dimen name="spacing_m">16dp</dimen>
+    <dimen name="spacing_l">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+    <dimen name="radius_s">12dp</dimen>
+    <dimen name="radius_m">20dp</dimen>
+    <dimen name="radius_l">28dp</dimen>
+    <dimen name="radius_button">28dp</dimen>
+    <dimen name="radius_welcome">32dp</dimen>
+    <dimen name="icon_size_decorative">24dp</dimen>
+    <dimen name="icon_size_avatar">32dp</dimen>
+    <dimen name="icon_size_avatar_large">120dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="dimension_zero">0dp</dimen>
+    <dimen name="button_min_height">52dp</dimen>
+    <dimen name="welcome_button_min_height">56dp</dimen>
+    <dimen name="text_size_14sp">14sp</dimen>
+    <dimen name="size_2dp">2dp</dimen>
+    <dimen name="size_6dp">6dp</dimen>
+    <dimen name="size_20dp">20dp</dimen>
+    <dimen name="size_10dp">10dp</dimen>
+    <dimen name="size_108dp">108dp</dimen>
+    <dimen name="size_12dp">12dp</dimen>
+    <dimen name="size_40dp">40dp</dimen>
+    <dimen name="size_28dp">28dp</dimen>
+    <dimen name="size_18dp">18dp</dimen>
+    <dimen name="size_144dp">144dp</dimen>
+    <dimen name="text_size_13sp">13sp</dimen>
+    <dimen name="size_3dp">3dp</dimen>
+    <dimen name="size_88dp">88dp</dimen>
+    <dimen name="size_104dp">104dp</dimen>
+    <dimen name="size_112dp">112dp</dimen>
+    <dimen name="size_64dp">64dp</dimen>
+    <dimen name="size_14dp">14dp</dimen>
+    <dimen name="touch_target_sheet">56dp</dimen>
+
+    <!-- SECTION 4 - TEXT APPEARANCE STYLES -->
+    <style name="TextAppearance.PetCare.SectionHeader" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_on_primary_container</item>
+        <item name="android:fontFamily">sans-serif-rounded</item>
+    </style>
+
+    <style name="TextAppearance.PetCare.Toolbar.Title" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_on_surface</item>
+        <item name="android:fontFamily">sans-serif-rounded</item>
+    </style>
+
+    <style name="TextAppearance.PetCare.Toolbar.Subtitle" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/color_on_surface_variant</item>
+    </style>
+
+    <style name="TextAppearance.PetCare.Dialog.Title" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/color_on_surface</item>
+    </style>
+
+    <style name="TextAppearance.PetCare.Dialog.Body" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:textColor">@color/color_on_surface_variant</item>
+        <item name="android:textSize">@dimen/text_size_14sp</item>
+        <item name="android:lineSpacingExtra">@dimen/size_2dp</item>
+    </style>
+
+    <style name="TextAppearance.PetCare.BodyLarge" parent="TextAppearance.Material3.BodyLarge" />
+
+    <style name="TextAppearance.PetCare.BodyMedium" parent="TextAppearance.Material3.BodyMedium" />
+
+    <style name="TextAppearance.PetCare.BodySmall" parent="TextAppearance.Material3.BodySmall" />
+
+    <style name="TextAppearance.PetCare.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="android:fontFamily">sans-serif-rounded</item>
+    </style>
+
+    <style name="TextAppearance.PetCare.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:fontFamily">sans-serif-rounded</item>
+    </style>
+
+    <style name="TextAppearance.PetCare.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:fontFamily">sans-serif-rounded</item>
+    </style>
+
+    <style name="TextAppearance.PetCare.LabelLarge" parent="TextAppearance.Material3.LabelLarge" />
+
+    <style name="TextAppearance.PetCare.LabelMedium" parent="TextAppearance.Material3.LabelMedium" />
+
+    <style name="TextAppearance.PetCare.LabelSmall" parent="TextAppearance.Material3.LabelSmall" />
+
+    <style name="TextAppearance.PetCare.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:fontFamily">sans-serif-rounded</item>
+    </style>
+
+    <style name="TextAppearance.PetCare.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">sans-serif-rounded</item>
+    </style>
+
+    <style name="TextAppearance.PetCare.TitleSmall" parent="TextAppearance.Material3.TitleSmall" />
+
+    <!-- SECTION 5 - COMPONENT STYLES
+         Theme attributes preserve state lists and local colour overlays. -->
+    <style name="Widget.PetCare.TextInputLayout.OutlinedBox" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">@dimen/radius_m</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_m</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_m</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_m</item>
+        <item name="boxBackgroundColor">?attr/colorSurface</item>
+        <item name="startIconMinSize">@dimen/touch_target</item>
+        <item name="endIconMinSize">@dimen/touch_target</item>
+        <item name="startIconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="endIconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="startIconScaleType">centerInside</item>
+        <item name="endIconScaleType">centerInside</item>
+    </style>
+
+    <style name="Widget.PetCare.TextInputLayout.OutlinedBox.ExposedDropdownMenu" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxCornerRadiusTopStart">@dimen/radius_m</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_m</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_m</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_m</item>
+        <item name="boxBackgroundColor">?attr/colorSurface</item>
+        <item name="startIconMinSize">@dimen/touch_target</item>
+        <item name="endIconMinSize">@dimen/touch_target</item>
+        <item name="startIconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="endIconTint">?attr/colorOnSurfaceVariant</item>
+        <item name="startIconScaleType">centerInside</item>
+        <item name="endIconScaleType">centerInside</item>
+    </style>
+
+    <style name="Widget.PetCare.TextInputLayout.OutlinedBox.ExposedDropdownMenu.Avatar" parent="Widget.PetCare.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="startIconTint">@null</item>
+    </style>
+
+    <style name="Widget.PetCare.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="cornerRadius">@dimen/radius_button</item>
+        <item name="iconSize">@dimen/icon_size_decorative</item>
+        <item name="iconTint">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="Widget.PetCare.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="cornerRadius">@dimen/radius_button</item>
+        <item name="iconSize">@dimen/icon_size_decorative</item>
+        <item name="strokeColor">?attr/colorPrimaryContainer</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="iconTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Widget.PetCare.Button.TextButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="cornerRadius">@dimen/radius_button</item>
+        <item name="iconSize">@dimen/icon_size_decorative</item>
+        <item name="iconTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Widget.PetCare.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">@dimen/button_min_height</item>
+        <item name="cornerRadius">@dimen/radius_button</item>
+        <item name="iconSize">@dimen/icon_size_decorative</item>
+    </style>
+
+    <style name="Widget.PetCare.Button.Welcome" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/welcome_button_min_height</item>
+        <item name="cornerRadius">@dimen/radius_welcome</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="iconSize">@dimen/icon_size_decorative</item>
+        <item name="iconTint">?attr/colorOnPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Widget.PetCare.Button.Welcome.Outlined" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/welcome_button_min_height</item>
+        <item name="cornerRadius">@dimen/radius_welcome</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="iconSize">@dimen/icon_size_decorative</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="backgroundTint">?attr/colorSurface</item>
+        <item name="android:textColor">?attr/colorOnPrimaryContainer</item>
+        <item name="iconTint">?attr/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Widget.PetCare.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">@dimen/card_corner_radius</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="strokeColor">?attr/colorOutlineVariant</item>
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+    </style>
+
+    <style name="Widget.PetCare.Card.Stat" parent="Widget.PetCare.Card">
+        <item name="cardElevation">@dimen/dimension_zero</item>
+    </style>
+
+    <style name="Widget.PetCare.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="titleTextAppearance">@style/TextAppearance.PetCare.Toolbar.Title</item>
+        <item name="subtitleTextAppearance">@style/TextAppearance.PetCare.Toolbar.Subtitle</item>
+        <item name="navigationIconTint">?attr/colorOnSurface</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+    </style>
+
+    <style name="Widget.PetCare.SheetAction" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/touch_target_sheet</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingHorizontal">@dimen/spacing_l</item>
+        <item name="android:paddingVertical">@dimen/spacing_s</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+    <style name="Widget.PetCare.SheetAction.Icon" parent="">
+        <item name="android:layout_width">@dimen/spacing_l</item>
+        <item name="android:layout_height">@dimen/spacing_l</item>
+    </style>
+
+    <style name="Widget.PetCare.SheetAction.Label" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/spacing_m</item>
+        <item name="android:textAppearance">@style/TextAppearance.PetCare.BodyLarge</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="Widget.PetCare.SectionHeader" parent="android:Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.PetCare.SectionHeader</item>
+        <item name="android:textColor">?attr/colorOnPrimaryContainer</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ThemeOverlay.PetCare.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.PetCare.MediumComponent</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/Widget.PetCare.Dialog.Title</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/Widget.PetCare.Dialog.Body</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.PetCare.Button.TextButton.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.PetCare.Button.TextButton.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Widget.PetCare.Button.TextButton.Dialog</item>
+    </style>
+
+    <style name="ThemeOverlay.PetCare.MaterialAlertDialog.Destructive" parent="ThemeOverlay.PetCare.MaterialAlertDialog">
+        <item name="colorPrimary">?attr/colorError</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.PetCare.Button.TextButton.Dialog.Destructive</item>
+    </style>
+
+    <style name="Widget.PetCare.Dialog.Title" parent="MaterialAlertDialog.Material3.Title.Text">
+        <item name="android:textAppearance">@style/TextAppearance.PetCare.Dialog.Title</item>
+    </style>
+
+    <style name="Widget.PetCare.Dialog.Body" parent="MaterialAlertDialog.Material3.Body.Text">
+        <item name="android:textAppearance">@style/TextAppearance.PetCare.Dialog.Body</item>
+    </style>
+
+    <style name="Widget.PetCare.Button.TextButton.Dialog" parent="Widget.Material3.Button.TextButton.Dialog">
+        <item name="android:minHeight">@dimen/touch_target</item>
+        <item name="cornerRadius">@dimen/radius_s</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Widget.PetCare.Button.TextButton.Dialog.Destructive" parent="Widget.PetCare.Button.TextButton.Dialog">
+        <item name="android:textColor">?attr/colorError</item>
+        <item name="iconTint">?attr/colorError</item>
+    </style>
+
+    <style name="ShapeAppearance.PetCare.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_s</item>
+    </style>
+
+    <style name="ShapeAppearance.PetCare.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_m</item>
+    </style>
+
+    <style name="ShapeAppearance.PetCare.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/radius_l</item>
+    </style>
+
+    <style name="ShapeAppearance.PetCare.Circular" parent="ShapeAppearance.Material3.Corner.Full">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Base.Theme.PetCare" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:fontFamily">sans-serif-rounded</item>
+        <item name="fontFamily">sans-serif-rounded</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.PetCare.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.PetCare.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.PetCare.LargeComponent</item>
+        <item name="textInputStyle">@style/Widget.PetCare.TextInputLayout.OutlinedBox</item>
+        <item name="materialCardViewStyle">@style/Widget.PetCare.Card</item>
+        <item name="materialButtonStyle">@style/Widget.PetCare.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.PetCare.Button.Outlined</item>
+        <item name="borderlessButtonStyle">@style/Widget.PetCare.Button.TextButton</item>
+        <item name="toolbarStyle">@style/Widget.PetCare.Toolbar</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.PetCare.MaterialAlertDialog</item>
+        <item name="bottomSheetDialogTheme">@style/Widget.PetCare.BottomSheetDialog</item>
+    </style>
+
+
+    <style name="Widget.PetCare.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+        <item name="chipCornerRadius">24dp</item>
+        <item name="chipStrokeWidth">2dp</item>
+        <item name="chipStrokeColor">?attr/colorOutlineVariant</item>
+        <item name="chipBackgroundColor">?attr/colorSurface</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- Modern themed bottom sheet for pet card options -->
+    <style name="Widget.PetCare.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.PetCare.BottomSheet</item>
+    </style>
+
+    <style name="Widget.PetCare.BottomSheet" parent="Widget.Material3.BottomSheet">
+        <item name="shapeAppearance">@style/ShapeAppearance.PetCare.BottomSheet</item>
+        <item name="backgroundTint">?attr/colorSurface</item>
+    </style>
+
+    <style name="ShapeAppearance.PetCare.BottomSheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/radius_l</item>
+        <item name="cornerSizeTopRight">@dimen/radius_l</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <!-- Themed PopupMenu overlay for toolbar overflow -->
+    <style name="ThemeOverlay.PetCare.PopupMenu" parent="ThemeOverlay.Material3.Light">
+        <item name="android:popupBackground">@drawable/bg_popup_menu</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+</resources>
+

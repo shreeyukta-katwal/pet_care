@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    fragment_admin_dashboard.xml – Privileged dashboard layout.
+
+    Visual structure (top → bottom):
+      1. AppBarLayout / CollapsingToolbarLayout – branded toolbar that matches
+         every other screen in the app (Widget.PetCare.Toolbar).
+      2. 2×2 grid of stat cards (Widget.PetCare.Card.Stat) each showing a large
+         number + small label, identical chrome to the rest of the app.
+      3. "Today's completion" section: a label + LinearProgressIndicator with the
+         shared progress style.
+      4. "All accounts" section header + RecyclerView of user rows + empty state.
+
+    Binding IDs unchanged from the original (stat_users, stat_pets, stat_tasks,
+    stat_done_today, progress_completion, recycler_users, text_empty, toolbar,
+    button_back) so AdminDashboardFragment.kt needs no logic changes.
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground">
+
+    <!-- ── Toolbar – matches every other screen's chrome ──────────────── -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="false"
+        app:liftOnScroll="true"
+        app:liftOnScrollTargetViewId="@id/recycler_users">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.PetCare.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/screen_admin_dashboard"
+            app:navigationIcon="@drawable/ic_back"
+            app:navigationContentDescription="@string/cd_navigate_up" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!--
+        button_back kept for binding compatibility; hidden behind the toolbar.
+        AdminDashboardFragment.kt references binding.buttonBack.setOnClickListener.
+    -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/touch_target"
+        android:layout_gravity="top|start"
+        android:text="@string/action_back"
+        app:icon="@drawable/ic_back"
+        android:visibility="gone" />
+
+    <!-- ── Scrollable body ───────────────────────────────────────────── -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/spacing_medium"
+            android:paddingTop="@dimen/spacing_large"
+            android:paddingBottom="@dimen/spacing_xlarge">
+
+            <!-- A strong summary header establishes context before the metrics. -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                app:cardBackgroundColor="?attr/colorPrimary"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="@dimen/dimension_zero">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_large">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/admin_hero_eyebrow"
+                        android:textAppearance="@style/TextAppearance.PetCare.LabelLarge"
+                        android:textColor="?attr/colorOnPrimary" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:text="@string/admin_hero_title"
+                        android:textAppearance="@style/TextAppearance.PetCare.HeadlineSmall"
+                        android:textColor="?attr/colorOnPrimary"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:text="@string/admin_hero_subtitle"
+                        android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
+                        android:textColor="?attr/colorOnPrimary" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── Stat cards 2×2 grid ────────────────────────────────── -->
+            <!--
+                GridLayout gives true 2-column 2-row alignment without nested
+                LinearLayouts. All four cells use the shared Widget.PetCare.Card.Stat
+                chrome (0dp elevation, outlined, 16dp corners).
+            -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_medium"
+                android:text="@string/admin_section_overview"
+                style="@style/Widget.PetCare.SectionHeader" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:columnCount="2"
+                android:rowCount="2"
+                android:useDefaultMargins="false">
+
+                <!-- Cell 1: Total users -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PetCare.Card.Stat"
+                    app:cardBackgroundColor="?attr/colorPrimaryContainer"
+                    android:layout_width="@dimen/dimension_zero"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_xsmall"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:minHeight="@dimen/size_144dp"
+                        android:padding="@dimen/spacing_medium"
+                        android:gravity="start">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:src="@drawable/ic_email_24"
+                            android:contentDescription="@null"
+                            app:tint="?attr/colorOnPrimaryContainer" />
+
+                        <TextView
+                            android:id="@+id/stat_users"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.PetCare.HeadlineMedium"
+                            android:textColor="?attr/colorOnPrimaryContainer"
+                            android:textStyle="bold"
+                            android:text="—" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/admin_total_users"
+                            android:textAppearance="@style/TextAppearance.PetCare.LabelSmall"
+                            android:textColor="?attr/colorOnPrimaryContainer"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Cell 2: Total pets -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PetCare.Card.Stat"
+                    app:cardBackgroundColor="?attr/colorSecondaryContainer"
+                    android:layout_width="@dimen/dimension_zero"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_xsmall"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:minHeight="@dimen/size_144dp"
+                        android:padding="@dimen/spacing_medium"
+                        android:gravity="start">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:src="@drawable/ic_paw_24"
+                            android:contentDescription="@null"
+                            app:tint="?attr/colorOnSecondaryContainer" />
+
+                        <TextView
+                            android:id="@+id/stat_pets"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.PetCare.HeadlineMedium"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:textStyle="bold"
+                            android:text="—" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/admin_total_pets"
+                            android:textAppearance="@style/TextAppearance.PetCare.LabelSmall"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Cell 3: Total tasks -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PetCare.Card.Stat"
+                    app:cardBackgroundColor="?attr/colorTertiaryContainer"
+                    android:layout_width="@dimen/dimension_zero"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_xsmall"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:minHeight="@dimen/size_144dp"
+                        android:padding="@dimen/spacing_medium"
+                        android:gravity="start">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:src="@drawable/ic_notes_24"
+                            android:contentDescription="@null"
+                            app:tint="?attr/colorOnTertiaryContainer" />
+
+                        <TextView
+                            android:id="@+id/stat_tasks"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.PetCare.HeadlineMedium"
+                            android:textColor="?attr/colorOnTertiaryContainer"
+                            android:textStyle="bold"
+                            android:text="—" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/admin_total_tasks"
+                            android:textAppearance="@style/TextAppearance.PetCare.LabelSmall"
+                            android:textColor="?attr/colorOnTertiaryContainer"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Cell 4: Done today -->
+                <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.PetCare.Card.Stat"
+                    android:layout_width="@dimen/dimension_zero"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_xsmall"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:minHeight="@dimen/size_144dp"
+                        android:padding="@dimen/spacing_medium"
+                        android:gravity="start">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginBottom="@dimen/spacing_medium"
+                            android:src="@drawable/ic_check"
+                            android:contentDescription="@null"
+                            app:tint="?attr/colorPrimary" />
+
+                        <TextView
+                            android:id="@+id/stat_done_today"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.PetCare.HeadlineMedium"
+                            android:textColor="?attr/colorOnSurface"
+                            android:textStyle="bold"
+                            android:text="—" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/admin_tasks_done_today"
+                            android:textAppearance="@style/TextAppearance.PetCare.LabelSmall"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:gravity="center" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </GridLayout>
+
+            <!-- ── Today's completion progress ───────────────────────── -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.PetCare.Card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_large">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/Widget.PetCare.SectionHeader"
+                            android:layout_width="@dimen/dimension_zero"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/admin_completion_visual" />
+
+                        <TextView
+                            android:id="@+id/text_completion_percent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/admin_completion_initial"
+                            android:textAppearance="@style/TextAppearance.PetCare.TitleMedium"
+                            android:textColor="?attr/colorPrimary"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_xs"
+                        android:text="@string/admin_completion_subtitle"
+                        android:textAppearance="@style/TextAppearance.PetCare.BodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progress_completion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_large"
+                        android:max="100"
+                        app:trackCornerRadius="@dimen/size_6dp"
+                        app:trackThickness="@dimen/size_10dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── All accounts list ──────────────────────────────────── -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_medium"
+                android:text="@string/admin_section_accounts"
+                style="@style/Widget.PetCare.SectionHeader" />
+
+            <!--
+                RecyclerView with wrap_content height is fine here since it lives
+                inside a NestedScrollView – no nested scrolling conflict because
+                the RV itself does not scroll independently.
+            -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_users"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:clipToPadding="false" />
+
+            <!-- Empty state – shown when there are no other user accounts -->
+            <TextView
+                android:id="@+id/text_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/spacing_large"
+                android:text="@string/admin_no_other_users"
+                android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

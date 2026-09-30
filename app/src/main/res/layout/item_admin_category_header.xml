@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_admin_category_header.xml – Compact category divider label used inside
+    admin pet detail cards to group tasks by category (Feeding, Exercise, etc.).
+
+    Styled as Widget.PetCare.SectionHeader but at a smaller scale (LabelMedium)
+    so it reads as a sub-section inside the pet card, not a page-level section.
+-->
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spacing_medium"
+    android:layout_marginBottom="@dimen/spacing_small"
+    android:textAppearance="@style/TextAppearance.PetCare.LabelMedium"
+    android:textColor="?attr/colorPrimary"
+    android:textStyle="bold" />

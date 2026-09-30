@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     fragment_login.xml – User Login Screen Layout.
-    
+
     Structure:
     - NestedScrollView (fillViewport=true): ensures scrollability in landscape and small screens.
-    - ConstraintLayout: centers content horizontally and vertically with a 480dp max width cap for tablets.
-    - Header Section: Paw-print logo badge, "Welcome Back" title, and friendly subtitle.
-    - Input Section: Outlined TextInputLayouts for Email and Password with password toggle end-icon.
-    - Options Section: "Remember me" checkbox.
-    - Action Section: CircularProgressIndicator, filled rounded "Log In" button, and "Sign Up" redirect link.
+    - Outer ConstraintLayout: fills the scrollable viewport so the inner container centres vertically.
+    - Inner ConstraintLayout (cardContainer): capped at 480dp for tablets/landscape.
+    - Header: 72dp logo badge, "Welcome Back" title, friendly subtitle.
+    - Fields: Email → Password, both using Widget.PetCare.TextInputLayout.OutlinedBox.
+      Password toggle end-icon is 24dp (icon drawable) inside a 48dp hit-target (endIconMinSize
+      from the style) — no oversizing possible via style.
+    - "Remember me" MaterialCheckBox: layout_width="@dimen/dimension_zero" + start/end constraints so it spans
+      the full width and the text label stays left-aligned without a detached-label look.
+    - Loading state: LinearProgressIndicator (full-width, indeterminate) sits above the primary
+      button. When visible it is clearly legible across the full form width; when GONE ConstraintLayout
+      collapses it so no gap appears between the checkbox and the button.
+    - Primary action: Widget.PetCare.Button (48dp, 12dp corners, match_parent via layout_width).
+    - Cross-link: Widget.PetCare.Button.TextButton — a proper text-button, not a styled TextView.
 -->
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -17,32 +25,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@drawable/bg_welcome_gradient">
+    android:background="?android:attr/colorBackground">
 
+    <!-- Outer ConstraintLayout fills the viewport so the inner container can be vertically centred. -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="32dp">
+        android:paddingHorizontal="@dimen/spacing_l"
+        android:paddingVertical="@dimen/spacing_xl">
 
-        <!-- ── Centered Card Container (Capped at 480dp for tablet/landscape) ── -->
+        <!-- ── Centered Card Container (capped at 480dp for tablet / landscape) ── -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cardContainer"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimension_zero"
             android:layout_height="wrap_content"
-            app:layout_constraintWidth_max="480dp"
+            android:padding="@dimen/spacing_s"
+            app:layout_constraintWidth_max="@dimen/form_max_width"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0">
 
-            <!-- ── Top Logo Badge ────────────────────────────────────── -->
+            <!-- ── Logo Badge (72dp circular container with tinted paw-print icon) ── -->
             <FrameLayout
                 android:id="@+id/logoBadge"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
+                android:layout_width="@dimen/photo_thumbnail_size"
+                android:layout_height="@dimen/photo_thumbnail_size"
                 android:background="@drawable/bg_logo_circle"
-                android:padding="12dp"
+                android:visibility="gone"
+                android:padding="@dimen/size_12dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -56,44 +68,48 @@
                     android:contentDescription="@string/cd_app_logo" />
             </FrameLayout>
 
-            <!-- ── Screen Title ──────────────────────────────────────── -->
+            <!-- ── Screen Title ── -->
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/spacing_m"
                 android:text="@string/title_login"
-                android:textAppearance="?attr/textAppearanceHeadlineMedium"
-                android:textColor="?attr/colorPrimary"
+                android:textAppearance="@style/TextAppearance.PetCare.HeadlineMedium"
+                android:textColor="?attr/colorOnSurface"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@id/logoBadge"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <!-- ── Screen Subtitle ───────────────────────────────────── -->
+            <!-- ── Screen Subtitle ── -->
             <TextView
                 android:id="@+id/tvSubtitle"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dimension_zero"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:gravity="center"
+                android:layout_marginTop="@dimen/size_6dp"
+                android:gravity="start"
+                android:visibility="gone"
                 android:text="@string/subtitle_login"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
                 android:textColor="?attr/colorOnSurfaceVariant"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- ── Email Input Field ─────────────────────────────────── -->
+            <!-- ── Email Input Field ──
+                 Widget.PetCare.TextInputLayout.OutlinedBox: 12dp corners, 48dp icon hit-targets,
+                 endIconScaleType=centerInside (prevents oversized icon overlap). -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEmail"
                 style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/dimension_zero"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="@dimen/size_28dp"
                 android:hint="@string/email_label"
                 app:errorEnabled="true"
-                app:layout_constraintTop_toBottomOf="@id/tvSubtitle">
+                app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmail"
@@ -105,17 +121,22 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- ── Password Input Field ──────────────────────────────── -->
+            <!-- ── Password Input Field ──
+                 endIconMode="password_toggle" provides the visibility toggle.
+                 The icon drawable is 24dp; endIconMinSize=48dp (from style) ensures a comfortable
+                 48dp hit-target so the icon is never oversized or crowded against the text. -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilPassword"
                 style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/dimension_zero"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/size_12dp"
                 android:hint="@string/password_label"
                 app:endIconMode="password_toggle"
                 app:errorEnabled="true"
-                app:layout_constraintTop_toBottomOf="@id/tilEmail">
+                app:layout_constraintTop_toBottomOf="@id/tilEmail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
@@ -127,24 +148,32 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- ── Remember Me Checkbox ──────────────────────────────── -->
+            <!-- ── Remember Me Checkbox ──
+                 layout_width="@dimen/dimension_zero" + start/end constraints → spans the full container width so
+                 the checkbox icon and its label are left-aligned flush with the input fields.
+                 MaterialCheckBox renders both the tick-box and the text as a single widget, so
+                 no separate label TextView is needed. -->
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/cbRememberMe"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dimension_zero"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/spacing_s"
                 android:text="@string/remember_me"
                 android:checked="true"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
                 app:layout_constraintTop_toBottomOf="@id/tilPassword"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- ── Progress Loading Indicator ────────────────────────── -->
-            <com.google.android.material.progressindicator.CircularProgressIndicator
+            <!-- ── Loading Progress Indicator ──
+                 LinearProgressIndicator spans the full container width for clear visibility.
+                 Visibility is toggled by LoginFragment.observeState(); GONE collapses the view
+                 in ConstraintLayout so no gap appears between the checkbox and the button. -->
+            <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dimension_zero"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/size_20dp"
                 android:indeterminate="true"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/cbRememberMe"
@@ -152,30 +181,37 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:visibility="visible" />
 
-            <!-- ── Log In Submit Button ──────────────────────────────── -->
+            <!-- ── Log In Submit Button ──
+                 Widget.PetCare.Button: 48dp minHeight, 12dp corners.
+                 layout_width="match_parent" + 0dp on the TIL above ensures full-width.
+                 marginTop="@dimen/spacing_s" when indicator is GONE; when VISIBLE the indicator
+                 already carries its own 20dp top margin so the button is pushed naturally. -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="20dp"
+                style="@style/Widget.PetCare.Button"
+                android:layout_width="@dimen/dimension_zero"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_s"
                 android:text="@string/btn_login"
                 android:contentDescription="@string/cd_btn_login"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                app:cornerRadius="24dp"
-                app:layout_constraintTop_toBottomOf="@id/progressBar" />
+                app:layout_constraintTop_toBottomOf="@id/progressBar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- ── Don't have an account link ────────────────────────── -->
+            <!-- ── "Don't have an account?" Cross-Link ──
+                 Widget.PetCare.Button.TextButton: proper text-button style (no background,
+                 no stroke, correct ripple) instead of a styled plain TextView.
+                 LoginFragment binds btnSignupLink.setOnClickListener to navigate to Signup. -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSignupLink"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="12dp"
+                style="@style/Widget.PetCare.Button.TextButton"
+                android:layout_width="@dimen/dimension_zero"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xs"
                 android:text="@string/dont_have_account"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                app:cornerRadius="24dp"
-                app:strokeColor="@android:color/transparent"
-                app:layout_constraintTop_toBottomOf="@id/btnLogin" />
+                app:layout_constraintTop_toBottomOf="@id/btnLogin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

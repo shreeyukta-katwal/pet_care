@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark palette overrides only; all tokens, dimensions and styles are shared. -->
+    <color name="palette_primary">#FFB3C6</color>
+    <color name="palette_on_primary">#5A2437</color>
+    <color name="palette_primary_container">#5A2437</color>
+    <color name="palette_on_primary_container">#FFB3C6</color>
+    <color name="palette_secondary">#FFB3C6</color>
+    <color name="palette_on_secondary">#3A2431</color>
+    <color name="palette_secondary_container">#3A2431</color>
+    <color name="palette_on_secondary_container">#FFB3C6</color>
+    <color name="palette_tertiary">#FFE7A3</color>
+    <color name="palette_on_tertiary">#43303F</color>
+    <color name="palette_tertiary_container">#65451D</color>
+    <color name="palette_on_tertiary_container">#FFE7A3</color>
+    <color name="palette_error">#F2B8B5</color>
+    <color name="palette_on_error">#601410</color>
+    <color name="palette_error_container">#8C1D18</color>
+    <color name="palette_on_error_container">#F9DEDC</color>
+    <color name="palette_background">#1E171C</color>
+    <color name="palette_on_background">#F8E9EF</color>
+    <color name="palette_surface">#2A2028</color>
+    <color name="palette_on_surface">#F8E9EF</color>
+    <color name="palette_surface_variant">#3A2431</color>
+    <color name="palette_on_surface_variant">#BFA5B3</color>
+    <color name="palette_outline">#9D7F90</color>
+    <color name="palette_outline_variant">#4A3844</color>
+    <color name="palette_inverse_surface">#E1E3E1</color>
+    <color name="palette_inverse_on_surface">#191C1B</color>
+    <color name="palette_inverse_primary">#9B2447</color>
+    <color name="palette_welcome_gradient_start">#5A2437</color>
+    <color name="palette_welcome_gradient_center">#3A2431</color>
+    <color name="palette_welcome_gradient_end">#1E171C</color>
+    <color name="palette_welcome_tagline">#BFA5B3</color>
+</resources>

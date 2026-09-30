@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_info_note.xml – Subtle rounded background container for informational hint cards.
+    Uses colorSurfaceVariant with a 1dp outlineVariant stroke and 12dp corner radius.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="?attr/colorSurfaceVariant" />
+    <stroke
+        android:width="@dimen/card_elevation"
+        android:color="?attr/colorOutlineVariant" />
+    <corners android:radius="@dimen/radius_s" />
+</shape>

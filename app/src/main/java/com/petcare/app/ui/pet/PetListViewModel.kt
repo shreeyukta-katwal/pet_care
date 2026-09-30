@@ -68,7 +68,7 @@ class PetListViewModel(
         )
 
     val petsWithProgress: StateFlow<List<PetItemUiState>> = if (taskRepository != null) {
-        combine(petRepository.getAllForUser(userId), taskRepository.getAllTasks()) { petList, allTasks ->
+        combine(petRepository.getAllForUser(userId), taskRepository.getAllTasksForUser(userId)) { petList, allTasks ->
             val today = LocalDate.now()
             val dayOfWeekBit = 1 shl (today.dayOfWeek.value - 1)
             val todayStr = today.toString()

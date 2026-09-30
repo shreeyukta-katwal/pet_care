@@ -154,6 +154,10 @@
                 app:argType="long"
                 android:defaultValue="0L" />
         </action>
+        <!-- Destination also performs a server-side-style authorization check. -->
+        <action
+            android:id="@+id/action_petList_to_adminDashboard"
+            app:destination="@id/adminDashboardFragment" />
     </fragment>
 
     <!-- ── Pet Form (Add / Edit) ─────────────────────────────────────── -->
@@ -259,4 +263,25 @@
             android:defaultValue="0L" />
     </fragment>
 
+    <!-- ── Administrator Dashboard ─────────────────────────────────── -->
+    <fragment
+        android:id="@+id/adminDashboardFragment"
+        android:name="com.petcare.app.ui.admin.AdminDashboardFragment"
+        android:label="@string/screen_admin_dashboard"
+        tools:layout="@layout/fragment_admin_dashboard">
+        <action
+            android:id="@+id/action_adminDashboard_to_adminUserDetail"
+            app:destination="@id/adminUserDetailFragment">
+            <argument android:name="userId" app:argType="long" />
+        </action>
+    </fragment>
+
+    <!-- ── Administrator Read-only User Detail ─────────────────────── -->
+    <fragment
+        android:id="@+id/adminUserDetailFragment"
+        android:name="com.petcare.app.ui.admin.AdminUserDetailFragment"
+        android:label="@string/screen_admin_user_detail"
+        tools:layout="@layout/fragment_admin_user_detail">
+        <argument android:name="userId" app:argType="long" />
+    </fragment>
 </navigation>

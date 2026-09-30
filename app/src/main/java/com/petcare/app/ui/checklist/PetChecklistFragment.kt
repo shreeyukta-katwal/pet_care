@@ -22,6 +22,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import android.content.res.ColorStateList
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.petcare.app.PetCareApp
@@ -30,6 +36,7 @@ import com.petcare.app.data.db.PetEntity
 import com.petcare.app.data.db.TaskEntity
 import com.petcare.app.data.repository.TaskSnapshot
 import com.petcare.app.databinding.FragmentPetChecklistBinding
+import com.petcare.app.databinding.BottomSheetChecklistOptionsBinding
 import com.petcare.app.gesture.ChecklistSwipeCallback
 import com.petcare.app.gesture.DoubleTapPhotoListener
 import com.petcare.app.gesture.PhotoViewerDialog
@@ -51,7 +58,7 @@ import kotlinx.coroutines.launch
  *    and enters contextual multi-selection mode, enabling batch-complete and batch-delete operations.
  * 5. **Double-Tap Photo to Enlarge**: Double-tapping the hero pet avatar launches [PhotoViewerDialog]
  *    in an immersive full-screen view with swipe-down dismissal.
- * 6. **Gesture Discoverability**: A "Gestures guide" dialog in the toolbar overflow menu documents all 5
+ * 6. **Gesture Discoverability**: A "Gestures guide" dialog in the toolbar options sheet documents all 5
  *    gestures, and a one-time onboarding hint Snackbar greets first-time visitors.
  */
 class PetChecklistFragment : Fragment() {
@@ -81,6 +88,7 @@ class PetChecklistFragment : Fragment() {
     /** Active contextual ActionMode when multi-selection is enabled. */
     private var actionMode: ActionMode? = null
     private val selectedTaskIds = mutableSetOf<Long>()
+    private var optionsSheet: BottomSheetDialog? = null
 
     /** BroadcastReceiver listening for system midnight date changes. */
     private val dateChangeReceiver = object : BroadcastReceiver() {
@@ -105,9 +113,22 @@ class PetChecklistFragment : Fragment() {
         setupRecyclerView()
         setupSegmentedControl()
         setupButtons()
+        setupFabInsets()
         setupGestures()
         showOnboardingGestureTipIfNeeded()
         observeViewModel()
+    }
+
+    private fun setupFabInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.fabAddRoutine) { v, insets ->
+            val navBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val params = v.layoutParams as ViewGroup.MarginLayoutParams
+            val margin = resources.getDimensionPixelSize(R.dimen.fab_margin)
+            params.bottomMargin = margin + navBars.bottom
+            params.rightMargin = margin + navBars.right
+            v.layoutParams = params
+            insets
+        }
     }
 
     override fun onResume() {
@@ -129,6 +150,7 @@ class PetChecklistFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        optionsSheet?.dismiss()
         super.onDestroyView()
         finishActionMode()
         shakeDetector?.stop()
@@ -155,21 +177,37 @@ class PetChecklistFragment : Fragment() {
                     }
                     true
                 }
-                R.id.action_edit_pet -> {
-                    navigateToPetForm()
-                    true
-                }
-                R.id.action_reset_checklist -> {
-                    confirmAndResetChecklist()
-                    true
-                }
-                R.id.action_gestures_guide -> {
-                    showGesturesGuideDialog()
+                R.id.action_more -> {
+                    showOptionsSheet()
                     true
                 }
                 else -> false
             }
         }
+    }
+
+    private fun showOptionsSheet() {
+        if (optionsSheet?.isShowing == true) {
+            optionsSheet?.dismiss()
+            return
+        }
+
+        val menuBinding = BottomSheetChecklistOptionsBinding.inflate(layoutInflater)
+        val sheet = BottomSheetDialog(requireContext(), R.style.Widget_PetCare_BottomSheetDialog).apply {
+            setContentView(menuBinding.root)
+            setOnDismissListener { optionsSheet = null }
+        }
+        optionsSheet = sheet
+
+        menuBinding.actionGesturesGuide.setOnClickListener {
+            sheet.dismiss()
+            showGesturesGuideDialog()
+        }
+        menuBinding.actionResetChecklist.setOnClickListener {
+            sheet.dismiss()
+            confirmAndResetChecklist()
+        }
+        sheet.show()
     }
 
     private fun setupRecyclerView() {
@@ -328,7 +366,7 @@ class PetChecklistFragment : Fragment() {
                     R.id.action_delete_selected -> {
                         val idsToDelete = selectedTaskIds.toSet()
                         val count = idsToDelete.size
-                        MaterialAlertDialogBuilder(requireContext())
+                        MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_PetCare_MaterialAlertDialog_Destructive)
                             .setTitle(R.string.dialog_delete_selected_tasks_title)
                             .setMessage(getString(R.string.dialog_delete_selected_tasks_message, count))
                             .setPositiveButton(R.string.btn_delete) { _, _ ->
@@ -389,7 +427,8 @@ class PetChecklistFragment : Fragment() {
 
     private fun confirmAndResetChecklist() {
         val petName = viewModel.pet.value?.name ?: "your pet"
-        MaterialAlertDialogBuilder(requireContext())
+        // Reset is a reversible but impactful action – use destructive styling to signal permanence
+        MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_PetCare_MaterialAlertDialog_Destructive)
             .setTitle(R.string.dialog_reset_checklist_title)
             .setMessage(getString(R.string.dialog_reset_checklist_message, petName))
             .setPositiveButton(R.string.btn_reset) { _, _ ->
@@ -402,9 +441,11 @@ class PetChecklistFragment : Fragment() {
     // ── Gestures Guide & Discoverability ──────────────────────────────────
 
     private fun showGesturesGuideDialog() {
+        // Inflate the custom list layout showing icon + name + description for each of the 5 gestures
+        val guideView = layoutInflater.inflate(R.layout.dialog_gestures_guide, null)
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.dialog_gestures_guide_title)
-            .setMessage(R.string.dialog_gestures_guide_message)
+            .setView(guideView)
             .setPositiveButton(R.string.btn_got_it, null)
             .show()
     }
@@ -479,21 +520,34 @@ class PetChecklistFragment : Fragment() {
 
         // Daily Progress (Only visible in "Today" mode)
         if (state.filterMode == ChecklistFilterMode.TODAY) {
+            binding.dividerProgress.visibility = View.VISIBLE
             binding.progressIndicatorDaily.visibility = View.VISIBLE
             binding.textProgressStatus.visibility = View.VISIBLE
             binding.progressIndicatorDaily.setProgress(state.progressPercentage, true)
 
             if (state.isAllDone) {
+                val doneColor = ContextCompat.getColor(requireContext(), R.color.color_swipe_done_bg)
                 binding.textProgressStatus.text = getString(R.string.progress_all_done)
+                binding.textProgressStatus.setTextColor(doneColor)
+                binding.textProgressStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check, 0, 0, 0)
+                binding.textProgressStatus.compoundDrawablePadding = resources.getDimensionPixelSize(R.dimen.spacing_xsmall)
+                binding.textProgressStatus.compoundDrawableTintList = ColorStateList.valueOf(doneColor)
+                binding.progressIndicatorDaily.setIndicatorColor(doneColor)
             } else {
+                val defaultColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorOnSurface)
+                val primaryColor = MaterialColors.getColor(binding.root, com.google.android.material.R.attr.colorPrimary)
                 binding.textProgressStatus.text = getString(
                     R.string.progress_x_of_y_done,
                     state.completedCount,
                     state.totalCount
                 )
+                binding.textProgressStatus.setTextColor(defaultColor)
+                binding.textProgressStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+                binding.progressIndicatorDaily.setIndicatorColor(primaryColor)
             }
         } else {
             // "All routines" mode
+            binding.dividerProgress.visibility = View.GONE
             binding.progressIndicatorDaily.visibility = View.GONE
             binding.textProgressStatus.visibility = View.GONE
         }
@@ -565,7 +619,7 @@ class PetChecklistFragment : Fragment() {
     // ── Dialog & Snackbar Helpers ─────────────────────────────────────────
 
     private fun showDeleteTaskDialog(task: TaskEntity) {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_PetCare_MaterialAlertDialog_Destructive)
             .setTitle(R.string.dialog_delete_task_title)
             .setMessage(getString(R.string.dialog_delete_task_message, task.name))
             .setPositiveButton(R.string.btn_delete) { _, _ ->

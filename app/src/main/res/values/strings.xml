@@ -15,6 +15,13 @@
     <string name="screen_login">Login</string>
     <string name="screen_signup">Sign Up</string>
     <string name="screen_pet_list">My Pets</string>
+    <string name="pet_list_eyebrow">YOUR CARE SPACE</string>
+    <string name="pet_list_intro">Every profile and daily routine, together in one place.</string>
+    <string name="empty_pets_eyebrow">LET’S GET STARTED</string>
+    <string name="pet_form_eyebrow">PET PROFILE</string>
+    <string name="pet_form_intro">The details that help you care for them.</string>
+    <string name="task_form_eyebrow">CARE ROUTINE</string>
+    <string name="task_form_intro">Make the everyday easier to remember.</string>
     <string name="screen_pet_form">Pet Profile</string>
     <string name="screen_pet_checklist">Daily Checklist</string>
     <string name="screen_task_form">Care Task</string>
@@ -130,8 +137,8 @@
     <string name="hint_pet_name">Pet Name *</string>
     <string name="hint_species">Species *</string>
     <string name="hint_breed">Breed</string>
-    <string name="hint_age">Age (years)</string>
-    <string name="hint_weight">Weight (kg)</string>
+    <string name="hint_age">Age</string>
+    <string name="hint_weight">Weight</string>
     <string name="hint_diet">Dietary Preferences</string>
     <string name="hint_allergies">Allergies &amp; Sensitivities</string>
     <string name="hint_vaccinations">Vaccination History</string>
@@ -281,8 +288,22 @@
     <!-- ── Gesture Controls (Step 9 - Desirable Feature) ──────────────── -->
     <string name="menu_reset_checklist">Reset today\'s checklist</string>
     <string name="menu_gestures_guide">Gestures guide</string>
-    <string name="dialog_gestures_guide_title">Desirable feature: Gesture controls</string>
+    <string name="menu_more_options">More options</string>
+    <string name="dialog_gestures_guide_title">Gesture Controls (Desirable Feature)</string>
+    <string name="dialog_gestures_guide_subtitle">PetCare includes 5 intuitive gesture &amp; sensor controls to streamline your daily care routines.</string>
+    <string name="gesture_swipe_left_name">Swipe Left</string>
+    <string name="gesture_swipe_left_desc">Delete a care routine or pet card instantly (with Undo)</string>
+    <string name="gesture_swipe_right_name">Swipe Right</string>
+    <string name="gesture_swipe_right_desc">Mark a care routine done for today (with Undo)</string>
+    <string name="gesture_shake_name">Shake Device</string>
+    <string name="gesture_shake_desc">Reset today\'s checklist progress via the accelerometer sensor</string>
+    <string name="gesture_long_press_name">Long Press</string>
+    <string name="gesture_long_press_desc">Enter multi-selection mode to batch-complete or batch-delete items</string>
+    <string name="gesture_double_tap_name">Double Tap Photo</string>
+    <string name="gesture_double_tap_desc">Enlarge pet profile picture in full-screen viewer</string>
+    <string name="gesture_note_alternatives">Every gesture has a direct button or menu alternative.</string>
     <string name="dialog_gestures_guide_message">PetCare includes 5 intuitive gesture &amp; sensor controls:\n\n1. 👈 Swipe Left: Delete a care routine or pet card instantly (with Undo).\n\n2. 👉 Swipe Right: Mark a care routine done for today (with Undo).\n\n3. 📳 Shake Device: Reset today\'s checklist progress via the accelerometer sensor.\n\n4. 👆 Long Press: Enter multi-selection mode to batch-complete or batch-delete items.\n\n5. 🔍 Double Tap Photo: Enlarge pet profile picture in full screen.\n\nNote: Every gesture has a direct button/menu alternative.</string>
+    <string name="hint_photo_dismiss">Tap anywhere or swipe down to dismiss</string>
     <string name="tip_gesture_hint">Tip: Swipe right to complete, left to delete, or shake to reset.</string>
     <string name="dialog_reset_checklist_title">Reset Today\'s Checklist</string>
     <string name="dialog_reset_checklist_message">Reset all completed tasks for %1$s today?</string>
@@ -301,5 +322,47 @@
     <string name="action_mode_selected_count">%1$d selected</string>
     <string name="cd_photo_viewer">Enlarged pet photo. Tap or swipe down to dismiss.</string>
     <string name="btn_got_it">Got it</string>
+
+    <!-- ── Administration (debug test account only) ─────────────────── -->
+    <string name="screen_admin_dashboard">Admin Panel</string>
+    <string name="screen_admin_user_detail">User pets</string>
+    <string name="menu_admin_panel">Admin Panel</string>
+    <string name="admin_total_users">Users</string>
+    <string name="admin_total_pets">Pets</string>
+    <string name="admin_total_tasks">Tasks</string>
+    <string name="admin_tasks_done_today">Done today</string>
+    <string name="admin_view_pets">View pets</string>
+    <string name="admin_delete_account">Delete account</string>
+    <string name="admin_reset_password">Reset password</string>
+    <string name="admin_password_reset_message">Reset this account to a new temporary password? The previous password will stop working immediately.</string>
+    <string name="admin_password_reset_complete_title">Temporary password created</string>
+    <string name="admin_password_reset_complete_message">Share this temporary password securely: %1$s</string>
+    <string name="admin_completion_visual">Today’s task completion</string>
+    <string name="admin_completion_initial">0%</string>
+    <string name="admin_completion_percent">%1$d%%</string>
+    <string name="admin_completion_subtitle">Completed routines across every account today</string>
+    <string name="admin_hero_eyebrow">ADMIN WORKSPACE</string>
+    <string name="admin_hero_title">A clear view of care.</string>
+    <string name="admin_hero_subtitle">Monitor accounts, pets and today’s routines at a glance.</string>
+    <string name="admin_account_eyebrow">ACCOUNT PROFILE</string>
+    <string name="admin_account_loading">Loading account…</string>
+    <string name="admin_account_subtitle">Pets and routines linked to this account</string>
+    <string name="admin_no_other_users">No other user accounts yet.</string>
+    <string name="admin_no_pets">This user has no pets.</string>
+    <string name="admin_delete_title">Delete account?</string>
+    <string name="admin_delete_message">Delete this account and all its data? This cannot be undone. This action is permanent.</string>
+    <string name="admin_account_deleted">Account deleted permanently</string>
+    <string name="admin_not_authorised">Not authorised</string>
+    <string name="action_back">Back</string>
+    <string name="admin_pet_count">%1$d pets</string>
+    <string name="admin_task_count">%1$d tasks</string>
+    <string name="admin_task_done">Done today</string>
+    <string name="admin_task_not_done">Not done today</string>
+    <!-- New strings for the redesigned admin UI -->
+    <string name="admin_section_overview">Overview</string>
+    <string name="admin_section_accounts">All accounts</string>
+    <string name="admin_section_pets">Pets</string>
+    <string name="admin_pet_routines_label">Routines</string>
+    <string name="admin_no_routines_for_pet">No routines set up yet</string>
 
 </resources>

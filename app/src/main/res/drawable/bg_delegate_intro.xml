@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Highlighted context block above the delegation form. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="?attr/colorPrimaryContainer" />
+    <corners android:radius="@dimen/size_20dp" />
+</shape>

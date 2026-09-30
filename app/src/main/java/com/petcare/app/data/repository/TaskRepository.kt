@@ -38,7 +38,7 @@ open class TaskRepository(private val taskDao: TaskDao) {
      *
      * @return A [Flow] emitting the complete list of [TaskEntity] rows.
      */
-    open fun getAllTasks(): Flow<List<TaskEntity>> = taskDao.getAllTasks()
+    open fun getAllTasksForUser(userId: Long): Flow<List<TaskEntity>> = taskDao.getAllTasksForUser(userId)
 
     /**
      * Retrieves all tasks that have reminders enabled (one-shot, non-reactive).

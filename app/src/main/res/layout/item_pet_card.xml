@@ -15,14 +15,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_pet"
+    style="@style/Widget.PetCare.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacing_medium"
-    android:layout_marginBottom="@dimen/spacing_small"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="2dp"
-    app:strokeColor="?attr/colorOutlineVariant"
-    app:strokeWidth="1dp"
+    android:layout_marginBottom="@dimen/spacing_medium"
     android:clickable="true"
     android:focusable="true">
 
@@ -35,12 +32,14 @@
             Circular pet photo.
             Loaded via setImageURI(); ic_paw_placeholder used when photoUri is null.
         -->
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_pet_photo"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:contentDescription="@string/cd_pet_photo"
             android:scaleType="centerCrop"
+            android:background="@drawable/bg_pet_avatar_small"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.PetCare.Circular"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -49,11 +48,12 @@
         <!-- Pet name – prominent title text -->
         <TextView
             android:id="@+id/text_pet_name"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimension_zero"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_medium"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textAppearance="@style/TextAppearance.PetCare.TitleMedium"
             android:textColor="?attr/colorOnSurface"
+            android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end"
             app:layout_constraintStart_toEndOf="@id/image_pet_photo"
@@ -64,11 +64,11 @@
         <!-- Species · Breed -->
         <TextView
             android:id="@+id/text_species_breed"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimension_zero"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_medium"
-            android:layout_marginTop="2dp"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:layout_marginTop="@dimen/size_2dp"
+            android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:maxLines="1"
             android:ellipsize="end"
@@ -83,31 +83,52 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_medium"
-            android:layout_marginTop="4dp"
-            android:textAppearance="?attr/textAppearanceLabelMedium"
-            android:textColor="?attr/colorPrimary"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:textAppearance="@style/TextAppearance.PetCare.LabelMedium"
+            android:textColor="?attr/colorOnPrimaryContainer"
+            android:background="@drawable/bg_pet_age_badge"
+            android:paddingHorizontal="@dimen/spacing_s"
+            android:paddingVertical="@dimen/spacing_xs"
             app:layout_constraintStart_toEndOf="@id/image_pet_photo"
             app:layout_constraintTop_toBottomOf="@id/text_species_breed"
             tools:text="3 yr" />
 
-        <!-- Progress label (Step 6 requirement 10: "4/6 done") -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_pet_today"
+            android:layout_width="@dimen/dimension_zero"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:visibility="gone"
+            app:indicatorColor="?attr/colorPrimary"
+            app:trackColor="?attr/colorSecondaryContainer"
+            app:trackThickness="10dp"
+            app:trackCornerRadius="5dp"
+            app:layout_constraintStart_toEndOf="@id/image_pet_photo"
+            app:layout_constraintEnd_toStartOf="@id/button_overflow"
+            app:layout_constraintTop_toBottomOf="@id/text_age"
+            tools:progress="80"
+            tools:visibility="visible" />
+
+        <!-- Progress label -->
         <TextView
             android:id="@+id/text_progress"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dimension_zero"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_small"
-            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:textAppearance="@style/TextAppearance.PetCare.LabelMedium"
             android:textColor="?attr/colorSecondary"
-            app:layout_constraintStart_toEndOf="@id/text_age"
+            app:layout_constraintStart_toEndOf="@id/image_pet_photo"
             app:layout_constraintEnd_toStartOf="@id/button_overflow"
-            app:layout_constraintBaseline_toBaselineOf="@id/text_age"
+            app:layout_constraintTop_toBottomOf="@id/progress_pet_today"
             tools:text="• 4/6 done" />
 
-        <!-- ⋮ overflow button – anchored top-end of the card -->
+        <!-- ⋮ overflow button – anchored top-end of the card (48dp touch target per Material guidelines) -->
         <ImageButton
             android:id="@+id/button_overflow"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/touch_target"
+            android:layout_height="@dimen/touch_target"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/cd_more_options"
             android:src="@drawable/ic_more_vert"

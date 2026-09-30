@@ -185,12 +185,11 @@ class TaskFormFragment : Fragment() {
      * Creates a circular avatar drawable for the selected pet (or placeholder).
      * Disables any start icon tint so photos are not tinted.
      */
-    private fun getPetAvatarDrawable(photoUriString: String?, sizeDp: Int): Drawable {
+    private fun getPetAvatarDrawable(photoUriString: String?, sizePx: Int): Drawable {
         if (!photoUriString.isNullOrBlank()) {
             try {
                 val uri = Uri.parse(photoUriString)
-                val density = resources.displayMetrics.density
-                val targetPx = (sizeDp * density).toInt().coerceAtLeast(1)
+                val targetPx = sizePx.coerceAtLeast(1)
 
                 // Decode bounds first to downsample efficiently
                 val boundsOptions = BitmapFactory.Options().apply { inJustDecodeBounds = true }
@@ -255,7 +254,7 @@ class TaskFormFragment : Fragment() {
         binding.dropdownPet.setText(petText, false)
         // Disable icon tint so photo colors are preserved
         binding.layoutPet.setStartIconTintList(null)
-        binding.layoutPet.startIconDrawable = getPetAvatarDrawable(pet.photoUri, 28)
+        binding.layoutPet.startIconDrawable = getPetAvatarDrawable(pet.photoUri, resources.getDimension(R.dimen.icon_size_avatar).toInt())
         binding.toolbar.subtitle = pet.name
     }
 
@@ -296,7 +295,7 @@ class TaskFormFragment : Fragment() {
             val pet = getItem(position)!!
             itemBinding.textPetName.text = pet.name
             itemBinding.textPetSpecies.text = pet.species
-            itemBinding.imagePetAvatar.setImageDrawable(getPetAvatarDrawable(pet.photoUri, 32))
+            itemBinding.imagePetAvatar.setImageDrawable(getPetAvatarDrawable(pet.photoUri, resources.getDimension(R.dimen.icon_size_avatar).toInt()))
             return itemBinding.root
         }
     }
@@ -757,7 +756,8 @@ class TaskFormFragment : Fragment() {
     }
 
     private fun showUnsavedChangesDialog() {
-        MaterialAlertDialogBuilder(requireContext())
+        // Discarding edits is irreversible – destructive styling signals intent clearly
+        MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_PetCare_MaterialAlertDialog_Destructive)
             .setTitle(R.string.dialog_unsaved_title)
             .setMessage(R.string.dialog_unsaved_message)
             .setPositiveButton(R.string.btn_discard) { _, _ ->

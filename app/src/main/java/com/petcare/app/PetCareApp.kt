@@ -4,6 +4,9 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
+import com.petcare.app.BuildConfig
+import com.petcare.app.data.db.UserEntity
+import com.petcare.app.data.security.PasswordHasher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,8 +36,23 @@ class PetCareApp : Application() {
         super.onCreate()
         container = AppContainer(this)
 
+        seedDebugAdmin()
         createNotificationChannel()
         rescheduleEnabledReminders()
+    }
+
+    /** Creates the documented test administrator only in debug builds and only once. */
+    private fun seedDebugAdmin() {
+        if (!BuildConfig.DEBUG) return
+        CoroutineScope(Dispatchers.IO).launch {
+            val email = "admin@petcare.app"
+            if (container.userRepository.findByEmail(email) == null) {
+                val hash = PasswordHasher.hash("AdminPetCare1")
+                container.userRepository.insert(
+                    UserEntity(email = email, passwordHash = hash.hashBase64, salt = hash.saltBase64, isAdmin = true)
+                )
+            }
+        }
     }
 
     /**

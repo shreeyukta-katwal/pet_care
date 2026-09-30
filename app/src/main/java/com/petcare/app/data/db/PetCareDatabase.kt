@@ -29,7 +29,7 @@ import androidx.room.TypeConverters
  */
 @Database(
     entities = [UserEntity::class, PetEntity::class, TaskEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = true   // Exports schema to app/schemas/ for migration tracking
 )
 @TypeConverters(Converters::class)
@@ -88,8 +88,9 @@ abstract class PetCareDatabase : RoomDatabase() {
                 PetCareDatabase::class.java,
                 DATABASE_NAME
             )
-                // In production, migrations would be added here.
-                // For now, destructive migration is disabled.
+                // This prototype has no migration strategy yet. Moving to v2 adds
+                // UserEntity.isAdmin, so existing prototype data is intentionally reset.
+                .fallbackToDestructiveMigration()
                 .build()
     }
 }

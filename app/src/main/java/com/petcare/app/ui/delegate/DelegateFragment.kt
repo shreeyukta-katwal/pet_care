@@ -20,6 +20,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -172,11 +175,25 @@ class DelegateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupWindowInsets()
         setupToolbar()
         setupRecyclerView()
         setupInputListeners()
         setupActionButtons()
         observeUiState()
+    }
+
+    /**
+     * Handles keyboard and navigation bar insets so content and bottom buttons are never obscured.
+     */
+    private fun setupWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.scrollView) { v, insets ->
+            val systemBars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
+            )
+            v.updatePadding(bottom = systemBars.bottom)
+            insets
+        }
     }
 
     override fun onDestroyView() {

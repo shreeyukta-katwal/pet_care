@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_contact_badge.xml – Pill container background for chosen contact indicator.
+    Uses colorSecondaryContainer with 8dp rounded corners and subtle styling.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="?attr/colorSecondaryContainer" />
+    <corners android:radius="@dimen/spacing_s" />
+</shape>

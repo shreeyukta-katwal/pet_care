@@ -3,8 +3,8 @@
     ic_more_vert.xml – Vertical three-dots overflow menu icon.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="24dp"
-    android:height="24dp"
+    android:width="@dimen/spacing_l"
+    android:height="@dimen/spacing_l"
     android:viewportWidth="24"
     android:viewportHeight="24">
     <path

@@ -81,6 +81,7 @@ ViewBinding / Gestures                                WorkManager / Sensors
 
 ### Installation & Run
 
+
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/<your-username>/PetCare.git

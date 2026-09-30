@@ -438,7 +438,8 @@ class PetFormFragment : Fragment() {
     }
 
     private fun showUnsavedChangesDialog() {
-        MaterialAlertDialogBuilder(requireContext())
+        // Discarding edits is irreversible – destructive styling signals intent clearly
+        MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_PetCare_MaterialAlertDialog_Destructive)
             .setTitle(R.string.dialog_unsaved_title)
             .setMessage(R.string.dialog_unsaved_message)
             .setPositiveButton(R.string.btn_discard) { _, _ ->

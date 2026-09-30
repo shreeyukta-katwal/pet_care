@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/spacing_l">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_xs" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/spacing_l"
+        android:paddingBottom="@dimen/spacing_s"
+        android:text="@string/screen_pet_checklist"
+        android:textAppearance="@style/TextAppearance.PetCare.TitleMedium"
+        android:textColor="?attr/colorOnSurface"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/spacing_l"
+        android:layout_marginBottom="@dimen/spacing_s"
+        android:background="?attr/colorOutlineVariant" />
+
+    <LinearLayout
+        android:id="@+id/action_gestures_guide"
+        style="@style/Widget.PetCare.SheetAction">
+        <ImageView
+            style="@style/Widget.PetCare.SheetAction.Icon"
+            android:src="@drawable/ic_gesture"
+            android:contentDescription="@null"
+            app:tint="?attr/colorPrimary" />
+        <TextView
+            style="@style/Widget.PetCare.SheetAction.Label"
+            android:text="@string/menu_gestures_guide" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/spacing_l"
+        android:layout_marginVertical="@dimen/spacing_xs"
+        android:background="?attr/colorOutlineVariant" />
+
+    <LinearLayout
+        android:id="@+id/action_reset_checklist"
+        style="@style/Widget.PetCare.SheetAction">
+        <ImageView
+            style="@style/Widget.PetCare.SheetAction.Icon"
+            android:src="@drawable/ic_clock"
+            android:contentDescription="@null"
+            app:tint="?attr/colorError" />
+        <TextView
+            style="@style/Widget.PetCare.SheetAction.Label"
+            android:text="@string/menu_reset_checklist"
+            android:textColor="?attr/colorError" />
+    </LinearLayout>
+</LinearLayout>

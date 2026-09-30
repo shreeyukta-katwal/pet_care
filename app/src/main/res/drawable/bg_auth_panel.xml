@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Raised surface keeps authentication content readable over the soft brand gradient. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="?attr/colorSurface" />
+    <corners android:radius="@dimen/radius_welcome" />
+    <stroke android:width="@dimen/card_elevation" android:color="?attr/colorOutlineVariant" />
+</shape>

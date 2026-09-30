@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    bg_user_avatar.xml – Circular background for the user-account avatar in admin user rows.
+    Uses colorPrimaryContainer to match the app's avatar system.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="?attr/colorPrimaryContainer" />
+</shape>

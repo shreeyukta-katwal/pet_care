@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    bg_welcome_gradient.xml – Subtle teal-tinted background gradient for Welcome screen (Light mode).
-    Starts with a soft, warm mint/teal at the top and softly transitions to the light surface background.
+    bg_welcome_gradient.xml – Cute theme background for Welcome screen (Light mode).
+    Matches prototype:
+    radial-gradient(circle at 100% 0, #FFE7A3 0 120px, transparent 121px),
+    radial-gradient(circle at 0 58%, #CFF1E4 0 70px, transparent 71px),
+    #FFC8D5
 -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient
-        android:angle="270"
-        android:startColor="#E0F2F1"
-        android:centerColor="#F0FAF7"
-        android:endColor="#FAFDFA"
-        android:type="linear" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base soft pink background -->
+    <item>
+        <shape>
+            <solid android:color="@color/color_welcome_gradient_center" />
+        </shape>
+    </item>
+    <!-- Top-right corner accent circle: yellow #FFE7A3, radius 120dp (center at 100% 0) -->
+    <item
+        android:width="240dp"
+        android:height="240dp"
+        android:gravity="top|right"
+        android:top="-120dp"
+        android:right="-120dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/color_welcome_gradient_start" />
+        </shape>
+    </item>
+    <!-- Mid-left accent circle: mint #CFF1E4, radius 70dp (center at 0 58%) -->
+    <item
+        android:width="140dp"
+        android:height="140dp"
+        android:gravity="center_vertical|left"
+        android:left="-70dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/color_welcome_gradient_end" />
+        </shape>
+    </item>
+</layer-list>

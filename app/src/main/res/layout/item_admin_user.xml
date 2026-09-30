@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_admin_user.xml – One administrator-managed account row.
+
+    Row anatomy (left → right):
+      ● 40dp circular avatar initial letter (colorPrimaryContainer bg)
+      ● Vertical stack: email (TitleMedium bold) + pet/task counts (BodyMedium muted)
+      ● 48dp overflow ImageButton (matching icon size & touch target from shared system)
+
+    Uses Widget.PetCare.Card chrome (16dp corners, 1dp outline, 2dp elevation)
+    so rows look consistent with pet-list cards and delegate task cards.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.PetCare.Card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_marginHorizontal="@dimen/dimension_zero"
+    android:layout_marginVertical="@dimen/spacing_xsmall">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/spacing_medium"
+        android:paddingVertical="@dimen/spacing_medium"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/touch_target">
+
+        <!-- Avatar: circular container with a person icon tinted in primary colour -->
+        <FrameLayout
+            android:layout_width="@dimen/size_40dp"
+            android:layout_height="@dimen/size_40dp"
+            android:layout_marginEnd="@dimen/spacing_medium"
+            android:background="@drawable/bg_user_avatar">
+
+            <ImageView
+                android:layout_width="@dimen/size_20dp"
+                android:layout_height="@dimen/size_20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_email_24"
+                android:contentDescription="@null"
+                app:tint="?attr/colorOnPrimaryContainer" />
+
+        </FrameLayout>
+
+        <!-- Account identity and aggregate counts -->
+        <LinearLayout
+            android:layout_width="@dimen/dimension_zero"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- Account email – primary identity for the admin -->
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.PetCare.TitleMedium"
+                android:textColor="?attr/colorOnSurface"
+                android:textStyle="bold"
+                android:ellipsize="end"
+                android:maxLines="1" />
+
+            <!-- Pet and task counts as compact subtitle -->
+            <TextView
+                android:id="@+id/counts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_2dp"
+                android:textAppearance="@style/TextAppearance.PetCare.BodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+
+        </LinearLayout>
+
+        <!-- Overflow action menu – 48dp touch target matches shared icon size -->
+        <ImageButton
+            android:id="@+id/overflow"
+            android:layout_width="@dimen/touch_target"
+            android:layout_height="@dimen/touch_target"
+            android:src="@drawable/ic_more_vert"
+            android:contentDescription="@string/cd_more_options"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="?attr/colorOnSurfaceVariant" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

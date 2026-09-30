@@ -30,6 +30,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
     tools:context=".ui.pet.PetFormFragment">
 
     <!-- ── Top App Bar ─────────────────────────────────────────────── -->
@@ -37,7 +38,7 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="false">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -67,7 +68,7 @@
 
             <LinearLayout
                 android:id="@+id/form_container"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dimension_zero"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/spacing_medium"
@@ -79,40 +80,90 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent">
 
+                <!-- A short context panel anchors the long profile form. -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_large"
+                    app:cardBackgroundColor="?attr/colorPrimaryContainer"
+                    app:cardCornerRadius="@dimen/card_corner_radius"
+                    app:cardElevation="@dimen/dimension_zero">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_large">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/pet_form_eyebrow"
+                            android:textAppearance="@style/TextAppearance.PetCare.LabelLarge"
+                            android:textColor="?attr/colorOnPrimaryContainer" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_small"
+                            android:text="@string/pet_form_intro"
+                            android:textAppearance="@style/TextAppearance.PetCare.TitleLarge"
+                            android:textColor="?attr/colorOnPrimaryContainer"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
                 <!-- ── Section 1: Basic Information ────────────────── -->
                 <TextView
                     android:id="@+id/header_basic_info"
+                    style="@style/Widget.PetCare.SectionHeader"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text="@string/section_basic_information" />
+
+                <!-- ── Photo area (circular avatar + camera badge button) ── -->
+                <FrameLayout
+                    android:id="@+id/layout_photo_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_small"
-                    android:text="@string/section_basic_info"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    android:textColor="?attr/colorPrimary"
-                    android:textStyle="bold" />
-
-                <!-- ── Photo area ───────────────────────────────────── -->
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/image_pet_photo"
-                    android:layout_width="@dimen/photo_preview_size"
-                    android:layout_height="@dimen/photo_preview_size"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/spacing_small"
-                    android:layout_marginBottom="@dimen/spacing_small"
-                    android:contentDescription="@string/cd_pet_photo"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_pet_placeholder"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.PetCare.Circular" />
+                    android:layout_marginBottom="@dimen/spacing_medium">
 
-                <!-- "Change photo" text button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_change_photo"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="@dimen/spacing_medium"
-                    android:minHeight="48dp"
-                    android:text="@string/action_change_photo" />
+                    <!-- Circular pet photo with clean light-container paw placeholder -->
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/image_pet_photo"
+                        android:layout_width="@dimen/photo_preview_size"
+                        android:layout_height="@dimen/photo_preview_size"
+                        android:contentDescription="@string/cd_pet_photo"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_pet_placeholder"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.PetCare.Circular" />
+
+                    <!-- Camera badge button overlapping the bottom-end of the circular avatar -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_change_photo"
+                        style="@style/Widget.PetCare.Button"
+                        android:layout_width="@dimen/size_40dp"
+                        android:layout_height="@dimen/size_40dp"
+                        android:layout_gravity="bottom|end"
+                        android:minWidth="@dimen/dimension_zero"
+                        android:minHeight="@dimen/dimension_zero"
+                        android:insetLeft="@dimen/dimension_zero"
+                        android:insetTop="@dimen/dimension_zero"
+                        android:insetRight="@dimen/dimension_zero"
+                        android:insetBottom="@dimen/dimension_zero"
+                        android:padding="@dimen/dimension_zero"
+                        app:cornerRadius="@dimen/size_20dp"
+                        app:strokeColor="?attr/colorSurface"
+                        app:strokeWidth="@dimen/size_2dp"
+                        android:backgroundTint="?attr/colorPrimary"
+                        app:icon="@drawable/ic_camera"
+                        app:iconGravity="textStart"
+                        app:iconPadding="@dimen/dimension_zero"
+                        app:iconSize="@dimen/size_20dp"
+                        android:contentDescription="@string/cd_change_photo_badge" />
+
+                </FrameLayout>
 
                 <!-- Pet name (required) -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -122,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_medium"
                     android:hint="@string/hint_pet_name"
-                    app:startIconDrawable="@drawable/ic_pets_empty"
+                    app:startIconDrawable="@drawable/ic_paw_24"
                     app:startIconContentDescription="@string/cd_field_name">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -184,11 +235,12 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/layout_age"
                         style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dimension_zero"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginEnd="@dimen/spacing_small"
-                        android:hint="@string/hint_age">
+                        android:hint="@string/hint_age"
+                        app:suffixText="@string/suffix_years">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edit_age"
@@ -204,11 +256,12 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/layout_weight"
                         style="@style/Widget.PetCare.TextInputLayout.OutlinedBox"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/dimension_zero"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_marginStart="@dimen/spacing_small"
-                        android:hint="@string/hint_weight">
+                        android:hint="@string/hint_weight"
+                        app:suffixText="@string/suffix_kg">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edit_weight"
@@ -225,14 +278,10 @@
                 <!-- ── Section 2: Health & Care ─────────────────────── -->
                 <TextView
                     android:id="@+id/header_health_care"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/Widget.PetCare.SectionHeader"
                     android:layout_marginTop="@dimen/spacing_small"
                     android:layout_marginBottom="@dimen/spacing_small"
-                    android:text="@string/section_health_care"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    android:textColor="?attr/colorPrimary"
-                    android:textStyle="bold" />
+                    android:text="@string/section_health_and_care" />
 
                 <!-- Diet notes -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -293,17 +342,13 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- ── Section 3: Additional Details ────────────────── -->
+                <!-- ── Section 3: Extras ──────────────────────────── -->
                 <TextView
                     android:id="@+id/header_additional_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/Widget.PetCare.SectionHeader"
                     android:layout_marginTop="@dimen/spacing_small"
                     android:layout_marginBottom="@dimen/spacing_small"
-                    android:text="@string/section_additional_details"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    android:textColor="?attr/colorPrimary"
-                    android:textStyle="bold" />
+                    android:text="@string/section_extras" />
 
                 <!-- Favourite toys -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -348,11 +393,10 @@
                 <!-- ── Save / Add button ────────────────────────────── -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_save"
+                    style="@style/Widget.PetCare.Button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_large"
-                    android:minHeight="48dp"
-                    app:cornerRadius="12dp"
                     tools:text="@string/action_add_pet" />
 
                 <!-- Loading indicator shown while save is in progress -->
@@ -364,8 +408,8 @@
                     android:layout_marginBottom="@dimen/spacing_medium"
                     android:indeterminate="true"
                     android:visibility="gone"
-                    app:indicatorSize="32dp"
-                    app:trackCornerRadius="4dp" />
+                    app:indicatorSize="@dimen/spacing_xl"
+                    app:trackCornerRadius="@dimen/spacing_xs" />
 
             </LinearLayout>
 

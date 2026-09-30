@@ -2,6 +2,8 @@ package com.petcare.app.ui.welcome
 
 import com.petcare.app.data.db.UserDao
 import com.petcare.app.data.db.UserEntity
+import com.petcare.app.data.db.UserWithCounts
+import com.petcare.app.data.db.AppStats
 import com.petcare.app.data.repository.UserRepository
 import com.petcare.app.data.session.SessionManager
 import kotlinx.coroutines.Dispatchers
@@ -70,6 +72,10 @@ class FakeUserDao : UserDao {
     override suspend fun deleteById(id: Long) {
         users.remove(id)
     }
+
+    override suspend fun getAllWithCounts(): List<UserWithCounts> = emptyList()
+
+    override suspend fun getAppStats(today: String): AppStats = AppStats(0, 0, 0, 0)
 }
 
 /**
