@@ -278,6 +278,7 @@ class PetChecklistFragment : Fragment() {
         // 1 & 2. Swipe Left to Delete and Swipe Right to Mark Done
         val swipeCallback = ChecklistSwipeCallback(
             context = requireContext(),
+            recyclerView = binding.recyclerChecklist,
             isSelectionModeActive = { actionMode != null },
             onSwipeDelete = { position ->
                 val item = checklistAdapter.getItemAt(position)
@@ -290,7 +291,6 @@ class PetChecklistFragment : Fragment() {
                 if (item is ChecklistItem.Task) {
                     val newDone = !item.isDoneToday
                     viewModel.toggleTaskDone(item.task, newDone)
-                    checklistAdapter.notifyItemChanged(position)
 
                     val statusMsg = if (newDone) {
                         "Completed \"${item.task.name}\""

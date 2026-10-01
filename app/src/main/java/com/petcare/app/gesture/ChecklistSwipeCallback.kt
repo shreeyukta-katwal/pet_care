@@ -23,7 +23,7 @@ import com.petcare.app.ui.checklist.ChecklistAdapter
  *     because the action is safely recoverable. Reminders are cancelled and restored on undo.
  *   - **Swipe RIGHT (`ItemTouchHelper.RIGHT`)**: Toggles the task's completion status for today,
  *     persists the new state to Room database, and immediately bounces/snaps the row back into place
- *     using [RecyclerView.Adapter.notifyItemChanged] while presenting an Undo action.
+ *     by replacing the swiped row's ViewHolder while presenting an Undo action.
  * - **Conflict Avoidance**:
  *   - Inspects [RecyclerView.ViewHolder.getItemViewType] in [getSwipeDirs]. Category header rows
  *     return `0` (swiping completely disabled on headers).
@@ -43,6 +43,7 @@ import com.petcare.app.ui.checklist.ChecklistAdapter
  */
 class ChecklistSwipeCallback(
     context: Context,
+    private val recyclerView: RecyclerView,
     private val isSelectionModeActive: () -> Boolean,
     private val onSwipeDelete: (position: Int) -> Unit,
     private val onSwipeToggleDone: (position: Int) -> Unit
@@ -88,7 +89,18 @@ class ChecklistSwipeCallback(
         if (direction == ItemTouchHelper.LEFT) {
             onSwipeDelete(position)
         } else if (direction == ItemTouchHelper.RIGHT) {
+            // Completion keeps the task in the list. ItemTouchHelper keeps a
+            // successful swipe off-screen until its ViewHolder is detached.
             onSwipeToggleDone(position)
+            recyclerView.post {
+                val currentPosition = viewHolder.bindingAdapterPosition
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    recyclerView.adapter?.apply {
+                        notifyItemRemoved(currentPosition)
+                        notifyItemInserted(currentPosition)
+                    }
+                }
+            }
         }
     }
 
