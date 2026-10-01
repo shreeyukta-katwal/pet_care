@@ -2,7 +2,7 @@
 <!--
     item_pet_card.xml – RecyclerView row for a single pet in PetListFragment.
     Uses a MaterialCardView with:
-      • Circular pet photo (80 dp) with placeholder paw icon
+      • Circular pet photo with placeholder paw icon
       • Pet name (headline / title style)
       • Species and breed on one line
       • Age displayed as a small chip-style text
@@ -19,9 +19,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/spacing_medium"
-    android:layout_marginBottom="@dimen/spacing_medium"
+    android:layout_marginBottom="@dimen/spacing_small"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    app:cardElevation="@dimen/dimension_zero"
+    app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -34,15 +36,14 @@
         -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_pet_photo"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="@dimen/photo_thumbnail_size"
+            android:layout_height="@dimen/photo_thumbnail_size"
             android:contentDescription="@string/cd_pet_photo"
             android:scaleType="centerCrop"
             android:background="@drawable/bg_pet_avatar_small"
             app:shapeAppearanceOverlay="@style/ShapeAppearance.PetCare.Circular"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             tools:src="@drawable/ic_pet_placeholder" />
 
         <!-- Pet name – prominent title text -->
@@ -93,35 +94,17 @@
             app:layout_constraintTop_toBottomOf="@id/text_species_breed"
             tools:text="3 yr" />
 
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/progress_pet_today"
-            android:layout_width="@dimen/dimension_zero"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_medium"
-            android:layout_marginTop="@dimen/spacing_small"
-            android:visibility="gone"
-            app:indicatorColor="?attr/colorPrimary"
-            app:trackColor="?attr/colorSecondaryContainer"
-            app:trackThickness="10dp"
-            app:trackCornerRadius="5dp"
-            app:layout_constraintStart_toEndOf="@id/image_pet_photo"
-            app:layout_constraintEnd_toStartOf="@id/button_overflow"
-            app:layout_constraintTop_toBottomOf="@id/text_age"
-            tools:progress="80"
-            tools:visibility="visible" />
-
         <!-- Progress label -->
         <TextView
             android:id="@+id/text_progress"
             android:layout_width="@dimen/dimension_zero"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_medium"
-            android:layout_marginTop="@dimen/spacing_xs"
+            android:layout_marginStart="@dimen/spacing_small"
             android:textAppearance="@style/TextAppearance.PetCare.LabelMedium"
             android:textColor="?attr/colorSecondary"
-            app:layout_constraintStart_toEndOf="@id/image_pet_photo"
-            app:layout_constraintEnd_toStartOf="@id/button_overflow"
-            app:layout_constraintTop_toBottomOf="@id/progress_pet_today"
+            app:layout_constraintStart_toEndOf="@id/text_age"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="@id/text_age"
             tools:text="• 4/6 done" />
 
         <!-- ⋮ overflow button – anchored top-end of the card (48dp touch target per Material guidelines) -->

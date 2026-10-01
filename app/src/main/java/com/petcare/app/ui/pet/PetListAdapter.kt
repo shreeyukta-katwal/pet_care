@@ -96,12 +96,8 @@ class PetListAdapter(
             if (item.progressText.isNotBlank()) {
                 binding.textProgress.text = item.progressText
                 binding.textProgress.visibility = View.VISIBLE
-                binding.progressPetToday.visibility = View.VISIBLE
-                binding.progressPetToday.progress =
-                    (item.completedCount * 100 / item.totalCount.coerceAtLeast(1))
             } else {
                 binding.textProgress.visibility = View.GONE
-                binding.progressPetToday.visibility = View.GONE
             }
 
             // ── Multi-selection state ───────────────────────────────────
