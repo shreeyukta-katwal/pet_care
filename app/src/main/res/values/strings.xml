@@ -365,4 +365,27 @@
     <string name="admin_pet_routines_label">Routines</string>
     <string name="admin_no_routines_for_pet">No routines set up yet</string>
 
+    <!-- User profile and account settings. -->
+    <string name="profile_title">My profile</string>
+    <string name="profile_photo_description">Profile photo</string>
+    <string name="profile_change_photo">Change photo</string>
+    <string name="profile_remove_photo">Remove photo</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_email_hint">Your email cannot be changed here</string>
+    <string name="profile_save">Save profile</string>
+    <string name="profile_saved">Profile updated</string>
+    <string name="profile_photo_failed">Could not save profile photo</string>
+    <string name="profile_load_failed">Could not load your profile</string>
+    <string name="profile_name_required">Enter your name</string>
+    <string name="profile_password_heading">Change password</string>
+    <string name="profile_current_password">Current password</string>
+    <string name="profile_new_password">New password</string>
+    <string name="profile_confirm_password">Confirm new password</string>
+    <string name="profile_change_password">Update password</string>
+    <string name="profile_password_saved">Password updated</string>
+    <string name="profile_current_password_wrong">Current password is incorrect</string>
+    <string name="profile_password_required">Enter your current password</string>
+    <string name="profile_password_mismatch">New passwords do not match</string>
+    <string name="profile_save_failed">Could not save changes</string>
 </resources>

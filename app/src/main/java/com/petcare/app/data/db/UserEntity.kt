@@ -41,6 +41,14 @@ data class UserEntity(
     @ColumnInfo(name = "salt")
     val salt: String,
 
+    /** Name shown in the profile and on delegated care plans. */
+    @ColumnInfo(name = "display_name", defaultValue = "''")
+    val displayName: String = "",
+
+    /** App-private URI of the optional profile photo. */
+    @ColumnInfo(name = "photo_uri")
+    val photoUri: String? = null,
+
     /** True only for the locally seeded administrator account. */
     @ColumnInfo(name = "is_admin")
     val isAdmin: Boolean = false

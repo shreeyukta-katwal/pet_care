@@ -5,6 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 /**
  * PetCareDatabase – the single Room database instance for the application.
@@ -29,7 +31,7 @@ import androidx.room.TypeConverters
  */
 @Database(
     entities = [UserEntity::class, PetEntity::class, TaskEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = true   // Exports schema to app/schemas/ for migration tracking
 )
 @TypeConverters(Converters::class)
@@ -45,6 +47,13 @@ abstract class PetCareDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
 
     companion object {
+        /** Preserve accounts and their pets when adding profile fields. */
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE users ADD COLUMN display_name TEXT NOT NULL DEFAULT ''")
+                db.execSQL("ALTER TABLE users ADD COLUMN photo_uri TEXT")
+            }
+        }
         /**
          * The file name of the SQLite database on disk.
          * Changing this will create a new empty database on existing installs.
@@ -88,6 +97,7 @@ abstract class PetCareDatabase : RoomDatabase() {
                 PetCareDatabase::class.java,
                 DATABASE_NAME
             )
+                .addMigrations(MIGRATION_2_3)
                 // This prototype has no migration strategy yet. Moving to v2 adds
                 // UserEntity.isAdmin, so existing prototype data is intentionally reset.
                 .fallbackToDestructiveMigration()

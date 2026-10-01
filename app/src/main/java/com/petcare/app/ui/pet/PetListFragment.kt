@@ -145,6 +145,10 @@ class PetListFragment : Fragment() {
             sheet.dismiss()
             showGesturesGuideDialog()
         }
+        menuBinding.actionProfile.setOnClickListener {
+            sheet.dismiss()
+            findNavController().navigate(R.id.action_petList_to_profile)
+        }
         menuBinding.actionAdminPanel.setOnClickListener {
             sheet.dismiss()
             findNavController().navigate(R.id.action_petList_to_adminDashboard)

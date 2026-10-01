@@ -14,9 +14,10 @@
 ## Key Features
 
 ### User Authentication & Scoped Storage
-- Local user signup and login with secure salted **SHA-256** password hashing.
+- Local user signup and login with salted **PBKDF2-HMAC-SHA256** password hashing.
 - Strict data isolation ensuring each user only accesses their own pets and routines.
 - Persistent session management with `SharedPreferences`.
+- My profile page with a private profile photo, editable display name, read-only email, and password change verified against the current password.
 
 ### Pet Profile Management
 - Comprehensive pet profiles: Name, species, breed, age, weight, diet, allergies, vaccinations, favorite toys, and notes.

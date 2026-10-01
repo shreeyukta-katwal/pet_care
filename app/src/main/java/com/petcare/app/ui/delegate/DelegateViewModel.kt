@@ -155,7 +155,7 @@ class DelegateViewModel(
                     if (user != null) {
                         val derived = user.email.substringBefore('@')
                             .replaceFirstChar { it.titlecase() }
-                        _senderName.value = derived
+                        _senderName.value = user.displayName.ifBlank { derived }
                     }
                 }
             } catch (e: Exception) {

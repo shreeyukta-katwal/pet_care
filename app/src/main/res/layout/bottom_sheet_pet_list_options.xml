@@ -42,6 +42,20 @@
             android:text="@string/menu_gestures_guide" />
     </LinearLayout>
 
+    <!-- Entry point for the signed-in account profile. -->
+    <LinearLayout
+        android:id="@+id/action_profile"
+        style="@style/Widget.PetCare.SheetAction">
+        <ImageView
+            style="@style/Widget.PetCare.SheetAction.Icon"
+            android:src="@drawable/ic_person_24"
+            android:contentDescription="@null"
+            app:tint="?attr/colorPrimary" />
+        <TextView
+            style="@style/Widget.PetCare.SheetAction.Label"
+            android:text="@string/profile_title" />
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/action_admin_panel"
         style="@style/Widget.PetCare.SheetAction"

@@ -141,6 +141,11 @@
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
 
+        <!-- Account profile and password settings. -->
+        <action
+            android:id="@+id/action_petList_to_profile"
+            app:destination="@id/profileFragment" />
+
         <!-- Navigate directly to add routine for a pet -->
         <action
             android:id="@+id/action_petList_to_taskForm"
@@ -159,6 +164,13 @@
             android:id="@+id/action_petList_to_adminDashboard"
             app:destination="@id/adminDashboardFragment" />
     </fragment>
+
+    <!-- Signed-in user's profile. -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.petcare.app.ui.profile.ProfileFragment"
+        android:label="@string/profile_title"
+        tools:layout="@layout/fragment_profile" />
 
     <!-- ── Pet Form (Add / Edit) ─────────────────────────────────────── -->
     <fragment
