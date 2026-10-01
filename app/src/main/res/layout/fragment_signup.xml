@@ -43,7 +43,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0">
+            app:layout_constraintVertical_bias="0.5">
 
             <!-- ── Logo Badge (72dp circular container with tinted paw-print icon) ── -->
             <FrameLayout
@@ -51,7 +51,7 @@
                 android:layout_width="@dimen/photo_thumbnail_size"
                 android:layout_height="@dimen/photo_thumbnail_size"
                 android:background="@drawable/bg_logo_circle"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:padding="@dimen/size_12dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_petcare_logo"
+                    android:scaleType="centerInside"
                     app:tint="?attr/colorPrimary"
                     android:contentDescription="@string/cd_app_logo" />
             </FrameLayout>
@@ -76,8 +77,10 @@
                 android:textAppearance="@style/TextAppearance.PetCare.HeadlineMedium"
                 android:textColor="?attr/colorOnSurface"
                 android:textStyle="bold"
+                android:gravity="center"
                 app:layout_constraintTop_toBottomOf="@id/logoBadge"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <!-- ── Screen Subtitle ── -->
             <TextView
