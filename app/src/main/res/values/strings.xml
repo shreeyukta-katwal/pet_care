@@ -46,6 +46,8 @@
     <string name="already_have_account">Already have an account? Log In</string>
     <string name="dont_have_account">Don’t have an account? Sign Up</string>
     <string name="btn_create_account">Create Account</string>
+    <string name="signup_success">Account created successfully</string>
+    <string name="login_success">Logged in successfully</string>
 
     <!-- Validation Errors -->
     <string name="error_email_required">Email address is required</string>
@@ -70,12 +72,14 @@
     <string name="title_edit_pet">Edit Pet</string>
     <string name="btn_add_pet">Add Pet</string>
     <string name="btn_save_changes">Save Changes</string>
+    <string name="pet_added_success">Pet added successfully</string>
+    <string name="pet_updated_success">Pet updated successfully</string>
     <string name="empty_pets_title">No pets yet!</string>
     <string name="empty_pets_subtitle">Add your furry, scaly, or feathered friend to begin tracking their daily care routines.</string>
     <string name="dialog_delete_pet_title">Delete %1$s?</string>
     <string name="dialog_delete_pet_message">This will permanently remove %1$s and all of their scheduled care tasks.</string>
     <string name="btn_delete">Delete</string>
-    <string name="snackbar_pet_deleted">%1$s deleted</string>
+    <string name="snackbar_pet_deleted">%1$s deleted successfully</string>
     <string name="action_undo">Undo</string>
     <string name="dialog_unsaved_title">Discard Changes?</string>
     <string name="dialog_unsaved_message">You have unsaved changes. Are you sure you want to discard them?</string>
@@ -196,6 +200,8 @@
     <string name="no_pets_warning">No pets found! You must add a pet before creating a care routine.</string>
     <string name="btn_create_pet">Add Pet First</string>
     <string name="snackbar_task_saved">Care routine saved</string>
+    <string name="routine_added_success">Care routine added successfully</string>
+    <string name="routine_updated_success">Care routine updated successfully</string>
 
     <!-- Task Form Validation Errors -->
     <string name="error_task_name_required">Routine name is required</string>
@@ -222,7 +228,7 @@
     <string name="action_edit_task">Edit task</string>
     <string name="dialog_delete_task_title">Delete Routine</string>
     <string name="dialog_delete_task_message">Are you sure you want to delete "%1$s"?</string>
-    <string name="snackbar_task_deleted">"%1$s" deleted</string>
+    <string name="snackbar_task_deleted">"%1$s" deleted successfully</string>
     <string name="tab_today">Today</string>
     <string name="tab_all_routines">All routines</string>
     <string name="progress_all_done">All done today! 🎉</string>
@@ -316,8 +322,8 @@
     <string name="dialog_delete_selected_tasks_message">Are you sure you want to delete %1$d selected routine(s)?</string>
     <string name="dialog_delete_selected_pets_title">Delete Selected Pets</string>
     <string name="dialog_delete_selected_pets_message">Are you sure you want to delete %1$d selected pet(s)?</string>
-    <string name="snackbar_tasks_batch_deleted">%1$d routine(s) deleted</string>
-    <string name="snackbar_pets_batch_deleted">%1$d pet(s) deleted</string>
+    <string name="snackbar_tasks_batch_deleted">%1$d routine(s) deleted successfully</string>
+    <string name="snackbar_pets_batch_deleted">%1$d pet(s) deleted successfully</string>
     <string name="snackbar_tasks_batch_completed">%1$d routine(s) marked done</string>
     <string name="action_mode_selected_count">%1$d selected</string>
     <string name="cd_photo_viewer">Enlarged pet photo. Tap or swipe down to dismiss.</string>
@@ -351,7 +357,7 @@
     <string name="admin_no_pets">This user has no pets.</string>
     <string name="admin_delete_title">Delete account?</string>
     <string name="admin_delete_message">Delete this account and all its data? This cannot be undone. This action is permanent.</string>
-    <string name="admin_account_deleted">Account deleted permanently</string>
+    <string name="admin_account_deleted">Account deleted successfully</string>
     <string name="admin_not_authorised">Not authorised</string>
     <string name="action_back">Back</string>
     <string name="admin_pet_count">%1$d pets</string>
@@ -374,7 +380,7 @@
     <string name="profile_email">Email</string>
     <string name="profile_email_hint">Your email cannot be changed here</string>
     <string name="profile_save">Save profile</string>
-    <string name="profile_saved">Profile updated</string>
+    <string name="profile_saved">Profile updated successfully</string>
     <string name="profile_photo_failed">Could not save profile photo</string>
     <string name="profile_load_failed">Could not load your profile</string>
     <string name="profile_name_required">Enter your name</string>
@@ -383,7 +389,7 @@
     <string name="profile_new_password">New password</string>
     <string name="profile_confirm_password">Confirm new password</string>
     <string name="profile_change_password">Update password</string>
-    <string name="profile_password_saved">Password updated</string>
+    <string name="profile_password_saved">Password updated successfully</string>
     <string name="profile_current_password_wrong">Current password is incorrect</string>
     <string name="profile_password_required">Enter your current password</string>
     <string name="profile_password_mismatch">New passwords do not match</string>

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -347,6 +348,8 @@ class PetFormFragment : Fragment() {
             }
             is PetFormState.Saved -> {
                 binding.progressIndicator.visibility = View.GONE
+                val message = if (viewModel.isEditMode) R.string.pet_updated_success else R.string.pet_added_success
+                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
                 findNavController().popBackStack()
             }
             is PetFormState.ValidationError -> {

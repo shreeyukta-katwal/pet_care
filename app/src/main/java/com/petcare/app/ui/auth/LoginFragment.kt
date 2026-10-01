@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -158,6 +159,7 @@ class LoginFragment : Fragment() {
                     if (state.navigateToPetList) {
                         viewModel.onNavigated()
                         if (findNavController().currentDestination?.id == R.id.loginFragment) {
+                            Toast.makeText(requireContext(), R.string.login_success, Toast.LENGTH_LONG).show()
                             findNavController().navigate(R.id.action_login_to_petList)
                         }
                     }

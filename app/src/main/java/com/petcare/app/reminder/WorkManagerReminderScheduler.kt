@@ -114,6 +114,7 @@ class WorkManagerReminderScheduler(
                 }
             }
             TaskFrequency.WEEKLY -> {
+                require(task.daysOfWeek != 0) { "Weekly tasks must have at least one selected day" }
                 // Day bit for offset 0 (today)
                 val todayBit = 1 shl (now.dayOfWeek.value - 1)
                 if ((task.daysOfWeek and todayBit) != 0 && targetToday.isAfter(now)) {

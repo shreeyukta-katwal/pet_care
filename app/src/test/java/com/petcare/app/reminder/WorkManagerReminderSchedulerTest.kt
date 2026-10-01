@@ -85,13 +85,7 @@ class WorkManagerReminderSchedulerTest {
         assertEquals("reminder_99", WorkManagerReminderScheduler.uniqueWorkName(99L))
     }
 
-    /**
-     * Diagnostic Test for Known Issue 2:
-     * When a weekly task is erroneously configured with daysOfWeek = 0 (no days selected),
-     * the scheduling engine should reject it (e.g. by throwing an IllegalArgumentException
-     * or returning an invalid occurrence). Currently, it loops 1..7 without a match and
-     * silently defaults to targetToday.plusDays(1), failing this defensive assertion.
-     */
+    /** An invalid weekly schedule must be rejected instead of silently scheduling tomorrow. */
     @Test(expected = IllegalArgumentException::class)
     fun `calculateNextOccurrence weekly task with zero daysOfWeek throws IllegalArgumentException`() {
         val scheduler = WorkManagerReminderSchedulerStub()
@@ -129,6 +123,7 @@ class WorkManagerReminderSchedulerStub {
                 }
             }
             TaskFrequency.WEEKLY -> {
+                require(task.daysOfWeek != 0) { "Weekly tasks must have at least one selected day" }
                 val todayBit = 1 shl (now.dayOfWeek.value - 1)
                 if ((task.daysOfWeek and todayBit) != 0 && targetToday.isAfter(now)) {
                     targetToday

@@ -18,6 +18,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -744,6 +745,8 @@ class TaskFormFragment : Fragment() {
     }
 
     private fun showConfirmationAndExit() {
+        val message = if (viewModel.isEditMode) R.string.routine_updated_success else R.string.routine_added_success
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
         findNavController().popBackStack()
     }
 
